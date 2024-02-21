@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SocialLed" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="fontFamily">@font/dmsan</item>
+
+    </style>
+
+    <style name="Theme.SocialLed" parent="Base.Theme.SocialLed" />
+
+    <style name="bottomNav">
+        <item name="itemIconSize">32dp</item>
+        <item name="itemTextAppearanceActive">@font/dmsan</item>
+        <item name="itemTextAppearanceInactive">@font/dmsan</item>
+        <item name="itemIconTint">@color/bottom_nav_selector</item>
+        <item name="itemTextColor">@color/bottom_nav_selector</item>
+
+    </style>
+
+</resources>

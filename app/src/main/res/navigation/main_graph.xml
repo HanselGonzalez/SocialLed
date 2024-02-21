@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/createSignsFragment">
+
+    <fragment
+        android:id="@+id/createSignsFragment"
+        android:name="com.sign.led.ui.createSigns.createSignsFragment"
+        android:label="fragment_create_signs"
+        tools:layout="@layout/fragment_create_signs" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.sign.led.ui.home.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/mySignsFragment2"
+        android:name="com.sign.led.ui.mysigns.mySignsFragment"
+        android:label="fragment_my_signs"
+        tools:layout="@layout/fragment_my_signs" />
+    <fragment
+        android:id="@+id/signsFragment2"
+        android:name="com.sign.led.ui.signs.signsFragment"
+        android:label="fragment_signs"
+        tools:layout="@layout/fragment_signs" />
+</navigation>
