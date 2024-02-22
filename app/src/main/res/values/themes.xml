@@ -14,7 +14,16 @@
         <item name="itemTextAppearanceInactive">@font/dmsan</item>
         <item name="itemIconTint">@color/bottom_nav_selector</item>
         <item name="itemTextColor">@color/bottom_nav_selector</item>
+        <item name="android:background">@drawable/border_bottomnav</item>
+    </style>
+
+    <style name="toolBar">
+        <item name="android:background">@drawable/border_toolbar</item>
+
 
     </style>
+
+
+
 
 </resources>
