@@ -4,15 +4,39 @@
     <color name="white">#FFFFFFFF</color>
 
 
-
+    //BOTTOM NAV, TOOLBAR, BACKGROUND AND ICONS
     <color name="tertiary">#04042E</color>
     <color name="secondary">#0264DC</color>
     <color name="primary">#040710</color>
+
+    //CARD-VIEW
+    <color name="primarySecond">#1F1F6E</color>
+    <color name="secondarySecond">#A7A4A4</color>
 
 
 
     <color name="red">#FF0000</color>
 
+
+    //PALETTE COLORS
+    <color name="blue">#0000FF</color>
+    <color name="yellow">#FFFF00</color>
+
+    <color name="salmon">#ED7272</color>
+    <color name="grey">#818181</color>
+    <color name="dark_red">#530013</color>
+    <color name="golden">#DAA520</color>
+    <color name="purple">#4C1D78</color>
+    <color name="crimson">#DC143C</color>
+    <color name="dark_purple">#2E053A</color>
+    <color name="dark_blue">#070829</color>
+    <color name="sky_blue">#00BCD4</color>
+    <color name="light_pink">#FFA7B4</color>
+    <color name="green">#32C632</color>
+    <color name="light_blue">#3753EA</color>
+    <color name="orange">#FF5722</color>
+    <color name="pink">#FF376F</color>
+    <color name="mint">#11CA83</color>
 
 
 </resources>

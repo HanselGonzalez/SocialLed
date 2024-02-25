@@ -3,6 +3,7 @@
     <style name="Base.Theme.SocialLed" parent="Theme.Material3.DayNight.NoActionBar">
 
         <item name="fontFamily">@font/dmsan</item>
+        <item name="android:statusBarColor">@color/tertiary</item>
 
     </style>
 
@@ -20,8 +21,15 @@
     <style name="toolBar">
         <item name="android:background">@drawable/border_toolbar</item>
 
-
     </style>
+
+    <style name="cvHome">
+        <item name="android:layout_height">110dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="cardBackgroundColor">@color/primarySecond</item>
+        <item name="cardCornerRadius">10dp</item>
+    </style>
+
 
 
 
