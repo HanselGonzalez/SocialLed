@@ -8,6 +8,37 @@
 
     //HOME FRAGMENT
     <string name="title">Title</string>
+    <string name="background">Background</string>
     <string name="text">Enter a text</string>
-    <string name="style">Style</string>
+    <string name="style">Add Style</string>
+
+
+    //DIALOG TITLE
+    <string name="font">Font</string>
+    <string name="animation">Animation</string>
+    <string name="speed">Speed</string>
+
+    //SPINNERS TITLE
+    <string-array name="spFontItems">
+        <item>Font 1</item>
+        <item>Font 2</item>
+        <item>Font 3</item>
+    </string-array>
+
+    <string-array name="spAnimationItems">
+        <item>Animation 1</item>
+        <item>Animation 2</item>
+        <item>Animation 3</item>
+    </string-array>
+
+    <string-array name="spSpeedAnimationItems">
+        <item>Normal</item>
+        <item>Slow</item>
+        <item>Fast</item>
+    </string-array>
+
+
+
+
+    
 </resources>

@@ -11,10 +11,12 @@
 
     //CARD-VIEW
     <color name="primarySecond">#1F1F6E</color>
-    <color name="secondarySecond">#A7A4A4</color>
+    <color name="secondarySecond">#CAC5C5</color>
+    <color name="tertiarySecond">#5057CD</color>
+    <color name="fourthSecond">#8E94F3</color>
 
 
-
+    <color name="transparent">#00000000</color>
     <color name="red">#FF0000</color>
 
 
