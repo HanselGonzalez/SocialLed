@@ -27,6 +27,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.android.material.card.MaterialCardView
 import com.sign.led.R
 import com.sign.led.databinding.FragmentCreateSignsBinding
@@ -41,6 +42,9 @@ class createSignsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var dialogTitle: Dialog
     private lateinit var dialogBackground: Dialog
+    private val listTextNew = ArrayList<TextView>()
+
+
 
 
 
@@ -70,13 +74,15 @@ class createSignsFragment : Fragment() {
         binding.btnStyleTitle.setOnClickListener {
         showDialogTitle()
         }
+
     }
 
     private fun showDialogTitle() {
-
-        val btnAddText = dialogTitle.findViewById<ImageButton>(R.id.btnCheck)
         val cvViewPreview = binding.cvViewPreview
+        val btnAddText = dialogTitle.findViewById<ImageButton>(R.id.btnCheck)
+        val btnExitDialog = dialogTitle.findViewById<ImageButton>(R.id.btnBack)
         val etText = binding.etText
+
 
 
         val spinnerFont = dialogTitle.findViewById<Spinner>(R.id.spFont)
@@ -209,68 +215,51 @@ class createSignsFragment : Fragment() {
 
 
         btnAddText.setOnClickListener {
-            val newText = TextView(requireContext())
-            newText.text = etText.text.toString()
+            val etTextFinal = etText.text.toString()
+
+            if(etTextFinal.isNotEmpty()){
+                val newText = TextView(requireContext())
+                newText.text = etTextFinal
+                newText.textSize = 20f
+
+                newText.setPadding(26,26,26,26)
+
+                val textLayoutParams = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+
+                )
 
 
-            val frameLayoutParent = FrameLayout(requireContext())
-
-            val layoutParamsParent = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-
-            frameLayoutParent.layoutParams = layoutParamsParent
+                newText.layoutParams = textLayoutParams
 
 
-
-            val frameLayout = FrameLayout(requireContext())
-
-            val layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-            frameLayout.layoutParams = layoutParams
+                etText.text.clear()
+                setOnTouchListener(newText)
+                listTextNew.add(newText)
 
 
-            newText.background = ContextCompat.getDrawable(requireContext(),R.drawable.textview_border_edit)
+                cvViewPreview.addView(newText)
+                dialogTitle.dismiss()
 
-            newText.setPadding(26, 26, 26, 26)
-
-            val textLayoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-
-            frameLayout.addView(newText, textLayoutParams)
-
-
-            val imagePrueba = ImageView(requireContext())
-            imagePrueba.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.baseline_next_plan_24))
-
-            val imageLayoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
+                if (listTextNew.size>0){
+                    etText.setHint(R.string.another_text)
+                }
+            }else{
+                Toast.makeText(requireContext(),"Ingresa un Texto Valido", Toast.LENGTH_SHORT).show()
+            }
 
 
-            imageLayoutParams.gravity = Gravity.BOTTOM or Gravity.END
-            imageLayoutParams.topMargin = 55
-
-            frameLayout.addView(imagePrueba, imageLayoutParams)
 
 
-            etText.text.clear()
 
-            setOnTouchListener(newText)
-
-            frameLayoutParent.addView(frameLayout)
-            cvViewPreview.addView(frameLayoutParent)
         }
 
 
 
 
+
+        btnExitDialog.setOnClickListener{dialogTitle.dismiss()}
         dialogTitle.show()
 
     }
@@ -279,38 +268,51 @@ class createSignsFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
 
-    private fun setOnTouchListener(newText: TextView, frame:FrameLayout) {
+    private fun setOnTouchListener(newText: TextView) {
         var resizing = false
         var initialY = 0f
         val initialSize = 20f
         var deltaX = 0f
         var deltaY = 0f
+        val cvViewPreview = binding.cvViewPreview
 
-        newText.setOnClickListener { newText.setBackgroundResource(R.drawable.textview_border_edit) }
+
+
+
 
         newText.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    newText.setBackgroundResource(R.drawable.textview_border_edit)
-                    val isInsideResizeRegion = isInsideResizeRegion(event.x, event.y, newText)
 
+                MotionEvent.ACTION_DOWN -> {
+                    newText.setBackgroundResource(R.drawable.layer_drawable)
+                    cvViewPreview.setOnClickListener{
+                        newText.setBackgroundResource(0)
+
+                    }
+
+                    val isInsideResizeRegion = isInsideResizeRegion(event.x, event.y, newText)
+                    val isInsideLeftBottomRegion = isInsideLeftBottomRegion(event.x, event.y, newText)
 
                     initialY = event.rawY
                     deltaX = v.x - event.rawX
                     deltaY = v.y - event.rawY
 
+
                     if (isInsideResizeRegion) {
                         Log.i("TouchEvent", "Estás presionando en la esquina inferior derecha")
                         resizing = true
                         Log.i("TOuchEvent", "$resizing")
-                    }else{
+                    }else if(isInsideLeftBottomRegion){
+                        cvViewPreview.removeView(newText)
+                    }
+                    else{
                         resizing = false
                     }
 
 
                 }
+
                 MotionEvent.ACTION_MOVE -> {
-                    newText.setBackgroundResource(R.drawable.textview_border_edit)
                     Log.i("TOuchEvent", "move $resizing")
                     if (resizing) {
                         val deltaY = event.rawY - initialY
@@ -323,11 +325,6 @@ class createSignsFragment : Fragment() {
                             .setDuration(0)
                             .start()
                     }
-                }
-
-                MotionEvent.ACTION_POINTER_UP ->{
-                    newText.setBackgroundResource(R.drawable.textview_border_not)
-
                 }
 
             }
@@ -346,6 +343,14 @@ class createSignsFragment : Fragment() {
         return x >= regionRight - touchSlop && x <= regionRight && y >= regionBottom - touchSlop && y <= regionBottom
     }
 
+
+    private fun isInsideLeftBottomRegion(x: Float, y: Float, view: View): Boolean {
+        val regionLeft = view.left
+        val regionBottom = view.bottom
+        val touchSlop = 50
+
+        return x >= regionLeft && x <= regionLeft + touchSlop && y >= regionBottom - touchSlop && y <= regionBottom
+    }
 
 
 
