@@ -13,6 +13,9 @@
     <string name="another_text">Enter another text</string>
     <string name="style">Add Style</string>
 
+    <string name="play_animation">Play Animation</string>
+    <string name="view_complete">View Complete</string>
+
 
 
 
@@ -20,6 +23,7 @@
     <string name="font">Font</string>
     <string name="animation">Animation</string>
     <string name="speed">Speed</string>
+    <string name="texture">Texture</string>
 
     //SPINNERS TITLE
     <string-array name="spFontItems">
@@ -34,15 +38,23 @@
     </string-array>
 
     <string-array name="spAnimationItems">
-        <item>Animation 1</item>
-        <item>Animation 2</item>
-        <item>Animation 3</item>
+        <item>None</item>
+        <item>Horizontal Displacement</item>
+        <item>Blink</item>
+        <item>Floating</item>
+        <item>Rotate</item>
+        <item>Zoom</item>
     </string-array>
 
     <string-array name="spSpeedAnimationItems">
         <item>Normal</item>
         <item>Slow</item>
         <item>Fast</item>
+    </string-array>
+
+    <string-array name="spTextureItems">
+        <item>Normal</item>
+        <item>Pixel</item>
     </string-array>
 
 

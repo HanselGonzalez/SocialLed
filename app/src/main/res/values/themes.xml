@@ -31,15 +31,19 @@
     </style>
 
 
-    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/rounded_borders</item>
-        <item name="backgroundTint">@color/tertiarySecond</item>
-        <item name="android:textSize">13sp</item>
+    <style name="ButtonStyle">
+        <item name="cardBackgroundColor">@color/tertiarySecond</item>
+        <item name="android:layout_marginBottom">7dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="android:clickable">true</item>
+
+    </style>
+
+    <style name="textStyle">
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/secondarySecond</item>
-        <item name="android:layout_marginBottom">7dp</item>
-        <item name="textAllCaps">false</item>
-
+        <item name="android:layout_gravity">center</item>
     </style>
 
 

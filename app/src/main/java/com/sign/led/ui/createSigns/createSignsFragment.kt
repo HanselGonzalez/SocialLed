@@ -1,37 +1,37 @@
 package com.sign.led.ui.createSigns
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Rect
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.fragment.app.Fragment
 import com.google.android.material.card.MaterialCardView
 import com.sign.led.R
 import com.sign.led.databinding.FragmentCreateSignsBinding
 import com.sign.led.domain.model.SpinnerFontModel
+import com.sign.led.domain.model.TextModel
 import com.sign.led.ui.createSigns.adapter.SpinnerFontAdapter
 
 
@@ -43,10 +43,17 @@ class createSignsFragment : Fragment() {
     private lateinit var dialogTitle: Dialog
     private lateinit var dialogBackground: Dialog
     private val listTextNew = ArrayList<TextView>()
-
-
-
-
+    private val listViewNew = ArrayList<View>()
+    private lateinit var fontFinal:Typeface
+    private var colorFinalTitle:Int? = null
+    private var colorFinalBackground:Int? = null
+    private lateinit var backgroundFinal:ImageView
+    private lateinit var cvViewPreview : MaterialCardView
+    private var backgroundState:Boolean = false
+    private var animationSelected:Animation? = null
+    private val listTextFinal = mutableListOf<TextModel>()
+    private var animationState = false
+    private var touchState = true
 
 
     override fun onCreateView(
@@ -61,6 +68,7 @@ class createSignsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        cvViewPreview = binding.cvViewPreview
         initUI()
     }
 
@@ -70,15 +78,193 @@ class createSignsFragment : Fragment() {
 
     private fun initListeners() {
         initDialogs()
+        backgroundPixelInitial()
+
+
+
 
         binding.btnStyleTitle.setOnClickListener {
-        showDialogTitle()
+            showDialogTitle()
+        }
+
+        binding.btnStyleBackground.setOnClickListener{
+            showDialogBackground()
+        }
+
+        animationText()
+
+
+
+    }
+
+    private fun animationText() {
+
+
+        binding.btnPlayAnimation.setOnClickListener{
+
+
+            val animationPlay = ObjectAnimator.ofFloat(binding.ivPlayAnimation, "alpha", 0f, 1f).apply {
+                duration = 500
+                interpolator = AccelerateDecelerateInterpolator()
+            }
+            animationPlay.start()
+
+
+            if(animationState){
+
+                binding.ivPlayAnimation.setImageResource(R.drawable.ic_play_animation)
+
+                listTextNew.forEach{text ->
+                    text.clearAnimation()
+                }
+
+            }else{
+                binding.ivPlayAnimation.setImageResource(R.drawable.ic_pause_animation)
+
+                listViewNew.forEach { viewNewList ->
+                    viewNewList.setBackgroundResource(0)
+                }
+
+                listTextNew.forEachIndexed { index, text ->
+
+
+                    val textModel = listTextFinal[index]
+                    text.animation = textModel.animation
+                    text.startAnimation(text.animation)
+
+
+                }
+            }
+
+            animationState = !animationState
+            touchState = !touchState
+
         }
 
     }
 
+
+    //BACKGROUND
+    private fun showDialogBackground() {
+        val btnAddBackground = dialogBackground.findViewById<ImageButton>(R.id.btnCheck)
+        val btnExitDialogBackground = dialogBackground.findViewById<ImageButton>(R.id.btnBack)
+        val spinnerTexture = dialogBackground.findViewById<Spinner>(R.id.spTexture)
+
+
+
+        val cvColor1 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor1)
+        val cvColor2 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor2)
+        val cvColor3 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor3)
+        val cvColor4 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor4)
+        val cvColor5 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor5)
+        val cvColor6 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor6)
+        val cvColor7 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor7)
+        val cvColor8 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor8)
+        val cvColor9 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor9)
+        val cvColor10 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor10)
+        val cvColor11 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor11)
+        val cvColor12 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor12)
+        val cvColor13 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor13)
+        val cvColor14 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor14)
+        val cvColor15 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor15)
+        val cvColor16 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor16)
+        val cvColor17 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor17)
+        val cvColor18 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor18)
+        val cvColor19 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor19)
+        val cvColor20 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor20)
+
+        cardTitleStyleColorPalette(cvColor1,cvColor2,cvColor3,cvColor4,cvColor5,cvColor6,cvColor7,cvColor8,
+            cvColor9,cvColor10,cvColor11,cvColor12,cvColor13,cvColor14,cvColor15,cvColor16,cvColor17,cvColor18,cvColor19,cvColor20)
+
+
+
+
+        val spTextureItems = resources.getStringArray(R.array.spTextureItems)
+        val spinnerTextureAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected, spTextureItems)
+
+        spinnerTextureAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
+
+        spinnerTexture.adapter = spinnerTextureAdapter
+
+        spinnerTexture.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+                when(spinnerTexture.selectedItemPosition){
+                    0 -> backgroundPixelVisibleFalse()
+                    1 -> backgroundPixelVisibleTrue()
+                }
+
+
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+
+
+
+
+        btnAddBackground.setOnClickListener{
+            cvViewPreview.setCardBackgroundColor(colorFinalBackground!!)
+
+
+            dialogBackground.dismiss()
+        }
+
+        btnExitDialogBackground.setOnClickListener { dialogBackground.dismiss() }
+
+        dialogBackground.show()
+
+    }
+
+    private fun backgroundPixelVisibleTrue() {
+
+        backgroundFinal.visibility = ImageView.VISIBLE
+        backgroundState = true
+
+    }
+
+    private fun backgroundPixelVisibleFalse() {
+
+        backgroundFinal.visibility = ImageView.INVISIBLE
+        backgroundState = false
+
+    }
+
+    private fun backgroundPixelInitial(){
+        backgroundFinal = ImageView(requireContext())
+        backgroundFinal.setImageResource(R.drawable.background_pixel)
+        backgroundFinal.visibility = ImageView.GONE
+        backgroundFinal.scaleType = ImageView.ScaleType.FIT_XY
+
+        val imageLayoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT
+
+        )
+
+
+        backgroundFinal.layoutParams = imageLayoutParams
+
+        cvViewPreview.addView(backgroundFinal)
+
+
+    }
+
+
+
+
+
+
+    //TEXT
     private fun showDialogTitle() {
-        val cvViewPreview = binding.cvViewPreview
         val btnAddText = dialogTitle.findViewById<ImageButton>(R.id.btnCheck)
         val btnExitDialog = dialogTitle.findViewById<ImageButton>(R.id.btnBack)
         val etText = binding.etText
@@ -105,7 +291,6 @@ class createSignsFragment : Fragment() {
         val customTypeface8 = Typeface.createFromAsset(requireContext().assets, "amatic.ttf")
 
 
-
         val options = mutableListOf<SpinnerFontModel>()
 
         for ((index, text) in spFontItems.withIndex()) {
@@ -129,14 +314,64 @@ class createSignsFragment : Fragment() {
         spinnerFont.adapter = spinnerFontAdapter
 
 
+        spinnerFont.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+
+                val selectedItemFont = spinnerFontAdapter.getSelectedFontTypeface(position)
+                 fontFinal = selectedItemFont!!
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+
+            }
+
+        }
+
+
 
         //SPINNER ANIMATION
+
         val spAnimationItems = resources.getStringArray(R.array.spAnimationItems)
 
         val spinnerAnimationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected, spAnimationItems)
         spinnerAnimationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
 
         spinnerAnimation.adapter = spinnerAnimationAdapter
+
+        spinnerAnimation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+                when(spinnerAnimation.selectedItemPosition){
+                    0 -> animationSelected = null
+                    1 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_horizontal_displacement)
+                    2 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_blink)
+                    3 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_float_text)
+                    4 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_rotate)
+                    5 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_text_zoom)
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+
+
+
 
 
 
@@ -146,6 +381,7 @@ class createSignsFragment : Fragment() {
         spinnerSpeedAnimationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
 
         spinnerSpeedAnimation.adapter = spinnerSpeedAnimationAdapter
+
 
 
         val cvColor1 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor1)
@@ -169,25 +405,258 @@ class createSignsFragment : Fragment() {
         val cvColor19 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor19)
         val cvColor20 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor20)
 
+        cardTitleStyleColorPalette(cvColor1,cvColor2,cvColor3,cvColor4,cvColor5,cvColor6,cvColor7,cvColor8,
+                cvColor9,cvColor10,cvColor11,cvColor12,cvColor13,cvColor14,cvColor15,cvColor16,cvColor17,cvColor18,cvColor19,cvColor20)
+
+
+
+
+
+
+
+        btnAddText.setOnClickListener {
+
+            val etTextFinal = etText.text.toString()
+
+            if(etTextFinal.isNotEmpty()){
+                val newText = TextView(requireContext())
+                newText.text = etTextFinal
+                val textNew = newText.text.toString()
+                newText.textSize = 20f
+                newText.typeface = fontFinal
+                newText.maxLines = 1
+                newText.ellipsize = TextUtils.TruncateAt.END
+                newText.setTextColor(colorFinalTitle!!)
+                newText.elevation = -10f
+                newText.setPadding(20,20,20,20)
+
+
+                val textLayoutParams = ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+                )
+
+
+                newText.layoutParams = textLayoutParams
+
+                val paint = Paint()
+                paint.textSize =  newText.textSize
+                val textWidth = paint.measureText(textNew)
+                val textHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
+
+
+
+
+                val newView = View(requireContext())
+
+                val viewLayoutParams = ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+                )
+
+                viewLayoutParams.width = textWidth.toInt() + 40
+                viewLayoutParams.height = textHeight.toInt() + 40
+                newView.layoutParams = viewLayoutParams
+
+
+
+
+
+
+                listTextNew.add(newText)
+                listViewNew.add(newView)
+                setOnTouchListener(newText,newView)
+
+
+
+
+
+
+
+                cvViewPreview.addView(newText)
+                cvViewPreview.removeView(backgroundFinal)
+                cvViewPreview.addView(backgroundFinal,0)
+                cvViewPreview.addView(newView)
+
+
+
+
+
+                etText.text.clear()
+                dialogTitle.dismiss()
+
+
+
+
+                if (listTextNew.size>0){
+                    etText.setHint(R.string.another_text)
+                }
+
+            }else{
+                Toast.makeText(requireContext(),"Ingresa un Texto Valido", Toast.LENGTH_SHORT).show()
+            }
+
+
+
+
+
+        }
+
+
+
+
+
+        btnExitDialog.setOnClickListener{dialogTitle.dismiss()}
+        dialogTitle.show()
+
+    }
+
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setOnTouchListener(newText: TextView, newView: View) {
+        var resizing = false
+        var initialY = 0f
+        val initialSize = 20f
+        var deltaX = 0f
+        var deltaY = 0f
+
+
+
+
+
+
+
+        newView.setOnTouchListener { v, event ->
+
+            if (!touchState) {
+
+                return@setOnTouchListener false
+            }
+
+            when (event.action) {
+
+                MotionEvent.ACTION_DOWN -> {
+
+                    val viewIndex = listViewNew.indexOfFirst { it == newView }
+                    if (viewIndex != -1) {
+
+                        listViewNew.forEachIndexed { index, viewNewList ->
+                            val backgroundResource = if (index == viewIndex) {
+                                R.drawable.layer_drawable
+                            } else {
+                                0
+                            }
+                            viewNewList.setBackgroundResource(backgroundResource)
+                        }
+                    }
+
+
+                    cvViewPreview.setOnClickListener {
+                        listViewNew.forEach { viewNewList ->
+                            viewNewList.setBackgroundResource(0)
+                        }
+
+
+                    }
+
+                    val isInsideResizeRegion = isInsideResizeRegion(event.x, event.y, newView)
+                    val isInsideLeftBottomRegion =
+                        isInsideLeftBottomRegion(event.x, event.y, newView)
+
+                    initialY = event.rawY
+                    deltaX = v.x - event.rawX
+                    deltaY = v.y - event.rawY
+
+
+                    if (isInsideResizeRegion) {
+                        Log.i("TouchEvent", "Estás presionando en la esquina inferior derecha")
+                        resizing = true
+                        Log.i("TOuchEvent", "$resizing")
+                    } else if (isInsideLeftBottomRegion) {
+                        cvViewPreview.removeView(newText)
+                        cvViewPreview.removeView(newView)
+                        listViewNew.remove(newView)
+                        listTextNew.remove(newText)
+
+                    } else {
+                        resizing = false
+                    }
+
+
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    Log.i("TOuchEvent", "move $resizing")
+                    if (resizing) {
+                        val deltaY = event.rawY - initialY
+                        val newSize = initialSize + deltaY
+                        newText.textSize = newSize.coerceIn(20f, 50f)
+                        newText.measure(0, 0)
+                        val textHeight = newText.measuredHeight
+                        val textWidth = newText.measuredWidth
+                        newView.layoutParams.height = textHeight
+                        newView.layoutParams.width = textWidth
+                        newView.requestLayout()
+                    } else {
+                        val newX = event.rawX + deltaX
+                        val newY = event.rawY + deltaY
+                        newView.animate()
+                            .x(newX)
+                            .y(newY)
+                            .setDuration(0)
+                            .start()
+
+                        newText.animate()
+                            .x(newX)
+                            .y(newY)
+                            .setDuration(0)
+                            .start()
+                    }
+
+                }
+
+
+            }
+            true
+
+        }
+
+        val textFinalNew = TextModel(newText.text.toString(), newText.textSize, fontFinal, colorFinalTitle!!, animationSelected)
+        listTextFinal.add(textFinalNew)
+    }
+
+
+    private fun cardTitleStyleColorPalette(cvColor1:MaterialCardView,cvColor2:MaterialCardView,cvColor3:MaterialCardView,
+                                           cvColor4:MaterialCardView,cvColor5:MaterialCardView,cvColor6:MaterialCardView,
+                                           cvColor7:MaterialCardView,cvColor8:MaterialCardView,cvColor9:MaterialCardView,
+                                           cvColor10:MaterialCardView,cvColor11:MaterialCardView,cvColor12:MaterialCardView,
+                                           cvColor13:MaterialCardView,cvColor14:MaterialCardView,cvColor15:MaterialCardView,
+                                           cvColor16:MaterialCardView,cvColor17:MaterialCardView,cvColor18:MaterialCardView,
+                                           cvColor19:MaterialCardView, cvColor20:MaterialCardView){
+
+
         val allCards = listOf(cvColor1,cvColor2,
-                cvColor3,
-                cvColor4,
-                cvColor5,
-                cvColor6,
-                cvColor7,
-                cvColor8,
-                cvColor9,
-                cvColor10,
-                cvColor11,
-                cvColor12,
-                cvColor13,
-                cvColor14,
-                cvColor15,
-                cvColor16,
-                cvColor17,
-                cvColor18,
-                cvColor19,
-                cvColor20)
+            cvColor3,
+            cvColor4,
+            cvColor5,
+            cvColor6,
+            cvColor7,
+            cvColor8,
+            cvColor9,
+            cvColor10,
+            cvColor11,
+            cvColor12,
+            cvColor13,
+            cvColor14,
+            cvColor15,
+            cvColor16,
+            cvColor17,
+            cvColor18,
+            cvColor19,
+            cvColor20)
 
         //DEFAULT
         handleCardSelection(cvColor1,allCards)
@@ -212,127 +681,11 @@ class createSignsFragment : Fragment() {
         cvColor18.setOnClickListener{handleCardSelection(cvColor18, allCards)}
         cvColor19.setOnClickListener{handleCardSelection(cvColor19, allCards)}
         cvColor20.setOnClickListener{handleCardSelection(cvColor20, allCards)}
-
-
-        btnAddText.setOnClickListener {
-            val etTextFinal = etText.text.toString()
-
-            if(etTextFinal.isNotEmpty()){
-                val newText = TextView(requireContext())
-                newText.text = etTextFinal
-                newText.textSize = 20f
-
-                newText.setPadding(26,26,26,26)
-
-                val textLayoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-
-                )
-
-
-                newText.layoutParams = textLayoutParams
-
-
-                etText.text.clear()
-                setOnTouchListener(newText)
-                listTextNew.add(newText)
-
-
-                cvViewPreview.addView(newText)
-                dialogTitle.dismiss()
-
-                if (listTextNew.size>0){
-                    etText.setHint(R.string.another_text)
-                }
-            }else{
-                Toast.makeText(requireContext(),"Ingresa un Texto Valido", Toast.LENGTH_SHORT).show()
-            }
-
-
-
-
-
-        }
-
-
-
-
-
-        btnExitDialog.setOnClickListener{dialogTitle.dismiss()}
-        dialogTitle.show()
-
     }
 
 
 
-    @SuppressLint("ClickableViewAccessibility")
 
-    private fun setOnTouchListener(newText: TextView) {
-        var resizing = false
-        var initialY = 0f
-        val initialSize = 20f
-        var deltaX = 0f
-        var deltaY = 0f
-        val cvViewPreview = binding.cvViewPreview
-
-
-
-
-
-        newText.setOnTouchListener { v, event ->
-            when (event.action) {
-
-                MotionEvent.ACTION_DOWN -> {
-                    newText.setBackgroundResource(R.drawable.layer_drawable)
-                    cvViewPreview.setOnClickListener{
-                        newText.setBackgroundResource(0)
-
-                    }
-
-                    val isInsideResizeRegion = isInsideResizeRegion(event.x, event.y, newText)
-                    val isInsideLeftBottomRegion = isInsideLeftBottomRegion(event.x, event.y, newText)
-
-                    initialY = event.rawY
-                    deltaX = v.x - event.rawX
-                    deltaY = v.y - event.rawY
-
-
-                    if (isInsideResizeRegion) {
-                        Log.i("TouchEvent", "Estás presionando en la esquina inferior derecha")
-                        resizing = true
-                        Log.i("TOuchEvent", "$resizing")
-                    }else if(isInsideLeftBottomRegion){
-                        cvViewPreview.removeView(newText)
-                    }
-                    else{
-                        resizing = false
-                    }
-
-
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    Log.i("TOuchEvent", "move $resizing")
-                    if (resizing) {
-                        val deltaY = event.rawY - initialY
-                        val newSize = initialSize + deltaY
-                        newText.textSize = newSize.coerceIn(20f, 50f)
-                    }else{
-                        v.animate()
-                            .x(event.rawX + deltaX)
-                            .y(event.rawY + deltaY)
-                            .setDuration(0)
-                            .start()
-                    }
-                }
-
-            }
-            true
-        }
-
-
-    }
 
     private fun isInsideResizeRegion(x: Float, y: Float, view: View): Boolean {
         val regionRight = view.right
@@ -353,9 +706,12 @@ class createSignsFragment : Fragment() {
     }
 
 
-
     private fun handleCardSelection(cardSelected: MaterialCardView?, allCards: List<MaterialCardView>) {
 
+        colorFinalTitle = cardSelected?.cardBackgroundColor?.defaultColor!!
+        colorFinalBackground = cardSelected?.cardBackgroundColor?.defaultColor!!
+
+        cardSelected?.cardBackgroundColor
         allCards.forEach{card ->
         card.strokeWidth = if(card == cardSelected ){
             resources.getDimensionPixelSize(R.dimen.stroke_cardselected)
@@ -379,10 +735,17 @@ class createSignsFragment : Fragment() {
 
 
 
+
+
+
     private fun initDialogs() {
         dialogTitle = Dialog(requireContext())
         dialogTitle.setContentView(R.layout.dialog_palette_colors)
         dialogTitle.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialogBackground = Dialog(requireContext())
+        dialogBackground.setContentView(R.layout.dialog_background)
+        dialogBackground.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
 
 

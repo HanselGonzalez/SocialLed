@@ -16,8 +16,11 @@
     <color name="fourthSecond">#0089FF</color>
 
 
+
     <color name="transparent">#00000000</color>
     <color name="red">#FF0000</color>
+    <color name="cancelRed">#F43434</color>
+    <color name="blackString">#6C6767</color>
 
 
     //PALETTE COLORS

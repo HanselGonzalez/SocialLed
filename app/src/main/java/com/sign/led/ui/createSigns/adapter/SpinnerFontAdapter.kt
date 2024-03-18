@@ -1,6 +1,7 @@
 package com.sign.led.ui.createSigns.adapter
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ class SpinnerFontAdapter(context: Context, options:List<SpinnerFontModel>):Array
             tvSpinnerFont.text = it.text
             tvSpinnerFont.typeface = it.font
 
+
         }
 
         return view
@@ -40,6 +42,11 @@ class SpinnerFontAdapter(context: Context, options:List<SpinnerFontModel>):Array
         }
 
         return view
+    }
+
+    fun getSelectedFontTypeface(position: Int): Typeface? {
+        val itemSelected = getItem(position)
+        return itemSelected?.font
     }
 
 
