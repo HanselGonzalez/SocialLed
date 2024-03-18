@@ -4,10 +4,11 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.TextPaint
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -54,6 +55,7 @@ class createSignsFragment : Fragment() {
     private val listTextFinal = mutableListOf<TextModel>()
     private var animationState = false
     private var touchState = true
+    private var speedSelection:Long = 3000
 
 
     override fun onCreateView(
@@ -326,6 +328,8 @@ class createSignsFragment : Fragment() {
                 val selectedItemFont = spinnerFontAdapter.getSelectedFontTypeface(position)
                  fontFinal = selectedItemFont!!
 
+
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -354,14 +358,55 @@ class createSignsFragment : Fragment() {
                 id: Long
             ) {
 
-                when(spinnerAnimation.selectedItemPosition){
-                    0 -> animationSelected = null
-                    1 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_horizontal_displacement)
-                    2 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_blink)
-                    3 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_float_text)
-                    4 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_rotate)
-                    5 -> animationSelected = AnimationUtils.loadAnimation(requireContext(),R.anim.anim_text_zoom)
+                animationSelected = when(spinnerAnimation.selectedItemPosition){
+                    0 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_none)
+                    1 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_horizontal_displacement)
+                    2 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_blink)
+                    3 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_float_text)
+                    4 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_rotate)
+                    5 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_text_zoom)
+                    else -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_none)
                 }
+
+
+
+
+            }
+
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+
+        }
+
+
+
+        //SPINER SPEED ANIMATION
+        val spSpeedAnimationItems = resources.getStringArray(R.array.spSpeedAnimationItems)
+
+        val spinnerSpeedAnimationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected, spSpeedAnimationItems)
+        spinnerSpeedAnimationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
+
+        spinnerSpeedAnimation.adapter = spinnerSpeedAnimationAdapter
+
+
+
+        spinnerSpeedAnimation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+                speedSelection = when (spinnerSpeedAnimation.selectedItemPosition) {
+                    0 -> 3000
+                    1 -> 5000
+                    2 -> 9000
+                    else -> {3000}
+                }
+
 
             }
 
@@ -375,12 +420,26 @@ class createSignsFragment : Fragment() {
 
 
 
-        val spSpeedAnimationItems = resources.getStringArray(R.array.spSpeedAnimationItems)
 
-        val spinnerSpeedAnimationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected, spSpeedAnimationItems)
-        spinnerSpeedAnimationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
 
-        spinnerSpeedAnimation.adapter = spinnerSpeedAnimationAdapter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -423,12 +482,14 @@ class createSignsFragment : Fragment() {
                 newText.text = etTextFinal
                 val textNew = newText.text.toString()
                 newText.textSize = 20f
-                newText.typeface = fontFinal
                 newText.maxLines = 1
                 newText.ellipsize = TextUtils.TruncateAt.END
                 newText.setTextColor(colorFinalTitle!!)
                 newText.elevation = -10f
-                newText.setPadding(20,20,20,20)
+                newText.typeface = fontFinal
+
+
+
 
 
                 val textLayoutParams = ConstraintLayout.LayoutParams(
@@ -440,11 +501,19 @@ class createSignsFragment : Fragment() {
 
                 newText.layoutParams = textLayoutParams
 
-                val paint = Paint()
-                paint.textSize =  newText.textSize
-                val textWidth = paint.measureText(textNew)
-                val textHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
 
+
+                val textBounds = Rect()
+                val textPaint = TextPaint()
+                textPaint.textSize = newText.textSize
+                textPaint.typeface = newText.typeface
+                textPaint.getTextBounds(textNew, 0, textNew.length, textBounds)
+
+                val textWidth = textBounds.width()
+                val textHeight = textBounds.height()
+
+
+                newText.setPadding(20,10,20,20)
 
 
 
@@ -456,8 +525,8 @@ class createSignsFragment : Fragment() {
 
                 )
 
-                viewLayoutParams.width = textWidth.toInt() + 40
-                viewLayoutParams.height = textHeight.toInt() + 40
+                viewLayoutParams.width = textWidth + 40
+                viewLayoutParams.height = textHeight + 40
                 newView.layoutParams = viewLayoutParams
 
 
@@ -472,6 +541,10 @@ class createSignsFragment : Fragment() {
 
 
 
+                val animationFinal = animationSelected
+                animationFinal?.duration = speedSelection
+                val textFinalNew = TextModel(newText.text.toString(), newText.textSize, fontFinal, colorFinalTitle!!, animationFinal)
+                listTextFinal.add(textFinalNew)
 
 
 
@@ -546,11 +619,13 @@ class createSignsFragment : Fragment() {
                         listViewNew.forEachIndexed { index, viewNewList ->
                             val backgroundResource = if (index == viewIndex) {
                                 R.drawable.layer_drawable
+
                             } else {
                                 0
                             }
                             viewNewList.setBackgroundResource(backgroundResource)
                         }
+
                     }
 
 
@@ -560,18 +635,19 @@ class createSignsFragment : Fragment() {
                         }
 
 
+
+
                     }
 
                     val isInsideResizeRegion = isInsideResizeRegion(event.x, event.y, newView)
-                    val isInsideLeftBottomRegion =
-                        isInsideLeftBottomRegion(event.x, event.y, newView)
+                    val isInsideLeftBottomRegion = isInsideLeftBottomRegion(event.x, event.y, newView)
 
                     initialY = event.rawY
                     deltaX = v.x - event.rawX
                     deltaY = v.y - event.rawY
 
 
-                    if (isInsideResizeRegion) {
+                    if (isInsideResizeRegion ) {
                         Log.i("TouchEvent", "Estás presionando en la esquina inferior derecha")
                         resizing = true
                         Log.i("TOuchEvent", "$resizing")
@@ -594,7 +670,7 @@ class createSignsFragment : Fragment() {
                         val deltaY = event.rawY - initialY
                         val newSize = initialSize + deltaY
                         newText.textSize = newSize.coerceIn(20f, 50f)
-                        newText.measure(0, 0)
+                        newText.measure(10, 0)
                         val textHeight = newText.measuredHeight
                         val textWidth = newText.measuredWidth
                         newView.layoutParams.height = textHeight
@@ -624,8 +700,7 @@ class createSignsFragment : Fragment() {
 
         }
 
-        val textFinalNew = TextModel(newText.text.toString(), newText.textSize, fontFinal, colorFinalTitle!!, animationSelected)
-        listTextFinal.add(textFinalNew)
+
     }
 
 

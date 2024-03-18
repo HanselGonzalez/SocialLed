@@ -14,9 +14,7 @@
     <string name="style">Add Style</string>
 
     <string name="play_animation">Play Animation</string>
-    <string name="view_complete">View Complete</string>
-
-
+    <string name="full_view">Full View</string>
 
 
     //DIALOG TITLE
@@ -60,5 +58,5 @@
 
 
 
-    
+
 </resources>

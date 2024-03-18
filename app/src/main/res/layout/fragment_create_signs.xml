@@ -220,7 +220,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnViewComplete"
+                app:layout_constraintEnd_toStartOf="@id/btnFullView"
                 app:cardBackgroundColor="@color/tertiarySecond"
                 android:clickable="true"
                 app:cardElevation="4dp"
@@ -266,7 +266,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btnViewComplete"
+                android:id="@+id/btnFullView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintStart_toEndOf="@id/btnPlayAnimation"
@@ -284,7 +284,7 @@
                     android:background="@color/transparent">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvViewComplete"
+                        android:id="@+id/tvFullView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:textColor="@color/secondarySecond"
@@ -292,15 +292,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ivViewComplete"
-                        android:text="@string/view_complete"
+                        app:layout_constraintEnd_toStartOf="@id/ivFullView"
+                        android:text="@string/full_view"
                         />
 
                     <ImageView
-                        android:id="@+id/ivViewComplete"
+                        android:id="@+id/ivFullView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        app:layout_constraintStart_toEndOf="@id/tvViewComplete"
+                        app:layout_constraintStart_toEndOf="@id/tvFullView"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

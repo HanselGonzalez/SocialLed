@@ -1,5 +1,4 @@
 <translate xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="3000"
     android:fromXDelta="100%p"
     android:interpolator="@android:anim/linear_interpolator"
     android:repeatCount="infinite"
