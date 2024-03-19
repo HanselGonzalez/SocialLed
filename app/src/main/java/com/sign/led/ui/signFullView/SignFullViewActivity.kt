@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sign.led.databinding.ActivitySignFullViewBinding
 
-class signFullViewActivity : AppCompatActivity() {
+class SignFullViewActivity : AppCompatActivity() {
 
 
     private lateinit var binding:ActivitySignFullViewBinding

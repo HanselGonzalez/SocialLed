@@ -7,12 +7,13 @@
 
     <fragment
         android:id="@+id/createSignsFragment"
-        android:name="com.sign.led.ui.createSigns.createSignsFragment"
+        android:name="com.sign.led.ui.createSigns.CreateSignsFragment"
         android:label="fragment_create_signs"
         tools:layout="@layout/fragment_create_signs" >
         <action
             android:id="@+id/action_createSignsFragment_to_signFullViewActivity2"
             app:destination="@id/signFullViewActivity" />
+
     </fragment>
     <activity
         android:id="@+id/mainActivity"
@@ -21,17 +22,17 @@
         tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/mySignsFragment2"
-        android:name="com.sign.led.ui.mysigns.mySignsFragment"
+        android:name="com.sign.led.ui.mysigns.MySignsFragment"
         android:label="fragment_my_signs"
         tools:layout="@layout/fragment_my_signs" />
     <fragment
         android:id="@+id/signsFragment2"
-        android:name="com.sign.led.ui.signs.signsFragment"
+        android:name="com.sign.led.ui.signs.SignsFragment"
         android:label="fragment_signs"
         tools:layout="@layout/fragment_signs" />
     <activity
         android:id="@+id/signFullViewActivity"
-        android:name="com.sign.led.ui.signFullView.signFullViewActivity"
+        android:name="com.sign.led.ui.signFullView.SignFullViewActivity"
         android:label="activity_sign_full_view"
         tools:layout="@layout/activity_sign_full_view" />
 </navigation>

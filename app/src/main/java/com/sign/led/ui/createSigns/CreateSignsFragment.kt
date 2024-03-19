@@ -16,7 +16,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -28,6 +27,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.sign.led.R
 import com.sign.led.databinding.FragmentCreateSignsBinding
@@ -36,7 +36,7 @@ import com.sign.led.domain.model.TextModel
 import com.sign.led.ui.createSigns.adapter.SpinnerFontAdapter
 
 
-class createSignsFragment : Fragment() {
+class CreateSignsFragment : Fragment() {
 
 
     private var _binding:FragmentCreateSignsBinding? = null
@@ -45,13 +45,15 @@ class createSignsFragment : Fragment() {
     private lateinit var dialogBackground: Dialog
     private val listTextNew = ArrayList<TextView>()
     private val listViewNew = ArrayList<View>()
-    private lateinit var fontFinal:Typeface
+
+    private lateinit var fontFinal:String
+
     private var colorFinalTitle:Int? = null
     private var colorFinalBackground:Int? = null
     private lateinit var backgroundFinal:ImageView
     private lateinit var cvViewPreview : MaterialCardView
     private var backgroundState:Boolean = false
-    private var animationSelected:Animation? = null
+    private var animationSelected:Int = R.anim.anim_none
     private val listTextFinal = mutableListOf<TextModel>()
     private var animationState = false
     private var touchState = true
@@ -131,7 +133,10 @@ class createSignsFragment : Fragment() {
 
 
                     val textModel = listTextFinal[index]
-                    text.animation = textModel.animation
+                    val animationFinalPreview = AnimationUtils.loadAnimation(requireContext(),textModel.animation)
+                    animationFinalPreview.duration = textModel.speedAnimation
+
+                    text.animation = animationFinalPreview
                     text.startAnimation(text.animation)
 
 
@@ -141,6 +146,12 @@ class createSignsFragment : Fragment() {
             animationState = !animationState
             touchState = !touchState
 
+        }
+
+        binding.btnFullView.setOnClickListener{
+            findNavController().navigate(
+                R.id.signFullViewActivity
+            )
         }
 
     }
@@ -293,24 +304,6 @@ class createSignsFragment : Fragment() {
         val customTypeface8 = Typeface.createFromAsset(requireContext().assets, "amatic.ttf")
 
 
-        val options = mutableListOf<SpinnerFontModel>()
-
-        for ((index, text) in spFontItems.withIndex()) {
-            val font: Typeface = when (index) {
-                0 -> customTypeface1
-                1 -> customTypeface2
-                2-> customTypeface3
-                3-> customTypeface4
-                4-> customTypeface5
-                5-> customTypeface6
-                6-> customTypeface7
-                7-> customTypeface8
-                else -> customTypeface1
-            }
-
-            options.add(SpinnerFontModel(text, font))
-        }
-
 
         val spinnerFontAdapter = SpinnerFontAdapter(requireContext(),options)
         spinnerFont.adapter = spinnerFontAdapter
@@ -359,13 +352,13 @@ class createSignsFragment : Fragment() {
             ) {
 
                 animationSelected = when(spinnerAnimation.selectedItemPosition){
-                    0 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_none)
-                    1 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_horizontal_displacement)
-                    2 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_blink)
-                    3 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_float_text)
-                    4 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_rotate)
-                    5 -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_text_zoom)
-                    else -> AnimationUtils.loadAnimation(requireContext(),R.anim.anim_none)
+                    0 -> R.anim.anim_none
+                    1 -> R.anim.anim_horizontal_displacement
+                    2 -> R.anim.anim_blink
+                    3 -> R.anim.anim_float_text
+                    4 -> R.anim.anim_rotate
+                    5 -> R.anim.anim_text_zoom
+                    else -> R.anim.anim_none
                 }
 
 
@@ -542,8 +535,10 @@ class createSignsFragment : Fragment() {
 
 
                 val animationFinal = animationSelected
-                animationFinal?.duration = speedSelection
-                val textFinalNew = TextModel(newText.text.toString(), newText.textSize, fontFinal, colorFinalTitle!!, animationFinal)
+                val animationSpeed = speedSelection
+
+
+                val textFinalNew = TextModel(newText.text.toString(), newText.textSize, fontFinal, colorFinalTitle!!, animationFinal, animationSpeed)
                 listTextFinal.add(textFinalNew)
 
 

@@ -13,7 +13,7 @@
         android:theme="@style/Theme.SocialLed"
         tools:targetApi="31">
         <activity
-            android:name=".ui.signFullView.signFullViewActivity"
+            android:name=".ui.signFullView.SignFullViewActivity"
             android:exported="false" />
         <activity
             android:name=".ui.home.MainActivity"

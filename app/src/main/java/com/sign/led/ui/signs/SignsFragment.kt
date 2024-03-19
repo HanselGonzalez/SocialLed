@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.sign.led.R
 
-class signsFragment : Fragment() {
+class SignsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
