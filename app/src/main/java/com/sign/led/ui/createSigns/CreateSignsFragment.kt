@@ -27,37 +27,44 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.sign.led.R
 import com.sign.led.databinding.FragmentCreateSignsBinding
 import com.sign.led.domain.model.SpinnerFontModel
 import com.sign.led.domain.model.TextModel
+import com.sign.led.ui.Singlenton.ListItemsFullViewSingleton
 import com.sign.led.ui.createSigns.adapter.SpinnerFontAdapter
+import com.sign.led.ui.signFullView.SignFullViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class CreateSignsFragment : Fragment() {
 
 
-    private var _binding:FragmentCreateSignsBinding? = null
+    private var _binding: FragmentCreateSignsBinding? = null
     private val binding get() = _binding!!
+    private val signFullViewModel:SignFullViewModel by viewModels()
+
     private lateinit var dialogTitle: Dialog
     private lateinit var dialogBackground: Dialog
     private val listTextNew = ArrayList<TextView>()
     private val listViewNew = ArrayList<View>()
 
-    private lateinit var fontFinal:String
+    private lateinit var fontFinal: String
 
-    private var colorFinalTitle:Int? = null
-    private var colorFinalBackground:Int? = null
-    private lateinit var backgroundFinal:ImageView
-    private lateinit var cvViewPreview : MaterialCardView
-    private var backgroundState:Boolean = false
-    private var animationSelected:Int = R.anim.anim_none
+    private var colorFinalTitle: Int? = null
+    private var colorFinalBackground: Int? = null
+    private lateinit var backgroundFinal: ImageView
+    private lateinit var cvViewPreview: MaterialCardView
+    private var backgroundState: Boolean = false
+    private var animationSelected: Int = R.anim.anim_none
     private val listTextFinal = mutableListOf<TextModel>()
     private var animationState = false
     private var touchState = true
-    private var speedSelection:Long = 3000
+    private var speedSelection: Long = 3000
 
 
     override fun onCreateView(
@@ -91,12 +98,11 @@ class CreateSignsFragment : Fragment() {
             showDialogTitle()
         }
 
-        binding.btnStyleBackground.setOnClickListener{
+        binding.btnStyleBackground.setOnClickListener {
             showDialogBackground()
         }
 
         animationText()
-
 
 
     }
@@ -104,25 +110,26 @@ class CreateSignsFragment : Fragment() {
     private fun animationText() {
 
 
-        binding.btnPlayAnimation.setOnClickListener{
+        binding.btnPlayAnimation.setOnClickListener {
 
 
-            val animationPlay = ObjectAnimator.ofFloat(binding.ivPlayAnimation, "alpha", 0f, 1f).apply {
-                duration = 500
-                interpolator = AccelerateDecelerateInterpolator()
-            }
+            val animationPlay =
+                ObjectAnimator.ofFloat(binding.ivPlayAnimation, "alpha", 0f, 1f).apply {
+                    duration = 500
+                    interpolator = AccelerateDecelerateInterpolator()
+                }
             animationPlay.start()
 
 
-            if(animationState){
+            if (animationState) {
 
                 binding.ivPlayAnimation.setImageResource(R.drawable.ic_play_animation)
 
-                listTextNew.forEach{text ->
+                listTextNew.forEach { text ->
                     text.clearAnimation()
                 }
 
-            }else{
+            } else {
                 binding.ivPlayAnimation.setImageResource(R.drawable.ic_pause_animation)
 
                 listViewNew.forEach { viewNewList ->
@@ -133,7 +140,8 @@ class CreateSignsFragment : Fragment() {
 
 
                     val textModel = listTextFinal[index]
-                    val animationFinalPreview = AnimationUtils.loadAnimation(requireContext(),textModel.animation)
+                    val animationFinalPreview =
+                        AnimationUtils.loadAnimation(requireContext(), textModel.animation)
                     animationFinalPreview.duration = textModel.speedAnimation
 
                     text.animation = animationFinalPreview
@@ -141,6 +149,8 @@ class CreateSignsFragment : Fragment() {
 
 
                 }
+
+
             }
 
             animationState = !animationState
@@ -148,7 +158,11 @@ class CreateSignsFragment : Fragment() {
 
         }
 
-        binding.btnFullView.setOnClickListener{
+        binding.btnFullView.setOnClickListener {
+
+            ListItemsFullViewSingleton.setListItems(listTextFinal)
+
+
             findNavController().navigate(
                 R.id.signFullViewActivity
             )
@@ -162,7 +176,6 @@ class CreateSignsFragment : Fragment() {
         val btnAddBackground = dialogBackground.findViewById<ImageButton>(R.id.btnCheck)
         val btnExitDialogBackground = dialogBackground.findViewById<ImageButton>(R.id.btnBack)
         val spinnerTexture = dialogBackground.findViewById<Spinner>(R.id.spTexture)
-
 
 
         val cvColor1 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor1)
@@ -186,20 +199,39 @@ class CreateSignsFragment : Fragment() {
         val cvColor19 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor19)
         val cvColor20 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor20)
 
-        cardTitleStyleColorPalette(cvColor1,cvColor2,cvColor3,cvColor4,cvColor5,cvColor6,cvColor7,cvColor8,
-            cvColor9,cvColor10,cvColor11,cvColor12,cvColor13,cvColor14,cvColor15,cvColor16,cvColor17,cvColor18,cvColor19,cvColor20)
-
-
+        cardTitleStyleColorPalette(
+            cvColor1,
+            cvColor2,
+            cvColor3,
+            cvColor4,
+            cvColor5,
+            cvColor6,
+            cvColor7,
+            cvColor8,
+            cvColor9,
+            cvColor10,
+            cvColor11,
+            cvColor12,
+            cvColor13,
+            cvColor14,
+            cvColor15,
+            cvColor16,
+            cvColor17,
+            cvColor18,
+            cvColor19,
+            cvColor20
+        )
 
 
         val spTextureItems = resources.getStringArray(R.array.spTextureItems)
-        val spinnerTextureAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected, spTextureItems)
+        val spinnerTextureAdapter =
+            ArrayAdapter(requireContext(), R.layout.spinner_selected, spTextureItems)
 
         spinnerTextureAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
 
         spinnerTexture.adapter = spinnerTextureAdapter
 
-        spinnerTexture.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinnerTexture.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -207,11 +239,10 @@ class CreateSignsFragment : Fragment() {
                 id: Long
             ) {
 
-                when(spinnerTexture.selectedItemPosition){
+                when (spinnerTexture.selectedItemPosition) {
                     0 -> backgroundPixelVisibleFalse()
                     1 -> backgroundPixelVisibleTrue()
                 }
-
 
 
             }
@@ -224,7 +255,7 @@ class CreateSignsFragment : Fragment() {
 
 
 
-        btnAddBackground.setOnClickListener{
+        btnAddBackground.setOnClickListener {
             cvViewPreview.setCardBackgroundColor(colorFinalBackground!!)
 
 
@@ -251,7 +282,7 @@ class CreateSignsFragment : Fragment() {
 
     }
 
-    private fun backgroundPixelInitial(){
+    private fun backgroundPixelInitial() {
         backgroundFinal = ImageView(requireContext())
         backgroundFinal.setImageResource(R.drawable.background_pixel)
         backgroundFinal.visibility = ImageView.GONE
@@ -272,10 +303,6 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-
-
-
-
     //TEXT
     private fun showDialogTitle() {
         val btnAddText = dialogTitle.findViewById<ImageButton>(R.id.btnCheck)
@@ -283,11 +310,9 @@ class CreateSignsFragment : Fragment() {
         val etText = binding.etText
 
 
-
         val spinnerFont = dialogTitle.findViewById<Spinner>(R.id.spFont)
         val spinnerAnimation = dialogTitle.findViewById<Spinner>(R.id.spAnimation)
         val spinnerSpeedAnimation = dialogTitle.findViewById<Spinner>(R.id.spSpeedAnimation)
-
 
 
         //SPINNER FONT
@@ -304,12 +329,30 @@ class CreateSignsFragment : Fragment() {
         val customTypeface8 = Typeface.createFromAsset(requireContext().assets, "amatic.ttf")
 
 
+        val options = mutableListOf<SpinnerFontModel>()
 
-        val spinnerFontAdapter = SpinnerFontAdapter(requireContext(),options)
+        for ((index, text) in spFontItems.withIndex()) {
+            val font: Typeface = when (index) {
+                0 -> customTypeface1
+                1 -> customTypeface2
+                2 -> customTypeface3
+                3 -> customTypeface4
+                4 -> customTypeface5
+                5 -> customTypeface6
+                6 -> customTypeface7
+                7 -> customTypeface8
+                else -> customTypeface1
+            }
+
+            options.add(SpinnerFontModel(text, font))
+        }
+
+
+        val spinnerFontAdapter = SpinnerFontAdapter(requireContext(), options)
         spinnerFont.adapter = spinnerFontAdapter
 
 
-        spinnerFont.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinnerFont.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -318,9 +361,19 @@ class CreateSignsFragment : Fragment() {
             ) {
 
 
-                val selectedItemFont = spinnerFontAdapter.getSelectedFontTypeface(position)
-                 fontFinal = selectedItemFont!!
-
+                fontFinal = when (spinnerFont.selectedItemPosition) {
+                    0 -> "dmsan.ttf"
+                    1 -> "leaguegothic.ttf"
+                    2 -> "dmseriftext.ttf"
+                    3 -> "fugazone.ttf"
+                    4 -> "sixtyfour.ttf"
+                    5 -> "pressstart.ttf"
+                    6 -> "bungeeshade.ttf"
+                    7 -> "amatic.ttf"
+                    else -> {
+                        "dmsan.ttf"
+                    }
+                }
 
 
             }
@@ -333,17 +386,17 @@ class CreateSignsFragment : Fragment() {
         }
 
 
-
         //SPINNER ANIMATION
 
         val spAnimationItems = resources.getStringArray(R.array.spAnimationItems)
 
-        val spinnerAnimationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected, spAnimationItems)
+        val spinnerAnimationAdapter =
+            ArrayAdapter(requireContext(), R.layout.spinner_selected, spAnimationItems)
         spinnerAnimationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
 
         spinnerAnimation.adapter = spinnerAnimationAdapter
 
-        spinnerAnimation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinnerAnimation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -351,7 +404,7 @@ class CreateSignsFragment : Fragment() {
                 id: Long
             ) {
 
-                animationSelected = when(spinnerAnimation.selectedItemPosition){
+                animationSelected = when (spinnerAnimation.selectedItemPosition) {
                     0 -> R.anim.anim_none
                     1 -> R.anim.anim_horizontal_displacement
                     2 -> R.anim.anim_blink
@@ -362,8 +415,6 @@ class CreateSignsFragment : Fragment() {
                 }
 
 
-
-
             }
 
 
@@ -374,18 +425,18 @@ class CreateSignsFragment : Fragment() {
         }
 
 
-
         //SPINER SPEED ANIMATION
         val spSpeedAnimationItems = resources.getStringArray(R.array.spSpeedAnimationItems)
 
-        val spinnerSpeedAnimationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected, spSpeedAnimationItems)
+        val spinnerSpeedAnimationAdapter =
+            ArrayAdapter(requireContext(), R.layout.spinner_selected, spSpeedAnimationItems)
         spinnerSpeedAnimationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
 
         spinnerSpeedAnimation.adapter = spinnerSpeedAnimationAdapter
 
 
 
-        spinnerSpeedAnimation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinnerSpeedAnimation.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -397,7 +448,9 @@ class CreateSignsFragment : Fragment() {
                     0 -> 3000
                     1 -> 5000
                     2 -> 9000
-                    else -> {3000}
+                    else -> {
+                        3000
+                    }
                 }
 
 
@@ -407,33 +460,6 @@ class CreateSignsFragment : Fragment() {
             }
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         val cvColor1 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor1)
@@ -457,8 +483,28 @@ class CreateSignsFragment : Fragment() {
         val cvColor19 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor19)
         val cvColor20 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor20)
 
-        cardTitleStyleColorPalette(cvColor1,cvColor2,cvColor3,cvColor4,cvColor5,cvColor6,cvColor7,cvColor8,
-                cvColor9,cvColor10,cvColor11,cvColor12,cvColor13,cvColor14,cvColor15,cvColor16,cvColor17,cvColor18,cvColor19,cvColor20)
+        cardTitleStyleColorPalette(
+            cvColor1,
+            cvColor2,
+            cvColor3,
+            cvColor4,
+            cvColor5,
+            cvColor6,
+            cvColor7,
+            cvColor8,
+            cvColor9,
+            cvColor10,
+            cvColor11,
+            cvColor12,
+            cvColor13,
+            cvColor14,
+            cvColor15,
+            cvColor16,
+            cvColor17,
+            cvColor18,
+            cvColor19,
+            cvColor20
+        )
 
 
 
@@ -470,7 +516,7 @@ class CreateSignsFragment : Fragment() {
 
             val etTextFinal = etText.text.toString()
 
-            if(etTextFinal.isNotEmpty()){
+            if (etTextFinal.isNotEmpty()) {
                 val newText = TextView(requireContext())
                 newText.text = etTextFinal
                 val textNew = newText.text.toString()
@@ -479,10 +525,9 @@ class CreateSignsFragment : Fragment() {
                 newText.ellipsize = TextUtils.TruncateAt.END
                 newText.setTextColor(colorFinalTitle!!)
                 newText.elevation = -10f
-                newText.typeface = fontFinal
+                val fontSelected = Typeface.createFromAsset(requireContext().assets, fontFinal)
 
-
-
+                newText.typeface = fontSelected
 
 
                 val textLayoutParams = ConstraintLayout.LayoutParams(
@@ -495,7 +540,6 @@ class CreateSignsFragment : Fragment() {
                 newText.layoutParams = textLayoutParams
 
 
-
                 val textBounds = Rect()
                 val textPaint = TextPaint()
                 textPaint.textSize = newText.textSize
@@ -506,8 +550,7 @@ class CreateSignsFragment : Fragment() {
                 val textHeight = textBounds.height()
 
 
-                newText.setPadding(20,10,20,20)
-
+                newText.setPadding(20, 10, 20, 20)
 
 
                 val newView = View(requireContext())
@@ -529,23 +572,28 @@ class CreateSignsFragment : Fragment() {
 
                 listTextNew.add(newText)
                 listViewNew.add(newView)
-                setOnTouchListener(newText,newView)
-
-
+                setOnTouchListener(newText, newView)
 
 
                 val animationFinal = animationSelected
                 val animationSpeed = speedSelection
 
 
-                val textFinalNew = TextModel(newText.text.toString(), newText.textSize, fontFinal, colorFinalTitle!!, animationFinal, animationSpeed)
+                val textFinalNew = TextModel(
+                    newText.text.toString(),
+                    newText.textSize,
+                    fontFinal,
+                    colorFinalTitle!!,
+                    animationFinal,
+                    animationSpeed
+                )
                 listTextFinal.add(textFinalNew)
 
 
 
                 cvViewPreview.addView(newText)
                 cvViewPreview.removeView(backgroundFinal)
-                cvViewPreview.addView(backgroundFinal,0)
+                cvViewPreview.addView(backgroundFinal, 0)
                 cvViewPreview.addView(newView)
 
 
@@ -558,16 +606,14 @@ class CreateSignsFragment : Fragment() {
 
 
 
-                if (listTextNew.size>0){
+                if (listTextNew.size > 0) {
                     etText.setHint(R.string.another_text)
                 }
 
-            }else{
-                Toast.makeText(requireContext(),"Ingresa un Texto Valido", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Ingresa un Texto Valido", Toast.LENGTH_SHORT)
+                    .show()
             }
-
-
-
 
 
         }
@@ -576,11 +622,10 @@ class CreateSignsFragment : Fragment() {
 
 
 
-        btnExitDialog.setOnClickListener{dialogTitle.dismiss()}
+        btnExitDialog.setOnClickListener { dialogTitle.dismiss() }
         dialogTitle.show()
 
     }
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -630,19 +675,18 @@ class CreateSignsFragment : Fragment() {
                         }
 
 
-
-
                     }
 
                     val isInsideResizeRegion = isInsideResizeRegion(event.x, event.y, newView)
-                    val isInsideLeftBottomRegion = isInsideLeftBottomRegion(event.x, event.y, newView)
+                    val isInsideLeftBottomRegion =
+                        isInsideLeftBottomRegion(event.x, event.y, newView)
 
                     initialY = event.rawY
                     deltaX = v.x - event.rawX
                     deltaY = v.y - event.rawY
 
 
-                    if (isInsideResizeRegion ) {
+                    if (isInsideResizeRegion) {
                         Log.i("TouchEvent", "Estás presionando en la esquina inferior derecha")
                         resizing = true
                         Log.i("TOuchEvent", "$resizing")
@@ -699,16 +743,19 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-    private fun cardTitleStyleColorPalette(cvColor1:MaterialCardView,cvColor2:MaterialCardView,cvColor3:MaterialCardView,
-                                           cvColor4:MaterialCardView,cvColor5:MaterialCardView,cvColor6:MaterialCardView,
-                                           cvColor7:MaterialCardView,cvColor8:MaterialCardView,cvColor9:MaterialCardView,
-                                           cvColor10:MaterialCardView,cvColor11:MaterialCardView,cvColor12:MaterialCardView,
-                                           cvColor13:MaterialCardView,cvColor14:MaterialCardView,cvColor15:MaterialCardView,
-                                           cvColor16:MaterialCardView,cvColor17:MaterialCardView,cvColor18:MaterialCardView,
-                                           cvColor19:MaterialCardView, cvColor20:MaterialCardView){
+    private fun cardTitleStyleColorPalette(
+        cvColor1: MaterialCardView, cvColor2: MaterialCardView, cvColor3: MaterialCardView,
+        cvColor4: MaterialCardView, cvColor5: MaterialCardView, cvColor6: MaterialCardView,
+        cvColor7: MaterialCardView, cvColor8: MaterialCardView, cvColor9: MaterialCardView,
+        cvColor10: MaterialCardView, cvColor11: MaterialCardView, cvColor12: MaterialCardView,
+        cvColor13: MaterialCardView, cvColor14: MaterialCardView, cvColor15: MaterialCardView,
+        cvColor16: MaterialCardView, cvColor17: MaterialCardView, cvColor18: MaterialCardView,
+        cvColor19: MaterialCardView, cvColor20: MaterialCardView
+    ) {
 
 
-        val allCards = listOf(cvColor1,cvColor2,
+        val allCards = listOf(
+            cvColor1, cvColor2,
             cvColor3,
             cvColor4,
             cvColor5,
@@ -726,35 +773,33 @@ class CreateSignsFragment : Fragment() {
             cvColor17,
             cvColor18,
             cvColor19,
-            cvColor20)
+            cvColor20
+        )
 
         //DEFAULT
-        handleCardSelection(cvColor1,allCards)
+        handleCardSelection(cvColor1, allCards)
 
-        cvColor1.setOnClickListener{handleCardSelection(cvColor1, allCards)}
-        cvColor2.setOnClickListener{handleCardSelection(cvColor2, allCards)}
-        cvColor3.setOnClickListener{handleCardSelection(cvColor3, allCards)}
-        cvColor4.setOnClickListener{handleCardSelection(cvColor4, allCards)}
-        cvColor5.setOnClickListener{handleCardSelection(cvColor5, allCards)}
-        cvColor6.setOnClickListener{handleCardSelection(cvColor6, allCards)}
-        cvColor7.setOnClickListener{handleCardSelection(cvColor7, allCards)}
-        cvColor8.setOnClickListener{handleCardSelection(cvColor8, allCards)}
-        cvColor9.setOnClickListener{handleCardSelection(cvColor9, allCards)}
-        cvColor10.setOnClickListener{handleCardSelection(cvColor10, allCards)}
-        cvColor11.setOnClickListener{handleCardSelection(cvColor11, allCards)}
-        cvColor12.setOnClickListener{handleCardSelection(cvColor12, allCards)}
-        cvColor13.setOnClickListener{handleCardSelection(cvColor13, allCards)}
-        cvColor14.setOnClickListener{handleCardSelection(cvColor14, allCards)}
-        cvColor15.setOnClickListener{handleCardSelection(cvColor15, allCards)}
-        cvColor16.setOnClickListener{handleCardSelection(cvColor16, allCards)}
-        cvColor17.setOnClickListener{handleCardSelection(cvColor17, allCards)}
-        cvColor18.setOnClickListener{handleCardSelection(cvColor18, allCards)}
-        cvColor19.setOnClickListener{handleCardSelection(cvColor19, allCards)}
-        cvColor20.setOnClickListener{handleCardSelection(cvColor20, allCards)}
+        cvColor1.setOnClickListener { handleCardSelection(cvColor1, allCards) }
+        cvColor2.setOnClickListener { handleCardSelection(cvColor2, allCards) }
+        cvColor3.setOnClickListener { handleCardSelection(cvColor3, allCards) }
+        cvColor4.setOnClickListener { handleCardSelection(cvColor4, allCards) }
+        cvColor5.setOnClickListener { handleCardSelection(cvColor5, allCards) }
+        cvColor6.setOnClickListener { handleCardSelection(cvColor6, allCards) }
+        cvColor7.setOnClickListener { handleCardSelection(cvColor7, allCards) }
+        cvColor8.setOnClickListener { handleCardSelection(cvColor8, allCards) }
+        cvColor9.setOnClickListener { handleCardSelection(cvColor9, allCards) }
+        cvColor10.setOnClickListener { handleCardSelection(cvColor10, allCards) }
+        cvColor11.setOnClickListener { handleCardSelection(cvColor11, allCards) }
+        cvColor12.setOnClickListener { handleCardSelection(cvColor12, allCards) }
+        cvColor13.setOnClickListener { handleCardSelection(cvColor13, allCards) }
+        cvColor14.setOnClickListener { handleCardSelection(cvColor14, allCards) }
+        cvColor15.setOnClickListener { handleCardSelection(cvColor15, allCards) }
+        cvColor16.setOnClickListener { handleCardSelection(cvColor16, allCards) }
+        cvColor17.setOnClickListener { handleCardSelection(cvColor17, allCards) }
+        cvColor18.setOnClickListener { handleCardSelection(cvColor18, allCards) }
+        cvColor19.setOnClickListener { handleCardSelection(cvColor19, allCards) }
+        cvColor20.setOnClickListener { handleCardSelection(cvColor20, allCards) }
     }
-
-
-
 
 
     private fun isInsideResizeRegion(x: Float, y: Float, view: View): Boolean {
@@ -776,36 +821,33 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-    private fun handleCardSelection(cardSelected: MaterialCardView?, allCards: List<MaterialCardView>) {
+    private fun handleCardSelection(
+        cardSelected: MaterialCardView?,
+        allCards: List<MaterialCardView>
+    ) {
 
         colorFinalTitle = cardSelected?.cardBackgroundColor?.defaultColor!!
         colorFinalBackground = cardSelected?.cardBackgroundColor?.defaultColor!!
 
         cardSelected?.cardBackgroundColor
-        allCards.forEach{card ->
-        card.strokeWidth = if(card == cardSelected ){
-            resources.getDimensionPixelSize(R.dimen.stroke_cardselected)
-        }else{
-            3
+        allCards.forEach { card ->
+            card.strokeWidth = if (card == cardSelected) {
+                resources.getDimensionPixelSize(R.dimen.stroke_cardselected)
+            } else {
+                3
+            }
         }
-    }
 
         allCards.forEach { card ->
-            card.strokeColor = if(card == cardSelected){
+            card.strokeColor = if (card == cardSelected) {
                 ContextCompat.getColor(requireContext(), R.color.fourthSecond)
-            }else{
-                ContextCompat.getColor(requireContext(),R.color.secondarySecond)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.secondarySecond)
             }
         }
 
 
     }
-
-
-
-
-
-
 
 
     private fun initDialogs() {
@@ -816,8 +858,6 @@ class CreateSignsFragment : Fragment() {
         dialogBackground = Dialog(requireContext())
         dialogBackground.setContentView(R.layout.dialog_background)
         dialogBackground.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-
 
 
     }

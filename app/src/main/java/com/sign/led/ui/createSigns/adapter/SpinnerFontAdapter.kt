@@ -10,7 +10,8 @@ import android.widget.TextView
 import com.sign.led.R
 import com.sign.led.domain.model.SpinnerFontModel
 
-class SpinnerFontAdapter(context: Context, options:List<SpinnerFontModel>):ArrayAdapter<SpinnerFontModel>(context, R.layout.spinner_selected, options) {
+class SpinnerFontAdapter(context: Context, options: List<SpinnerFontModel>) :
+    ArrayAdapter<SpinnerFontModel>(context, R.layout.spinner_selected, options) {
 
     private val inflater = LayoutInflater.from(context)
 
