@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -39,17 +40,24 @@ android {
     buildFeatures{
         viewBinding = true
     }
+
+
+
 }
 
 dependencies {
 
     val navVersion = "2.7.7"
+    val dagVersion = "2.48"
 
 
     //Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
+    //Dagger Hilt
+    implementation("com.google.dagger:hilt-android:$dagVersion")
+    kapt("com.google.dagger:hilt-compiler:$dagVersion")
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
