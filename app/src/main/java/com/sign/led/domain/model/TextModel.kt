@@ -3,12 +3,16 @@ package com.sign.led.domain.model
 
 data class TextModel (
 
+    val id:Int,
     val text:String,
-    val size:Float,
+    var size:Float,
     val typeface: String,
-    val color:Int,
+    var color:Int,
     val animation: Int,
-    val speedAnimation:Long
+    val speedAnimation:Long,
+    var positionX: Float,
+    var positionY: Float
+
 
 
 

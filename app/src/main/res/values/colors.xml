@@ -9,6 +9,10 @@
     <color name="secondary">#0264DC</color>
     <color name="primary">#040710</color>
 
+    //ACTIVITY FULL VIEW
+    <color name="tertiaryTransparent">#171755</color>
+
+
     //CARD-VIEW
     <color name="primarySecond">#1F1F6E</color>
     <color name="secondarySecond">#CAC5C5</color>

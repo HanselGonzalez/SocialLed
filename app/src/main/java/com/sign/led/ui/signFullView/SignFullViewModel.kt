@@ -13,6 +13,4 @@ class SignFullViewModel @Inject constructor() : ViewModel() {
     val state: StateFlow<SignFullState> = _state
 
 
-
-
 }

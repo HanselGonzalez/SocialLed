@@ -22,7 +22,6 @@ class SpinnerFontAdapter(context: Context, options: List<SpinnerFontModel>) :
         itemSelected?.let {
             val tvSpinnerFont = view.findViewById<TextView>(R.id.tvSpinner)
             tvSpinnerFont.text = it.text
-            tvSpinnerFont.typeface = it.font
 
 
         }
@@ -39,6 +38,7 @@ class SpinnerFontAdapter(context: Context, options: List<SpinnerFontModel>) :
             val tvSpinnerFont = view.findViewById<TextView>(R.id.tvSpinner)
             tvSpinnerFont.text = it.text
             tvSpinnerFont.typeface = it.font
+
 
         }
 

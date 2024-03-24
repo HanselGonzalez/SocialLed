@@ -26,17 +26,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.sign.led.R
 import com.sign.led.databinding.FragmentCreateSignsBinding
+import com.sign.led.domain.model.ItemViewFullModel
 import com.sign.led.domain.model.SpinnerFontModel
 import com.sign.led.domain.model.TextModel
-import com.sign.led.ui.Singlenton.ListItemsFullViewSingleton
+import com.sign.led.ui.Singleton.ListItemsFullViewSingleton
 import com.sign.led.ui.createSigns.adapter.SpinnerFontAdapter
-import com.sign.led.ui.signFullView.SignFullViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -46,11 +47,10 @@ class CreateSignsFragment : Fragment() {
 
     private var _binding: FragmentCreateSignsBinding? = null
     private val binding get() = _binding!!
-    private val signFullViewModel:SignFullViewModel by viewModels()
 
     private lateinit var dialogTitle: Dialog
     private lateinit var dialogBackground: Dialog
-    private val listTextNew = ArrayList<TextView>()
+    private val listTextNew = mutableListOf<TextView>()
     private val listViewNew = ArrayList<View>()
 
     private lateinit var fontFinal: String
@@ -65,6 +65,8 @@ class CreateSignsFragment : Fragment() {
     private var animationState = false
     private var touchState = true
     private var speedSelection: Long = 3000
+    private var positionX: Float = 0.0f
+    private var positionY: Float = 0.0f
 
 
     override fun onCreateView(
@@ -104,6 +106,40 @@ class CreateSignsFragment : Fragment() {
 
         animationText()
 
+        binding.btnUndo.setOnClickListener {
+            undoText()
+        }
+
+
+    }
+
+    private fun undoText() {
+
+        Log.i("listasRemove", "primero: $listViewNew")
+        Log.i("listasRemove", "primero: $listTextNew")
+        Log.i("listasRemove", "primero: $listTextFinal")
+        if (listTextNew.isNotEmpty() && listViewNew.isNotEmpty() && listTextFinal.isNotEmpty()) {
+            val lastText = listTextNew.last()
+            val lastView = listViewNew.last()
+
+            cvViewPreview.forEach { viewCard ->
+                if(viewCard == lastText){
+                    cvViewPreview.removeView(viewCard)
+
+                }
+            }
+
+            cvViewPreview.forEach { viewCard ->
+                if(viewCard == lastView){
+                    cvViewPreview.removeView(viewCard)
+                }
+            }
+
+            listViewNew.removeAt(listViewNew.lastIndex)
+            listTextNew.removeAt(listTextNew.lastIndex)
+            listTextFinal.removeAt(listTextFinal.lastIndex)
+
+        }
 
     }
 
@@ -127,6 +163,8 @@ class CreateSignsFragment : Fragment() {
 
                 listTextNew.forEach { text ->
                     text.clearAnimation()
+                    text.ellipsize = null
+
                 }
 
             } else {
@@ -160,12 +198,12 @@ class CreateSignsFragment : Fragment() {
 
         binding.btnFullView.setOnClickListener {
 
-            ListItemsFullViewSingleton.setListItems(listTextFinal)
+            Log.i("background","$backgroundState")
+            val items = ItemViewFullModel(colorFinalBackground,backgroundState,listTextFinal)
+            ListItemsFullViewSingleton.setListItems(items)
 
 
-            findNavController().navigate(
-                R.id.signFullViewActivity
-            )
+            findNavController().navigate(R.id.signFullViewActivity)
         }
 
     }
@@ -200,6 +238,7 @@ class CreateSignsFragment : Fragment() {
         val cvColor20 = dialogBackground.findViewById<MaterialCardView>(R.id.cvColor20)
 
         cardTitleStyleColorPalette(
+            "background",
             cvColor1,
             cvColor2,
             cvColor3,
@@ -259,7 +298,9 @@ class CreateSignsFragment : Fragment() {
             cvViewPreview.setCardBackgroundColor(colorFinalBackground!!)
 
 
+            binding.tvStyleBackground.setText(R.string.edit_style)
             dialogBackground.dismiss()
+
         }
 
         btnExitDialogBackground.setOnClickListener { dialogBackground.dismiss() }
@@ -484,6 +525,7 @@ class CreateSignsFragment : Fragment() {
         val cvColor20 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor20)
 
         cardTitleStyleColorPalette(
+            "text",
             cvColor1,
             cvColor2,
             cvColor3,
@@ -524,7 +566,6 @@ class CreateSignsFragment : Fragment() {
                 newText.maxLines = 1
                 newText.ellipsize = TextUtils.TruncateAt.END
                 newText.setTextColor(colorFinalTitle!!)
-                newText.elevation = -10f
                 val fontSelected = Typeface.createFromAsset(requireContext().assets, fontFinal)
 
                 newText.typeface = fontSelected
@@ -549,8 +590,9 @@ class CreateSignsFragment : Fragment() {
                 val textWidth = textBounds.width()
                 val textHeight = textBounds.height()
 
+                newText.setPadding(20, 20, 20, 20)
 
-                newText.setPadding(20, 10, 20, 20)
+
 
 
                 val newView = View(requireContext())
@@ -566,7 +608,26 @@ class CreateSignsFragment : Fragment() {
                 newView.layoutParams = viewLayoutParams
 
 
+                val animationFinal = animationSelected
+                val animationSpeed = speedSelection
 
+                newText.id = View.generateViewId()
+
+                positionX = 0.0f
+                positionY = 0.0f
+
+                val textFinalNew = TextModel(
+                    newText.id,
+                    newText.text.toString(),
+                    newText.textSize,
+                    fontFinal,
+                    colorFinalTitle!!,
+                    animationFinal,
+                    animationSpeed,
+                    positionX,
+                    positionY
+                )
+                listTextFinal.add(textFinalNew)
 
 
 
@@ -575,19 +636,7 @@ class CreateSignsFragment : Fragment() {
                 setOnTouchListener(newText, newView)
 
 
-                val animationFinal = animationSelected
-                val animationSpeed = speedSelection
 
-
-                val textFinalNew = TextModel(
-                    newText.text.toString(),
-                    newText.textSize,
-                    fontFinal,
-                    colorFinalTitle!!,
-                    animationFinal,
-                    animationSpeed
-                )
-                listTextFinal.add(textFinalNew)
 
 
 
@@ -596,6 +645,8 @@ class CreateSignsFragment : Fragment() {
                 cvViewPreview.addView(backgroundFinal, 0)
                 cvViewPreview.addView(newView)
 
+                Log.i("removeList","cvViewPreview: ${cvViewPreview.size}")
+                Log.i("removeList","cvViewPreview: ${cvViewPreview.childCount}")
 
 
 
@@ -611,7 +662,8 @@ class CreateSignsFragment : Fragment() {
                 }
 
             } else {
-                Toast.makeText(requireContext(), "Ingresa un Texto Valido", Toast.LENGTH_SHORT)
+
+                Toast.makeText(requireContext(), R.string.textNotValid, Toast.LENGTH_SHORT)
                     .show()
             }
 
@@ -637,8 +689,7 @@ class CreateSignsFragment : Fragment() {
         var deltaY = 0f
 
 
-
-
+        val indicesNewTextID = newText.id
 
 
 
@@ -649,10 +700,12 @@ class CreateSignsFragment : Fragment() {
                 return@setOnTouchListener false
             }
 
+
             when (event.action) {
 
                 MotionEvent.ACTION_DOWN -> {
 
+                    //Collocation Background to vista
                     val viewIndex = listViewNew.indexOfFirst { it == newView }
                     if (viewIndex != -1) {
 
@@ -667,6 +720,14 @@ class CreateSignsFragment : Fragment() {
                         }
 
                     }
+
+
+
+                    val textHeight = newText.measuredHeight
+                    val textWidth = newText.measuredWidth
+                    newView.layoutParams.height = textHeight
+                    newView.layoutParams.width = textWidth
+                    newView.requestLayout()
 
 
                     cvViewPreview.setOnClickListener {
@@ -691,10 +752,24 @@ class CreateSignsFragment : Fragment() {
                         resizing = true
                         Log.i("TOuchEvent", "$resizing")
                     } else if (isInsideLeftBottomRegion) {
+
                         cvViewPreview.removeView(newText)
                         cvViewPreview.removeView(newView)
                         listViewNew.remove(newView)
                         listTextNew.remove(newText)
+
+                        var textModelSearch: Int? = null
+                        for ((index, text) in listTextFinal.withIndex()) {
+                            if (text.id == indicesNewTextID) {
+                                textModelSearch = index
+                                break
+                            }
+                        }
+                        if (textModelSearch != null) {
+                            listTextFinal.removeAt(textModelSearch)
+                        }
+
+
 
                     } else {
                         resizing = false
@@ -709,15 +784,35 @@ class CreateSignsFragment : Fragment() {
                         val deltaY = event.rawY - initialY
                         val newSize = initialSize + deltaY
                         newText.textSize = newSize.coerceIn(20f, 50f)
-                        newText.measure(10, 0)
+                        newText.measure(0, 0)
                         val textHeight = newText.measuredHeight
                         val textWidth = newText.measuredWidth
                         newView.layoutParams.height = textHeight
                         newView.layoutParams.width = textWidth
                         newView.requestLayout()
                     } else {
+
                         val newX = event.rawX + deltaX
                         val newY = event.rawY + deltaY
+
+                        positionX = newX / cvViewPreview.width
+                        positionY = newY / cvViewPreview.height
+
+                        var textModelSearch: Int? = null
+
+                        for ((index, text) in listTextFinal.withIndex()) {
+                            if (text.id == indicesNewTextID) {
+                                textModelSearch = index
+                                break
+                            }
+                        }
+
+                        val textModelSelected = listTextFinal[textModelSearch!!]
+                        textModelSelected.positionX = positionX
+                        textModelSelected.positionY = positionY
+                        textModelSelected.size = newText.textSize
+
+
                         newView.animate()
                             .x(newX)
                             .y(newY)
@@ -743,7 +838,7 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-    private fun cardTitleStyleColorPalette(
+    private fun cardTitleStyleColorPalette(id:String,
         cvColor1: MaterialCardView, cvColor2: MaterialCardView, cvColor3: MaterialCardView,
         cvColor4: MaterialCardView, cvColor5: MaterialCardView, cvColor6: MaterialCardView,
         cvColor7: MaterialCardView, cvColor8: MaterialCardView, cvColor9: MaterialCardView,
@@ -777,28 +872,28 @@ class CreateSignsFragment : Fragment() {
         )
 
         //DEFAULT
-        handleCardSelection(cvColor1, allCards)
+        handleCardSelection(id,cvColor1, allCards)
 
-        cvColor1.setOnClickListener { handleCardSelection(cvColor1, allCards) }
-        cvColor2.setOnClickListener { handleCardSelection(cvColor2, allCards) }
-        cvColor3.setOnClickListener { handleCardSelection(cvColor3, allCards) }
-        cvColor4.setOnClickListener { handleCardSelection(cvColor4, allCards) }
-        cvColor5.setOnClickListener { handleCardSelection(cvColor5, allCards) }
-        cvColor6.setOnClickListener { handleCardSelection(cvColor6, allCards) }
-        cvColor7.setOnClickListener { handleCardSelection(cvColor7, allCards) }
-        cvColor8.setOnClickListener { handleCardSelection(cvColor8, allCards) }
-        cvColor9.setOnClickListener { handleCardSelection(cvColor9, allCards) }
-        cvColor10.setOnClickListener { handleCardSelection(cvColor10, allCards) }
-        cvColor11.setOnClickListener { handleCardSelection(cvColor11, allCards) }
-        cvColor12.setOnClickListener { handleCardSelection(cvColor12, allCards) }
-        cvColor13.setOnClickListener { handleCardSelection(cvColor13, allCards) }
-        cvColor14.setOnClickListener { handleCardSelection(cvColor14, allCards) }
-        cvColor15.setOnClickListener { handleCardSelection(cvColor15, allCards) }
-        cvColor16.setOnClickListener { handleCardSelection(cvColor16, allCards) }
-        cvColor17.setOnClickListener { handleCardSelection(cvColor17, allCards) }
-        cvColor18.setOnClickListener { handleCardSelection(cvColor18, allCards) }
-        cvColor19.setOnClickListener { handleCardSelection(cvColor19, allCards) }
-        cvColor20.setOnClickListener { handleCardSelection(cvColor20, allCards) }
+        cvColor1.setOnClickListener { handleCardSelection(id,cvColor1, allCards) }
+        cvColor2.setOnClickListener { handleCardSelection(id,cvColor2, allCards) }
+        cvColor3.setOnClickListener { handleCardSelection(id,cvColor3, allCards) }
+        cvColor4.setOnClickListener { handleCardSelection(id,cvColor4, allCards) }
+        cvColor5.setOnClickListener { handleCardSelection(id,cvColor5, allCards) }
+        cvColor6.setOnClickListener { handleCardSelection(id,cvColor6, allCards) }
+        cvColor7.setOnClickListener { handleCardSelection(id,cvColor7, allCards) }
+        cvColor8.setOnClickListener { handleCardSelection(id,cvColor8, allCards) }
+        cvColor9.setOnClickListener { handleCardSelection(id,cvColor9, allCards) }
+        cvColor10.setOnClickListener { handleCardSelection(id,cvColor10, allCards) }
+        cvColor11.setOnClickListener { handleCardSelection(id,cvColor11, allCards) }
+        cvColor12.setOnClickListener { handleCardSelection(id,cvColor12, allCards) }
+        cvColor13.setOnClickListener { handleCardSelection(id,cvColor13, allCards) }
+        cvColor14.setOnClickListener { handleCardSelection(id,cvColor14, allCards) }
+        cvColor15.setOnClickListener { handleCardSelection(id,cvColor15, allCards) }
+        cvColor16.setOnClickListener { handleCardSelection(id,cvColor16, allCards) }
+        cvColor17.setOnClickListener { handleCardSelection(id,cvColor17, allCards) }
+        cvColor18.setOnClickListener { handleCardSelection(id,cvColor18, allCards) }
+        cvColor19.setOnClickListener { handleCardSelection(id,cvColor19, allCards) }
+        cvColor20.setOnClickListener { handleCardSelection(id,cvColor20, allCards) }
     }
 
 
@@ -821,13 +916,17 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-    private fun handleCardSelection(
+    private fun handleCardSelection(id:String,
         cardSelected: MaterialCardView?,
         allCards: List<MaterialCardView>
     ) {
 
-        colorFinalTitle = cardSelected?.cardBackgroundColor?.defaultColor!!
-        colorFinalBackground = cardSelected?.cardBackgroundColor?.defaultColor!!
+        when(id){
+            "background" -> colorFinalBackground = cardSelected?.cardBackgroundColor?.defaultColor!!
+            "text" -> colorFinalTitle = cardSelected?.cardBackgroundColor?.defaultColor!!
+        }
+
+
 
         cardSelected?.cardBackgroundColor
         allCards.forEach { card ->

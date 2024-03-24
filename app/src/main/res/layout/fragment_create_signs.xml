@@ -74,6 +74,7 @@
                 style="@style/ButtonStyle">
 
                 <TextView
+                    android:id="@+id/tvStyleBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/style"
@@ -151,6 +152,7 @@
                 style="@style/ButtonStyle">
 
                 <TextView
+                    android:id="@+id/tvStyleTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/style"
@@ -211,6 +213,8 @@
             android:layout_height="match_parent"
             android:background="@color/transparent"
             android:padding="1dp">
+
+
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnPlayAnimation"
@@ -317,6 +321,31 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+
+    <ImageButton
+        android:id="@+id/btnUndo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_undo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvManagementButtons"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="150dp"
+
+        />
+
+    <ImageButton
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_save"
+        app:layout_constraintStart_toEndOf="@id/btnUndo"
+        app:layout_constraintTop_toBottomOf="@id/cvManagementButtons"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="23dp"
+
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

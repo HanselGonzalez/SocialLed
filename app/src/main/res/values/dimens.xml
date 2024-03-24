@@ -3,5 +3,6 @@
     <dimen name="stroke_cardselected">4dp</dimen>
 
     <dimen name="resize_area_size">15dp</dimen>
+    <dimen name="spinnerFontTextSelection">18dp</dimen>
 
 </resources>

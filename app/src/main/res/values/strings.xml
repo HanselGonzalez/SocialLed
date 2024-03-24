@@ -6,12 +6,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    //OTHERS
+    <string name="textNotValid">Enter a Valid Text</string>
+    <string name="go_back">Go Back</string>
+
     //HOME FRAGMENT
     <string name="title">Titles</string>
     <string name="background">Background</string>
     <string name="enter_text">Enter a text</string>
     <string name="another_text">Enter another text</string>
     <string name="style">Add Style</string>
+    <string name="edit_style">Edit Style</string>
 
     <string name="play_animation">Play Animation</string>
     <string name="full_view">Full View</string>
@@ -25,14 +30,14 @@
 
     //SPINNERS TITLE
     <string-array name="spFontItems">
-        <item>Font 1</item>
-        <item>Font 2</item>
-        <item>Font 3</item>
-        <item>Font 4</item>
-        <item>Font 5</item>
-        <item>Font 6</item>
-        <item>Font 7</item>
-        <item>Font 8</item>
+        <item>DmSan</item>
+        <item>LeagueGothic</item>
+        <item>DmSerifText</item>
+        <item>Fugazone</item>
+        <item>SixtyFour</item>
+        <item>PressStart</item>
+        <item>BungeeShade</item>
+        <item>Amatic</item>
     </string-array>
 
     <string-array name="spAnimationItems">

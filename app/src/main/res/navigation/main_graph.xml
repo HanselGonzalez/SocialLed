@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_create_signs" >
         <action
             android:id="@+id/action_createSignsFragment_to_signFullViewActivity2"
-            app:destination="@id/signFullViewActivity" />
+            app:destination="@id/signFullViewActivity"
+            app:popUpTo="@id/createSignsFragment"
+            app:popUpToInclusive="true"/>
 
     </fragment>
     <activity
