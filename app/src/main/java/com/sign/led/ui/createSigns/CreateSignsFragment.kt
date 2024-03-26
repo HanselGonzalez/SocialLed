@@ -3,6 +3,7 @@ package com.sign.led.ui.createSigns
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -17,8 +18,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
+import android.view.animation.ScaleAnimation
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
@@ -29,6 +32,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.sign.led.R
@@ -38,6 +42,7 @@ import com.sign.led.domain.model.SpinnerFontModel
 import com.sign.led.domain.model.TextModel
 import com.sign.led.ui.Singleton.ListItemsFullViewSingleton
 import com.sign.led.ui.createSigns.adapter.SpinnerFontAdapter
+import com.sign.led.ui.mysigns.MySignsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -45,16 +50,25 @@ import dagger.hilt.android.AndroidEntryPoint
 class CreateSignsFragment : Fragment() {
 
 
+    //BINDING
     private var _binding: FragmentCreateSignsBinding? = null
     private val binding get() = _binding!!
 
+    //ViewModel
+    private val mySignsViewModel:MySignsViewModel by activityViewModels()
+
+    //DIALOGS
     private lateinit var dialogTitle: Dialog
     private lateinit var dialogBackground: Dialog
+
+    private lateinit var dialogSave:Dialog
+
+    //LIST
     private val listTextNew = mutableListOf<TextView>()
     private val listViewNew = ArrayList<View>()
 
+    //COMPONENTS
     private lateinit var fontFinal: String
-
     private var colorFinalTitle: Int? = null
     private var colorFinalBackground: Int? = null
     private lateinit var backgroundFinal: ImageView
@@ -93,9 +107,6 @@ class CreateSignsFragment : Fragment() {
         initDialogs()
         backgroundPixelInitial()
 
-
-
-
         binding.btnStyleTitle.setOnClickListener {
             showDialogTitle()
         }
@@ -107,11 +118,94 @@ class CreateSignsFragment : Fragment() {
         animationText()
 
         binding.btnUndo.setOnClickListener {
+            val scaleAnimation = ScaleAnimation(
+                1f, 1.2f,
+                1f, 1.2f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f
+            ).apply {
+                duration = 100
+                interpolator = AccelerateDecelerateInterpolator()
+            }
+
+            binding.btnUndo.startAnimation(scaleAnimation)
             undoText()
+        }
+
+        binding.btnSave.setOnClickListener {
+
+            binding.btnSave.background = ContextCompat.getDrawable(requireContext(),R.drawable.ic_save_pressed)
+            binding.btnSave.alpha = 0f
+            binding.btnSave.animate()
+                .alpha(1f)
+                .setDuration(120)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .withEndAction{
+                    binding.btnSave.postDelayed({
+                        showDialogSaveSign()
+                    },550)
+                }
+                .start()
+
+
+
+
         }
 
 
     }
+
+    private fun showDialogSaveSign() {
+        val nameSignSave = dialogSave.findViewById<EditText>(R.id.etNameSign)
+        val btnExitDialogSave = dialogSave.findViewById<ImageButton>(R.id.btnBackSave)
+        val btnCheckDialogSave = dialogSave.findViewById<ImageButton>(R.id.btnCheckSave)
+
+
+        btnExitDialogSave.setOnClickListener {
+            dialogSave.dismiss()
+            binding.btnSave.background = ContextCompat.getDrawable(requireContext(),R.drawable.ic_save)
+            binding.btnSave.alpha = 0f
+            binding.btnSave.animate()
+                .alpha(1f)
+                .setDuration(120)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        }
+
+        val onDismissDialogSave = DialogInterface.OnDismissListener {
+            binding.btnSave.background = ContextCompat.getDrawable(requireContext(),R.drawable.ic_save)
+            binding.btnSave.alpha = 0f
+            binding.btnSave.animate()
+                .alpha(1f)
+                .setDuration(120)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        }
+
+        btnCheckDialogSave.setOnClickListener {
+
+            if(nameSignSave.text.toString().isNotEmpty()){
+                val nameSignFinal = nameSignSave.text.toString()
+                val itemsFull = ItemViewFullModel(nameSignFinal,colorFinalBackground,backgroundState,listTextFinal)
+                mySignsViewModel.createSign(itemsFull)
+                dialogSave.dismiss()
+            }else{
+
+                Toast.makeText(requireContext(), "Ingrese un nombre correcto", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+
+
+
+        dialogSave.setOnDismissListener(onDismissDialogSave)
+
+        dialogSave.show()
+
+    }
+
+
 
     private fun undoText() {
 
@@ -151,7 +245,7 @@ class CreateSignsFragment : Fragment() {
 
             val animationPlay =
                 ObjectAnimator.ofFloat(binding.ivPlayAnimation, "alpha", 0f, 1f).apply {
-                    duration = 500
+                    duration = 200
                     interpolator = AccelerateDecelerateInterpolator()
                 }
             animationPlay.start()
@@ -199,7 +293,7 @@ class CreateSignsFragment : Fragment() {
         binding.btnFullView.setOnClickListener {
 
             Log.i("background","$backgroundState")
-            val items = ItemViewFullModel(colorFinalBackground,backgroundState,listTextFinal)
+            val items = ItemViewFullModel(null,colorFinalBackground,backgroundState,listTextFinal)
             ListItemsFullViewSingleton.setListItems(items)
 
 
@@ -950,13 +1044,21 @@ class CreateSignsFragment : Fragment() {
 
 
     private fun initDialogs() {
-        dialogTitle = Dialog(requireContext())
-        dialogTitle.setContentView(R.layout.dialog_palette_colors)
-        dialogTitle.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogTitle = Dialog(requireContext()).apply {
+            setContentView(R.layout.dialog_palette_colors)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
 
-        dialogBackground = Dialog(requireContext())
-        dialogBackground.setContentView(R.layout.dialog_background)
-        dialogBackground.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogBackground = Dialog(requireContext()).apply {
+            setContentView(R.layout.dialog_background)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        dialogSave = Dialog(requireContext()).apply {
+            setContentView(R.layout.dialog_save)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
 
 
     }

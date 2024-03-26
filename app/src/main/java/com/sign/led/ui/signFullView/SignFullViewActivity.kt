@@ -34,7 +34,6 @@ class SignFullViewActivity : AppCompatActivity() {
     private val signFullViewModel: SignFullViewModel by viewModels()
     private val listItemsFinal = ListItemsFullViewSingleton.getListItems()
     private lateinit var flBackground: FrameLayout
-    private var visibilityToolbar = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

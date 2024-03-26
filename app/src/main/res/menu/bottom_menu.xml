@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/homeFragment"
+    <item android:id="@+id/createSignsFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
 
-    <item android:id="@+id/signsFragment"
+    <item android:id="@+id/signsFragment2"
         android:icon="@drawable/ic_signs"
         android:title="@string/signs"/>
 
-    <item android:id="@+id/mySignsFragment"
+    <item android:id="@+id/mySignsFragment2"
         android:icon="@drawable/ic_mysigns"
         android:title="@string/my_signs"/>
 

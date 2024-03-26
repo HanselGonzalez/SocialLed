@@ -10,6 +10,15 @@
     <string name="textNotValid">Enter a Valid Text</string>
     <string name="go_back">Go Back</string>
 
+    //MY SIGNS FRAGMENT
+    <string name="favorite_signs">Favorite Led Signs</string>
+    <string name="empty_list">Empty List</string>
+
+    //DIALOG SAVE
+    <string name="save_sign">Save Sign</string>
+    <string name="name_sign">Enter a sign name</string>
+    <string name="name_sign_hint">Please enter a valid name</string>
+
     //HOME FRAGMENT
     <string name="title">Titles</string>
     <string name="background">Background</string>

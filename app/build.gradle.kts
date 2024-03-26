@@ -59,8 +59,17 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$dagVersion")
     kapt("com.google.dagger:hilt-compiler:$dagVersion")
 
+    //Room
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    //Gson
+    implementation("com.google.code.gson:gson:2.9.0")
+
+    //ViewModel
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
+    //OTHERS
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
