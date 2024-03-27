@@ -3,6 +3,7 @@ package com.sign.led.ui.mysigns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sign.led.domain.UseCase.CreateSignUseCase
+import com.sign.led.domain.UseCase.DeleteSignUseCase
 import com.sign.led.domain.UseCase.GetAllSignsUseCase
 import com.sign.led.domain.model.ItemViewFullModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MySignsViewModel @Inject constructor(
     private val getAllSignsUseCase: GetAllSignsUseCase,
-    private val createSignUseCase: CreateSignUseCase
+    private val createSignUseCase: CreateSignUseCase,
+    private val deleteSignUseCase: DeleteSignUseCase
 ) :
     ViewModel() {
 
@@ -53,5 +55,29 @@ class MySignsViewModel @Inject constructor(
 
         }
     }
+
+    fun deleteSign(itemsFull: ItemViewFullModel){
+
+        viewModelScope.launch {
+
+            _state.value = MySignsState.Loading
+
+            try {
+
+                withContext(Dispatchers.IO){deleteSignUseCase(itemsFull)}
+
+                val result = withContext(Dispatchers.IO){getAllSignsUseCase()}
+
+                _state.value = MySignsState.Success(result)
+
+            }catch (e:Exception){
+
+                _state.value = MySignsState.Error("Hubo un error")
+
+            }
+        }
+
+    }
+
 
 }

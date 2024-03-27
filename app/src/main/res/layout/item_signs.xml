@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="100dp"
-    app:cardCornerRadius="20dp">
+    android:padding="10dp"
+    android:background="@color/transparent"
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvContainerSign"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:cardElevation="100dp"
+        app:cardCornerRadius="10dp"
+        app:strokeWidth="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/transparent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clNameSign"
-            android:layout_width="220dp"
-            android:layout_height="0dp"
+            android:layout_width="210dp"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/item_name_sign_gradient"
-
-            >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/clButtonsSign"
+            android:background="@drawable/item_name_sign_gradient">
 
             <TextView
                 android:id="@+id/tvNameSign"
@@ -28,7 +42,6 @@
                 android:textAllCaps="true"
                 android:textSize="20sp"
                 android:paddingHorizontal="25dp"
-
                 android:textColor="@color/secondarySecond"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -40,6 +53,7 @@
                 />
 
             <FrameLayout
+                android:id="@+id/flBehindTransparent"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,41 +66,43 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clButtons"
+            android:id="@+id/clButtonsSign"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toEndOf="@id/clNameSign"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/item_buttons_signs_gradient"
             >
 
             <ImageButton
                 android:id="@+id/btnFullViewSigns"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 app:layout_constraintStart_toEndOf="@id/btnSignDelete"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginLeft="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/ic_view_complete"
                 android:backgroundTint="@color/tertiarySecond"
+                app:layout_constraintEnd_toEndOf="parent"
 
 
                 />
 
             <ImageButton
                 android:id="@+id/btnSignDelete"
-                android:layout_width="50dp"
-                android:layout_height="45dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/ic_delete_sign"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginLeft="40dp"
+                app:layout_constraintEnd_toStartOf="@id/btnFullViewSigns"
                 />
+
 
 
 
@@ -94,7 +110,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-</com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

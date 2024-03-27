@@ -10,8 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sign.led.databinding.FragmentMySignsBinding
+import com.sign.led.domain.model.ItemViewFullModel
 import com.sign.led.ui.mysigns.Adapter.MySignsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -53,9 +55,14 @@ class MySignsFragment : Fragment() {
         }
     }
 
+
     private fun successState(state: MySignsState.Success) {
         binding.pbMySigns.isVisible = false
         adapter.updateDate(state.itemsFull)
+
+        if(state.itemsFull.isNotEmpty()){
+            binding.tvEmptyListMySign.isVisible = false
+        }
 
 
 
@@ -68,6 +75,7 @@ class MySignsFragment : Fragment() {
 
     private fun initialState() {
         binding.pbMySigns.isVisible = false
+        binding.tvEmptyListMySign.isVisible = true
 
 
     }
@@ -82,7 +90,10 @@ class MySignsFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = MySignsAdapter()
+        adapter = MySignsAdapter(
+            navigateToFullView = { navigateToFullView(it)},
+            onDeleteClick = { onDeleteClickSign(it)}
+        )
 
         binding.apply {
             rvMySigns.layoutManager = LinearLayoutManager(rvMySigns.context)
@@ -91,6 +102,21 @@ class MySignsFragment : Fragment() {
 
     }
 
+
+    private fun onDeleteClickSign(itemsFull:ItemViewFullModel){
+
+        mySignsViewModel.deleteSign(itemsFull)
+
+    }
+
+    private fun navigateToFullView(idItem:Long){
+        findNavController().navigate(MySignsFragmentDirections.actionMySignsFragment2ToSignFullViewActivity(idItem,"signBd"))
+    }
+
+
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -98,6 +124,9 @@ class MySignsFragment : Fragment() {
         _binding = FragmentMySignsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+
+
+
 
 
 }

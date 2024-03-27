@@ -13,8 +13,7 @@
         <action
             android:id="@+id/action_createSignsFragment_to_signFullViewActivity2"
             app:destination="@id/signFullViewActivity"
-            app:popUpTo="@id/createSignsFragment"
-            app:popUpToInclusive="true"/>
+            />
 
     </fragment>
 
@@ -22,7 +21,11 @@
         android:id="@+id/mySignsFragment2"
         android:name="com.sign.led.ui.mysigns.MySignsFragment"
         android:label="fragment_my_signs"
-        tools:layout="@layout/fragment_my_signs" />
+        tools:layout="@layout/fragment_my_signs" >
+        <action
+            android:id="@+id/action_mySignsFragment2_to_signFullViewActivity"
+            app:destination="@id/signFullViewActivity" />
+    </fragment>
     <fragment
         android:id="@+id/signsFragment2"
         android:name="com.sign.led.ui.signs.SignsFragment"
@@ -33,5 +36,12 @@
         android:id="@+id/signFullViewActivity"
         android:name="com.sign.led.ui.signFullView.SignFullViewActivity"
         android:label="activity_sign_full_view"
-        tools:layout="@layout/activity_sign_full_view" />
+        tools:layout="@layout/activity_sign_full_view" >
+        <argument
+            android:name="id"
+            app:argType="long"/>
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </activity>
 </navigation>

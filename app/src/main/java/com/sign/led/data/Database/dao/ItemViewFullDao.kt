@@ -14,6 +14,9 @@ interface ItemViewFullDao {
     @Query("select * from signs_table")
     suspend fun getAllSigns():List<ItemViewFullEntity>
 
+    @Query("select * from signs_table where id = :idItem")
+    suspend fun getSignById(idItem:Long):ItemViewFullEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSign(itemViewFull:ItemViewFullEntity)
 

@@ -15,11 +15,13 @@
         android:layout_height="wrap_content"
         android:text="@string/favorite_signs"
         android:textSize="25sp"
-        android:textColor="@color/secondarySecond"
+        android:textColor="@color/textBehind"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@id/rvMySigns"
+        android:layout_margin="30dp"
+
         />
 
 
@@ -30,16 +32,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleFragmentMySign"
-        android:layout_marginHorizontal="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginVertical="20dp"
-        android:padding="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="20dp"
         android:background="@drawable/background_my_signs_gradient"
 
         />
 
 
     <TextView
+        android:id="@+id/tvEmptyListMySign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +49,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/empty_list"
+        android:textColor="@color/textBehind"
         android:textSize="30sp"
 
 
@@ -59,11 +62,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="50dp"
+        android:indeterminateTint="@color/tertiarySecond"
         android:visibility="gone"
-        android:progressTint="@color/green"
-        android:backgroundTint="@color/green"
         />
 
 

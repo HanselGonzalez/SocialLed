@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sign.led.R
 import com.sign.led.domain.model.ItemViewFullModel
 
-class MySignsAdapter(private var itemsFull: List<ItemViewFullModel> = emptyList()):RecyclerView.Adapter<MySignsViewHolder>() {
+class MySignsAdapter(
+    private var itemsFull: List<ItemViewFullModel> = emptyList(),
+    private val onDeleteClick: (ItemViewFullModel) -> Unit,
+    private val navigateToFullView:(Long) -> Unit
+) : RecyclerView.Adapter<MySignsViewHolder>() {
 
 
-    fun updateDate(itemsFull: List<ItemViewFullModel>){
+    fun updateDate(itemsFull: List<ItemViewFullModel>) {
         this.itemsFull = itemsFull
         notifyDataSetChanged()
     }
@@ -22,7 +26,7 @@ class MySignsAdapter(private var itemsFull: List<ItemViewFullModel> = emptyList(
     }
 
     override fun onBindViewHolder(holder: MySignsViewHolder, position: Int) {
-        holder.render(itemsFull[position])
+        holder.render(itemsFull[position], onDeleteClick, navigateToFullView)
     }
 
     override fun getItemCount(): Int = itemsFull.size

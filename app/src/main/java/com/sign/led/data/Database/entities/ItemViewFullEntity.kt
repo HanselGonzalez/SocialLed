@@ -25,6 +25,7 @@ data class ItemViewFullEntity (
         val textList : List<TextModel> = gson.fromJson(textListFinal,listType)
 
         return ItemViewFullModel(
+            id,
             name,
             backgroundColor,
             backgroundImage,

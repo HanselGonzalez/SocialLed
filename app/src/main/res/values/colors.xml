@@ -16,6 +16,9 @@
 
     //MY SIGNS FRAGMENT
     <color name="black_transparent">#40000000</color>
+    <color name="textBehind">#5D5DEA</color>
+    <color name="primaryBehind">#3051B3</color>
+
 
 
     //CARD-VIEW

@@ -30,7 +30,6 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -55,13 +54,13 @@ class CreateSignsFragment : Fragment() {
     private val binding get() = _binding!!
 
     //ViewModel
-    private val mySignsViewModel:MySignsViewModel by activityViewModels()
+    private val mySignsViewModel: MySignsViewModel by activityViewModels()
 
     //DIALOGS
     private lateinit var dialogTitle: Dialog
     private lateinit var dialogBackground: Dialog
 
-    private lateinit var dialogSave:Dialog
+    private lateinit var dialogSave: Dialog
 
     //LIST
     private val listTextNew = mutableListOf<TextView>()
@@ -134,20 +133,19 @@ class CreateSignsFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
 
-            binding.btnSave.background = ContextCompat.getDrawable(requireContext(),R.drawable.ic_save_pressed)
+            binding.btnSave.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_save_pressed)
             binding.btnSave.alpha = 0f
             binding.btnSave.animate()
                 .alpha(1f)
                 .setDuration(120)
                 .setInterpolator(AccelerateDecelerateInterpolator())
-                .withEndAction{
+                .withEndAction {
                     binding.btnSave.postDelayed({
                         showDialogSaveSign()
-                    },550)
+                    }, 550)
                 }
                 .start()
-
-
 
 
         }
@@ -163,7 +161,8 @@ class CreateSignsFragment : Fragment() {
 
         btnExitDialogSave.setOnClickListener {
             dialogSave.dismiss()
-            binding.btnSave.background = ContextCompat.getDrawable(requireContext(),R.drawable.ic_save)
+            binding.btnSave.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_save)
             binding.btnSave.alpha = 0f
             binding.btnSave.animate()
                 .alpha(1f)
@@ -173,7 +172,8 @@ class CreateSignsFragment : Fragment() {
         }
 
         val onDismissDialogSave = DialogInterface.OnDismissListener {
-            binding.btnSave.background = ContextCompat.getDrawable(requireContext(),R.drawable.ic_save)
+            binding.btnSave.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_save)
             binding.btnSave.alpha = 0f
             binding.btnSave.animate()
                 .alpha(1f)
@@ -184,14 +184,33 @@ class CreateSignsFragment : Fragment() {
 
         btnCheckDialogSave.setOnClickListener {
 
-            if(nameSignSave.text.toString().isNotEmpty()){
-                val nameSignFinal = nameSignSave.text.toString()
-                val itemsFull = ItemViewFullModel(nameSignFinal,colorFinalBackground,backgroundState,listTextFinal)
-                mySignsViewModel.createSign(itemsFull)
-                dialogSave.dismiss()
-            }else{
+            if (nameSignSave.text.toString()
+                    .isNotEmpty() && nameSignSave.text.toString().length <= 28 && listTextFinal.size >= 1
+            ) {
 
-                Toast.makeText(requireContext(), "Ingrese un nombre correcto", Toast.LENGTH_SHORT).show()
+                val nameSignFinal = nameSignSave.text.toString()
+                val itemsFull = ItemViewFullModel(
+                    -1,
+                    nameSignFinal,
+                    colorFinalBackground,
+                    backgroundState,
+                    listTextFinal
+                )
+                mySignsViewModel.createSign(itemsFull)
+
+                cvViewPreview.removeAllViews()
+                listViewNew.clear()
+                listTextNew.clear()
+                listTextFinal.clear()
+
+                dialogSave.dismiss()
+
+            } else if(nameSignSave.text.toString().isEmpty()){
+                Toast.makeText(requireContext(), "Ingrese un nombre valido", Toast.LENGTH_SHORT)
+                    .show()
+            }else if(listTextFinal.size <1){
+                Toast.makeText(requireContext(), "Debe guardar al menos 1 Texto", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         }
@@ -206,25 +225,21 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-
     private fun undoText() {
 
-        Log.i("listasRemove", "primero: $listViewNew")
-        Log.i("listasRemove", "primero: $listTextNew")
-        Log.i("listasRemove", "primero: $listTextFinal")
         if (listTextNew.isNotEmpty() && listViewNew.isNotEmpty() && listTextFinal.isNotEmpty()) {
             val lastText = listTextNew.last()
             val lastView = listViewNew.last()
 
             cvViewPreview.forEach { viewCard ->
-                if(viewCard == lastText){
+                if (viewCard == lastText) {
                     cvViewPreview.removeView(viewCard)
 
                 }
             }
 
             cvViewPreview.forEach { viewCard ->
-                if(viewCard == lastView){
+                if (viewCard == lastView) {
                     cvViewPreview.removeView(viewCard)
                 }
             }
@@ -292,12 +307,13 @@ class CreateSignsFragment : Fragment() {
 
         binding.btnFullView.setOnClickListener {
 
-            Log.i("background","$backgroundState")
-            val items = ItemViewFullModel(null,colorFinalBackground,backgroundState,listTextFinal)
+            Log.i("background", "$backgroundState")
+            val items =
+                ItemViewFullModel(null, null, colorFinalBackground, backgroundState, listTextFinal)
             ListItemsFullViewSingleton.setListItems(items)
 
 
-            findNavController().navigate(R.id.signFullViewActivity)
+            findNavController().navigate(CreateSignsFragmentDirections.actionCreateSignsFragmentToSignFullViewActivity2(-1,"signTemporal"))
         }
 
     }
@@ -687,8 +703,6 @@ class CreateSignsFragment : Fragment() {
                 newText.setPadding(20, 20, 20, 20)
 
 
-
-
                 val newView = View(requireContext())
 
                 val viewLayoutParams = ConstraintLayout.LayoutParams(
@@ -734,15 +748,10 @@ class CreateSignsFragment : Fragment() {
 
 
 
-                cvViewPreview.addView(newText)
+                cvViewPreview.addView(newText,0)
                 cvViewPreview.removeView(backgroundFinal)
-                cvViewPreview.addView(backgroundFinal, 0)
+                cvViewPreview.addView(backgroundFinal)
                 cvViewPreview.addView(newView)
-
-                Log.i("removeList","cvViewPreview: ${cvViewPreview.size}")
-                Log.i("removeList","cvViewPreview: ${cvViewPreview.childCount}")
-
-
 
 
                 etText.text.clear()
@@ -816,7 +825,6 @@ class CreateSignsFragment : Fragment() {
                     }
 
 
-
                     val textHeight = newText.measuredHeight
                     val textWidth = newText.measuredWidth
                     newView.layoutParams.height = textHeight
@@ -862,7 +870,6 @@ class CreateSignsFragment : Fragment() {
                         if (textModelSearch != null) {
                             listTextFinal.removeAt(textModelSearch)
                         }
-
 
 
                     } else {
@@ -932,7 +939,8 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-    private fun cardTitleStyleColorPalette(id:String,
+    private fun cardTitleStyleColorPalette(
+        id: String,
         cvColor1: MaterialCardView, cvColor2: MaterialCardView, cvColor3: MaterialCardView,
         cvColor4: MaterialCardView, cvColor5: MaterialCardView, cvColor6: MaterialCardView,
         cvColor7: MaterialCardView, cvColor8: MaterialCardView, cvColor9: MaterialCardView,
@@ -966,28 +974,28 @@ class CreateSignsFragment : Fragment() {
         )
 
         //DEFAULT
-        handleCardSelection(id,cvColor1, allCards)
+        handleCardSelection(id, cvColor1, allCards)
 
-        cvColor1.setOnClickListener { handleCardSelection(id,cvColor1, allCards) }
-        cvColor2.setOnClickListener { handleCardSelection(id,cvColor2, allCards) }
-        cvColor3.setOnClickListener { handleCardSelection(id,cvColor3, allCards) }
-        cvColor4.setOnClickListener { handleCardSelection(id,cvColor4, allCards) }
-        cvColor5.setOnClickListener { handleCardSelection(id,cvColor5, allCards) }
-        cvColor6.setOnClickListener { handleCardSelection(id,cvColor6, allCards) }
-        cvColor7.setOnClickListener { handleCardSelection(id,cvColor7, allCards) }
-        cvColor8.setOnClickListener { handleCardSelection(id,cvColor8, allCards) }
-        cvColor9.setOnClickListener { handleCardSelection(id,cvColor9, allCards) }
-        cvColor10.setOnClickListener { handleCardSelection(id,cvColor10, allCards) }
-        cvColor11.setOnClickListener { handleCardSelection(id,cvColor11, allCards) }
-        cvColor12.setOnClickListener { handleCardSelection(id,cvColor12, allCards) }
-        cvColor13.setOnClickListener { handleCardSelection(id,cvColor13, allCards) }
-        cvColor14.setOnClickListener { handleCardSelection(id,cvColor14, allCards) }
-        cvColor15.setOnClickListener { handleCardSelection(id,cvColor15, allCards) }
-        cvColor16.setOnClickListener { handleCardSelection(id,cvColor16, allCards) }
-        cvColor17.setOnClickListener { handleCardSelection(id,cvColor17, allCards) }
-        cvColor18.setOnClickListener { handleCardSelection(id,cvColor18, allCards) }
-        cvColor19.setOnClickListener { handleCardSelection(id,cvColor19, allCards) }
-        cvColor20.setOnClickListener { handleCardSelection(id,cvColor20, allCards) }
+        cvColor1.setOnClickListener { handleCardSelection(id, cvColor1, allCards) }
+        cvColor2.setOnClickListener { handleCardSelection(id, cvColor2, allCards) }
+        cvColor3.setOnClickListener { handleCardSelection(id, cvColor3, allCards) }
+        cvColor4.setOnClickListener { handleCardSelection(id, cvColor4, allCards) }
+        cvColor5.setOnClickListener { handleCardSelection(id, cvColor5, allCards) }
+        cvColor6.setOnClickListener { handleCardSelection(id, cvColor6, allCards) }
+        cvColor7.setOnClickListener { handleCardSelection(id, cvColor7, allCards) }
+        cvColor8.setOnClickListener { handleCardSelection(id, cvColor8, allCards) }
+        cvColor9.setOnClickListener { handleCardSelection(id, cvColor9, allCards) }
+        cvColor10.setOnClickListener { handleCardSelection(id, cvColor10, allCards) }
+        cvColor11.setOnClickListener { handleCardSelection(id, cvColor11, allCards) }
+        cvColor12.setOnClickListener { handleCardSelection(id, cvColor12, allCards) }
+        cvColor13.setOnClickListener { handleCardSelection(id, cvColor13, allCards) }
+        cvColor14.setOnClickListener { handleCardSelection(id, cvColor14, allCards) }
+        cvColor15.setOnClickListener { handleCardSelection(id, cvColor15, allCards) }
+        cvColor16.setOnClickListener { handleCardSelection(id, cvColor16, allCards) }
+        cvColor17.setOnClickListener { handleCardSelection(id, cvColor17, allCards) }
+        cvColor18.setOnClickListener { handleCardSelection(id, cvColor18, allCards) }
+        cvColor19.setOnClickListener { handleCardSelection(id, cvColor19, allCards) }
+        cvColor20.setOnClickListener { handleCardSelection(id, cvColor20, allCards) }
     }
 
 
@@ -1010,12 +1018,13 @@ class CreateSignsFragment : Fragment() {
     }
 
 
-    private fun handleCardSelection(id:String,
+    private fun handleCardSelection(
+        id: String,
         cardSelected: MaterialCardView?,
         allCards: List<MaterialCardView>
     ) {
 
-        when(id){
+        when (id) {
             "background" -> colorFinalBackground = cardSelected?.cardBackgroundColor?.defaultColor!!
             "text" -> colorFinalTitle = cardSelected?.cardBackgroundColor?.defaultColor!!
         }
@@ -1058,7 +1067,6 @@ class CreateSignsFragment : Fragment() {
             setContentView(R.layout.dialog_save)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-
 
 
     }

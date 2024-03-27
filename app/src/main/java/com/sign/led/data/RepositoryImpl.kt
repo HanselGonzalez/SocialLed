@@ -10,17 +10,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RepositoryImpl @Inject constructor(private val itemViewFullDao: ItemViewFullDao):Repository {
+class RepositoryImpl @Inject constructor(private val itemViewFullDao: ItemViewFullDao) :
+    Repository {
 
 
     override suspend fun getSigns(): List<ItemViewFullModel> {
 
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             try {
                 val response = itemViewFullDao.getAllSigns()
                 return@withContext response.map { it.toDomain() }
-            }catch (e:Exception){
-                Log.i("errorImpl","Ha ocurrido un error: ${e.message}")
+            } catch (e: Exception) {
+                Log.i("errorImpl", "Ha ocurrido un error: ${e.message}")
             }
 
             return@withContext emptyList()
@@ -28,10 +29,10 @@ class RepositoryImpl @Inject constructor(private val itemViewFullDao: ItemViewFu
 
     }
 
-    override suspend fun createSign(itemsFull:ItemViewFullModel){
+    override suspend fun createSign(itemsFull: ItemViewFullModel) {
 
-        return withContext(Dispatchers.IO){
-            try{
+        return withContext(Dispatchers.IO) {
+            try {
                 val entity = ItemViewFullEntity(
                     name = itemsFull.name!!,
                     backgroundColor = itemsFull.backgroundColor,
@@ -40,13 +41,52 @@ class RepositoryImpl @Inject constructor(private val itemViewFullDao: ItemViewFu
                 )
 
                 itemViewFullDao.insertSign(entity)
-            }catch (e:Exception){
-                Log.i("errorImpl","Ha ocurrido un error: ${e.message}")
+            } catch (e: Exception) {
+                Log.i("errorImpl", "Ha ocurrido un error: ${e.message}")
             }
         }
 
     }
 
 
+    override suspend fun deleteSign(itemsFull: ItemViewFullModel) {
+
+        return withContext(Dispatchers.IO) {
+
+            try {
+
+                val entity = ItemViewFullEntity(
+                    id = itemsFull.id!!,
+                    name = itemsFull.name!!,
+                    backgroundColor = itemsFull.backgroundColor,
+                    backgroundImage = itemsFull.backgroundImage,
+                    textListFinal = Gson().toJson(itemsFull.listText)
+                )
+
+                itemViewFullDao.deleteSign(entity)
+
+            } catch (e: Exception) {
+                Log.i("errorImpl", "Ha ocurrido un error: ${e.message}")
+
+            }
+
+        }
+    }
+
+    override suspend fun getSignById(idItem: Long): ItemViewFullModel? {
+
+        return try {
+            withContext(Dispatchers.IO) {
+                val response = itemViewFullDao.getSignById(idItem)
+
+                response?.toDomain()
+            }
+        } catch (e: Exception) {
+            Log.i("errorImpl", "Ha ocurrido un error: ${e.message}")
+            null
+        }
+    }
+
 
 }
+

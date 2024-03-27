@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.navArgs
 import com.sign.led.R
 import com.sign.led.databinding.ActivitySignFullViewBinding
 import com.sign.led.ui.Singleton.ListItemsFullViewSingleton
@@ -32,8 +33,8 @@ class SignFullViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignFullViewBinding
     private val signFullViewModel: SignFullViewModel by viewModels()
-    private val listItemsFinal = ListItemsFullViewSingleton.getListItems()
     private lateinit var flBackground: FrameLayout
+    private val args:SignFullViewActivityArgs by navArgs()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,12 +81,16 @@ class SignFullViewActivity : AppCompatActivity() {
             override fun onGlobalLayout() {
                 flBackground.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                initUILocal()
+                when(args.type){
+                    "signTemporal" -> initUILocal()
+                    "signBd" -> initUIState()
+                }
+
             }
         })
 
 
-        initUIState()
+
         initListeners()
     }
 
@@ -151,7 +156,12 @@ class SignFullViewActivity : AppCompatActivity() {
 
 
 
+
+
+
 private fun initUILocal() {
+    val listItemsFinal = ListItemsFullViewSingleton.getListItems()
+
     if (listItemsFinal.backgroundColor != null) {
         flBackground.setBackgroundColor(listItemsFinal.backgroundColor)
     } else {
@@ -220,6 +230,8 @@ private fun initUILocal() {
 
 
 private fun initUIState() {
+    signFullViewModel.getSignById(args.id)
+
     lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             signFullViewModel.state.collect() {
@@ -235,13 +247,83 @@ private fun initUIState() {
 
 private fun successState(state: SignFullState.Success) {
 
+    binding.pbViewFullSign.isVisible = false
+
+    val listFinalBd = state.idItem
+
+    if (listFinalBd.backgroundColor != null) {
+        flBackground.setBackgroundColor(listFinalBd.backgroundColor)
+    } else {
+        flBackground.setBackgroundColor(getColor(R.color.black))
+    }
+
+    lateinit var backgroundFinal: ImageView
+
+    if (listFinalBd.backgroundImage) {
+        backgroundFinal = ImageView(this)
+        backgroundFinal.setImageResource(R.drawable.background_pixel)
+        backgroundFinal.scaleType = ImageView.ScaleType.FIT_XY
+
+        val imageLayoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT
+
+        )
+        backgroundFinal.layoutParams = imageLayoutParams
+
+        flBackground.addView(backgroundFinal)
+    }
+
+    listFinalBd.listText?.forEach { textItem ->
+
+        val newText = TextView(this)
+        newText.text = textItem.text
+        newText.textSize = textItem.size
+        newText.maxLines = 1
+        newText.setTextColor(textItem.color)
+        newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
+
+        val relativeX = textItem.positionX
+        val relativeY = textItem.positionY
+
+        val absoluteX = relativeX * flBackground.width
+        val absoluteY = relativeY * flBackground.height
+
+
+        val animationNewText =
+            AnimationUtils.loadAnimation(this, textItem.animation)
+        animationNewText.duration = textItem.speedAnimation
+
+        newText.animation = animationNewText
+        newText.startAnimation(newText.animation)
+
+        newText.setPadding(20, 10, 20, 20)
+
+
+        val textLayoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+        )
+
+        newText.layoutParams = textLayoutParams
+
+
+        newText.x = absoluteX
+        newText.y = absoluteY
+
+        flBackground.addView(newText,0)
+    }
+
 }
 
 private fun loadingState() {
-
+binding.pbViewFullSign.isVisible = true
 }
 
 private fun errorState() {
-
+    binding.pbViewFullSign.isVisible = false
 }
+
+
 }
