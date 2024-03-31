@@ -1,5 +1,7 @@
 package com.sign.led.ui.createSigns
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -26,7 +28,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
@@ -42,6 +43,7 @@ import com.sign.led.domain.model.TextModel
 import com.sign.led.ui.Singleton.ListItemsFullViewSingleton
 import com.sign.led.ui.createSigns.adapter.SpinnerFontAdapter
 import com.sign.led.ui.mysigns.MySignsViewModel
+import com.sign.led.ui.utils.CustomToast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -77,9 +79,13 @@ class CreateSignsFragment : Fragment() {
     private val listTextFinal = mutableListOf<TextModel>()
     private var animationState = false
     private var touchState = true
-    private var speedSelection: Long = 3000
+    private var speedSelection: Long = 0
     private var positionX: Float = 0.0f
     private var positionY: Float = 0.0f
+    private var speedNormal: Long = 0
+    private var speedSlow: Long = 0
+    private var speedFast: Long = 0
+    private var speedSelectionItem: Int = 0
 
 
     override fun onCreateView(
@@ -107,11 +113,21 @@ class CreateSignsFragment : Fragment() {
         backgroundPixelInitial()
 
         binding.btnStyleTitle.setOnClickListener {
-            showDialogTitle()
+            if(!animationState){
+                showDialogTitle()
+            }else{
+                val customToast = CustomToast
+                customToast.showCustomToast(requireContext(),getString(R.string.stop_animations))
+            }
         }
 
         binding.btnStyleBackground.setOnClickListener {
-            showDialogBackground()
+            if(!animationState){
+                showDialogBackground()
+            }else{
+                val customToast = CustomToast
+                customToast.showCustomToast(requireContext(),getString(R.string.stop_animations))
+            }
         }
 
         animationText()
@@ -188,30 +204,45 @@ class CreateSignsFragment : Fragment() {
                     .isNotEmpty() && nameSignSave.text.toString().length <= 28 && listTextFinal.size >= 1
             ) {
 
+
+                Log.i("listFinalBd", "$listTextFinal")
                 val nameSignFinal = nameSignSave.text.toString()
                 val itemsFull = ItemViewFullModel(
                     -1,
                     nameSignFinal,
                     colorFinalBackground,
                     backgroundState,
-                    listTextFinal
+                    listTextFinal.toList()
                 )
+                Log.i("listFinalBd", "$listTextFinal")
                 mySignsViewModel.createSign(itemsFull)
 
+
                 cvViewPreview.removeAllViews()
+                cvViewPreview.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.black
+                    )
+                )
                 listViewNew.clear()
                 listTextNew.clear()
                 listTextFinal.clear()
-
                 dialogSave.dismiss()
+                nameSignSave.setText("")
+                Log.i("listFinalBd", "clear $listTextFinal")
 
-            } else if(nameSignSave.text.toString().isEmpty()){
-                Toast.makeText(requireContext(), "Ingrese un nombre valido", Toast.LENGTH_SHORT)
-                    .show()
-            }else if(listTextFinal.size <1){
-                Toast.makeText(requireContext(), "Debe guardar al menos 1 Texto", Toast.LENGTH_SHORT)
-                    .show()
+
+            } else if (nameSignSave.text.toString().isEmpty()) {
+                val customToast = CustomToast
+                customToast.showCustomToast(requireContext(),getString(R.string.name_valid))
+
+            } else if (listTextFinal.size < 1) {
+                val customToast = CustomToast
+                customToast.showCustomToast(requireContext(),getString(R.string.save_text_one))
+
             }
+
 
         }
 
@@ -254,9 +285,10 @@ class CreateSignsFragment : Fragment() {
 
     private fun animationText() {
 
+        val animatorSet = AnimatorSet()
+
 
         binding.btnPlayAnimation.setOnClickListener {
-
 
             val animationPlay =
                 ObjectAnimator.ofFloat(binding.ivPlayAnimation, "alpha", 0f, 1f).apply {
@@ -266,15 +298,18 @@ class CreateSignsFragment : Fragment() {
             animationPlay.start()
 
 
+
             if (animationState) {
 
                 binding.ivPlayAnimation.setImageResource(R.drawable.ic_play_animation)
 
-                listTextNew.forEach { text ->
-                    text.clearAnimation()
-                    text.ellipsize = null
+                animatorSet.end()
 
+                listTextNew.forEach { text ->
+                    text.ellipsize = TextUtils.TruncateAt.END
+                    text.clearAnimation()
                 }
+
 
             } else {
                 binding.ivPlayAnimation.setImageResource(R.drawable.ic_pause_animation)
@@ -284,21 +319,43 @@ class CreateSignsFragment : Fragment() {
                 }
 
                 listTextNew.forEachIndexed { index, text ->
-
-
                     val textModel = listTextFinal[index]
-                    val animationFinalPreview =
-                        AnimationUtils.loadAnimation(requireContext(), textModel.animation)
-                    animationFinalPreview.duration = textModel.speedAnimation
+                    text.ellipsize = null
+                    text.freezesText = true
+                    val animationResourceTypeName =
+                        requireContext().resources.getResourceTypeName(textModel.animation)
 
-                    text.animation = animationFinalPreview
-                    text.startAnimation(text.animation)
+
+                    //Type Animator
+                    if (animationResourceTypeName == "animator") {
+
+                        val animationFinalPreviewAnimator  =
+                            AnimatorInflater.loadAnimator(requireContext(), textModel.animation)
+                        animationFinalPreviewAnimator.duration = textModel.speedAnimation
+                        animationFinalPreviewAnimator.setTarget(text)
+                        animatorSet.play(animationFinalPreviewAnimator)
+
+
+                    } else if (animationResourceTypeName == "anim") {
+                        //Type Anim
+                        val animation =
+                            AnimationUtils.loadAnimation(requireContext(), textModel.animation)
+                        animation.duration = textModel.speedAnimation
+                        text.animation = animation
+                        text.startAnimation(animation)
+
+                    }
+
 
 
                 }
 
+                animatorSet.start()
 
             }
+
+
+
 
             animationState = !animationState
             touchState = !touchState
@@ -313,7 +370,12 @@ class CreateSignsFragment : Fragment() {
             ListItemsFullViewSingleton.setListItems(items)
 
 
-            findNavController().navigate(CreateSignsFragmentDirections.actionCreateSignsFragmentToSignFullViewActivity2(-1,"signTemporal"))
+            findNavController().navigate(
+                CreateSignsFragmentDirections.actionCreateSignsFragmentToSignFullViewActivity2(
+                    -1,
+                    "signTemporal"
+                )
+            )
         }
 
     }
@@ -465,6 +527,7 @@ class CreateSignsFragment : Fragment() {
         val spinnerAnimation = dialogTitle.findViewById<Spinner>(R.id.spAnimation)
         val spinnerSpeedAnimation = dialogTitle.findViewById<Spinner>(R.id.spSpeedAnimation)
 
+        spinnerSpeedAnimation.isEnabled = false
 
         //SPINNER FONT
         val spFontItems = resources.getStringArray(R.array.spFontItems)
@@ -538,7 +601,6 @@ class CreateSignsFragment : Fragment() {
 
 
         //SPINNER ANIMATION
-
         val spAnimationItems = resources.getStringArray(R.array.spAnimationItems)
 
         val spinnerAnimationAdapter =
@@ -555,16 +617,21 @@ class CreateSignsFragment : Fragment() {
                 id: Long
             ) {
 
+                speedNormal = speedAnimationNormal(position)
+                speedSlow = speedAnimationSlow(position)
+                speedFast = speedAnimationFast(position)
+
                 animationSelected = when (spinnerAnimation.selectedItemPosition) {
                     0 -> R.anim.anim_none
                     1 -> R.anim.anim_horizontal_displacement
                     2 -> R.anim.anim_blink
                     3 -> R.anim.anim_float_text
-                    4 -> R.anim.anim_rotate
-                    5 -> R.anim.anim_text_zoom
+                    4 -> R.animator.anim_rotate
+                    5 -> R.animator.anim_text_zoom
                     else -> R.anim.anim_none
                 }
 
+                spinnerSpeedAnimation.isEnabled = position != 0
 
             }
 
@@ -576,7 +643,7 @@ class CreateSignsFragment : Fragment() {
         }
 
 
-        //SPINER SPEED ANIMATION
+        //SPINNER SPEED ANIMATION
         val spSpeedAnimationItems = resources.getStringArray(R.array.spSpeedAnimationItems)
 
         val spinnerSpeedAnimationAdapter =
@@ -584,6 +651,7 @@ class CreateSignsFragment : Fragment() {
         spinnerSpeedAnimationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_items)
 
         spinnerSpeedAnimation.adapter = spinnerSpeedAnimationAdapter
+
 
 
 
@@ -595,14 +663,8 @@ class CreateSignsFragment : Fragment() {
                 id: Long
             ) {
 
-                speedSelection = when (spinnerSpeedAnimation.selectedItemPosition) {
-                    0 -> 3000
-                    1 -> 5000
-                    2 -> 9000
-                    else -> {
-                        3000
-                    }
-                }
+
+                speedSelectionItem = position
 
 
             }
@@ -611,7 +673,6 @@ class CreateSignsFragment : Fragment() {
             }
 
         }
-
 
         val cvColor1 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor1)
         val cvColor2 = dialogTitle.findViewById<MaterialCardView>(R.id.cvColor2)
@@ -674,7 +735,7 @@ class CreateSignsFragment : Fragment() {
                 val textNew = newText.text.toString()
                 newText.textSize = 20f
                 newText.maxLines = 1
-                newText.ellipsize = TextUtils.TruncateAt.END
+                newText.ellipsize = TextUtils.TruncateAt.MARQUEE
                 newText.setTextColor(colorFinalTitle!!)
                 val fontSelected = Typeface.createFromAsset(requireContext().assets, fontFinal)
 
@@ -716,6 +777,13 @@ class CreateSignsFragment : Fragment() {
                 newView.layoutParams = viewLayoutParams
 
 
+
+                when (speedSelectionItem) {
+                    0 -> speedSelection = speedNormal
+                    1 -> speedSelection = speedSlow
+                    2 -> speedSelection = speedFast
+                }
+                Log.i("position", "$speedSelection")
                 val animationFinal = animationSelected
                 val animationSpeed = speedSelection
 
@@ -744,11 +812,7 @@ class CreateSignsFragment : Fragment() {
                 setOnTouchListener(newText, newView)
 
 
-
-
-
-
-                cvViewPreview.addView(newText,0)
+                cvViewPreview.addView(newText, 0)
                 cvViewPreview.removeView(backgroundFinal)
                 cvViewPreview.addView(backgroundFinal)
                 cvViewPreview.addView(newView)
@@ -766,8 +830,8 @@ class CreateSignsFragment : Fragment() {
 
             } else {
 
-                Toast.makeText(requireContext(), R.string.textNotValid, Toast.LENGTH_SHORT)
-                    .show()
+                val customToast = CustomToast
+                customToast.showCustomToast(requireContext(),getString(R.string.textNotValid))
             }
 
 
@@ -779,6 +843,47 @@ class CreateSignsFragment : Fragment() {
 
         btnExitDialog.setOnClickListener { dialogTitle.dismiss() }
         dialogTitle.show()
+
+    }
+
+    private fun speedAnimationNormal(position: Int): Long {
+
+        Log.i("item position", "$position")
+        return when (position) {
+            1 -> 6000 //horizontal displacement
+            2 -> 1000 //blink
+            3 -> 3000 //float text
+            4 -> 8000 //rotate
+            5 -> 4200 //text zoom
+            else -> 0 //none
+        }
+
+    }
+
+    private fun speedAnimationSlow(position: Int): Long {
+
+        return when (position) {
+            1 -> 10000 //horizontal displacement
+            2 -> 4000 //blink
+            3 -> 5000 //float text
+            4 -> 12000 //rotate
+            5 -> 7200 //text zoom
+            else -> 0 //none
+        }
+
+    }
+
+    private fun speedAnimationFast(position: Int): Long {
+
+        return when (position) {
+            1 -> 4000 //horizontal displacement
+            2 -> 400 //blink
+            3 -> 900 //float text
+            4 -> 3000 //rotate
+            5 -> 2000 //text zoom
+            else -> 0 //none
+
+        }
 
     }
 
@@ -896,22 +1001,30 @@ class CreateSignsFragment : Fragment() {
                         val newX = event.rawX + deltaX
                         val newY = event.rawY + deltaY
 
+
+
                         positionX = newX / cvViewPreview.width
                         positionY = newY / cvViewPreview.height
 
-                        var textModelSearch: Int? = null
+                        var textModelSearchBd: Int? = null
 
+                        Log.i("textModelSearch", "$textModelSearchBd")
                         for ((index, text) in listTextFinal.withIndex()) {
                             if (text.id == indicesNewTextID) {
-                                textModelSearch = index
+                                textModelSearchBd = index
                                 break
                             }
                         }
 
-                        val textModelSelected = listTextFinal[textModelSearch!!]
-                        textModelSelected.positionX = positionX
-                        textModelSelected.positionY = positionY
-                        textModelSelected.size = newText.textSize
+                        Log.i("textModelSearch", "$textModelSearchBd")
+
+                        if(textModelSearchBd != null){
+                            val textModelSelected = listTextFinal[textModelSearchBd]
+                            textModelSelected.positionX = positionX
+                            textModelSelected.positionY = positionY
+                            textModelSelected.size = newText.textSize
+                        }
+
 
 
                         newView.animate()
@@ -1069,6 +1182,62 @@ class CreateSignsFragment : Fragment() {
         }
 
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        listTextNew.clear()
+        listViewNew.clear()
+        colorFinalBackground = null
+        colorFinalTitle = null
+        backgroundState = false
+        fontFinal = ""
+        listTextFinal.clear()
+        animationSelected = R.anim.anim_none
+        touchState = true
+        cvViewPreview.removeAllViews()
+        speedSelection = 0
+        positionX = 0.0f
+        positionY = 0.0f
+        speedNormal = 0
+        speedSlow = 0
+        speedFast = 0
+        speedSelectionItem = 0
+
+        if(::backgroundFinal.isInitialized){
+            backgroundFinal.setImageResource(0)
+        }
+
+
+
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listTextNew.clear()
+        listViewNew.clear()
+        colorFinalBackground = null
+        colorFinalTitle = null
+        backgroundState = false
+        fontFinal = ""
+        listTextFinal.clear()
+        animationSelected = R.anim.anim_none
+        touchState = true
+        cvViewPreview.removeAllViews()
+        speedSelection = 0
+        positionX = 0.0f
+        positionY = 0.0f
+        speedNormal = 0
+        speedSlow = 0
+        speedFast = 0
+        speedSelectionItem = 0
+
+        if(::backgroundFinal.isInitialized){
+            backgroundFinal.setImageResource(0)
+        }
+
+        _binding = null
     }
 
 }

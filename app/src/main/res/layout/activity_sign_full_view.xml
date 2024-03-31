@@ -31,12 +31,12 @@
     <FrameLayout
         android:id="@+id/flToolBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="10dp"
-        android:background="@color/tertiaryTransparent"
+        android:padding="3dp"
+        android:background="@drawable/item_name_sign_gradient"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -48,9 +48,11 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/ic_back"
-                android:padding="20dp"
+                android:padding="16dp"
                 android:backgroundTint="@color/secondarySecond"
+                android:layout_marginLeft="10dp"
                 />
 
             <TextView

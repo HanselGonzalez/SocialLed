@@ -11,7 +11,7 @@ import com.sign.led.data.Database.entities.ItemViewFullEntity
 @Dao
 interface ItemViewFullDao {
 
-    @Query("select * from signs_table")
+    @Query("select * from signs_table ORDER BY id DESC")
     suspend fun getAllSigns():List<ItemViewFullEntity>
 
     @Query("select * from signs_table where id = :idItem")

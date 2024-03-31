@@ -13,6 +13,8 @@
         <item name="itemIconSize">32dp</item>
         <item name="itemTextAppearanceActive">@font/dmsan</item>
         <item name="itemTextAppearanceInactive">@font/dmsan</item>
+        <item name="android:itemBackground">@color/transparent</item>
+        <item name="itemActiveIndicatorStyle">@color/transparent</item>
         <item name="itemIconTint">@color/bottom_nav_selector</item>
         <item name="itemTextColor">@color/bottom_nav_selector</item>
         <item name="android:background">@drawable/border_bottomnav</item>

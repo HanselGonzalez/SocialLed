@@ -7,6 +7,7 @@
     //BOTTOM NAV, TOOLBAR, BACKGROUND AND ICONS
     <color name="tertiary">#04042E</color>
     <color name="secondary">#0264DC</color>
+    <color name="secondaryBar">#0290DC</color>
     <color name="primary">#040710</color>
 
     //ACTIVITY FULL VIEW

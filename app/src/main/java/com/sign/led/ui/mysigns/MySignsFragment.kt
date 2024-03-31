@@ -1,9 +1,13 @@
 package com.sign.led.ui.mysigns
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sign.led.R
 import com.sign.led.databinding.FragmentMySignsBinding
 import com.sign.led.domain.model.ItemViewFullModel
 import com.sign.led.ui.mysigns.Adapter.MySignsAdapter
@@ -27,6 +32,8 @@ class MySignsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter:MySignsAdapter
     private val mySignsViewModel:MySignsViewModel by activityViewModels()
+    private lateinit var dialogDeleteSign: Dialog
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,9 +42,17 @@ class MySignsFragment : Fragment() {
     }
 
     private fun initUI() {
+        initDialog()
         mySignsViewModel.getSigns()
         initList()
         initUIState()
+    }
+
+    private fun initDialog() {
+        dialogDeleteSign = Dialog(requireContext()).apply {
+            setContentView(R.layout.dialog_delete_sign)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
     }
 
     private fun initUIState() {
@@ -105,8 +120,17 @@ class MySignsFragment : Fragment() {
 
     private fun onDeleteClickSign(itemsFull:ItemViewFullModel){
 
-        mySignsViewModel.deleteSign(itemsFull)
+        dialogDeleteSign.findViewById<ImageButton>(R.id.btnBackDelete).setOnClickListener {
+            dialogDeleteSign.dismiss()
+        }
 
+        dialogDeleteSign.findViewById<ImageButton>(R.id.btnCheckDelete).setOnClickListener {
+            mySignsViewModel.deleteSign(itemsFull)
+            dialogDeleteSign.dismiss()
+        }
+
+
+        dialogDeleteSign.show()
     }
 
     private fun navigateToFullView(idItem:Long){

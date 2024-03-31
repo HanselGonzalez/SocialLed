@@ -1,5 +1,6 @@
 package com.sign.led.ui.mysigns
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sign.led.domain.UseCase.CreateSignUseCase
@@ -25,6 +26,9 @@ class MySignsViewModel @Inject constructor(
     private var _state = MutableStateFlow<MySignsState>(MySignsState.Initial)
     val state: StateFlow<MySignsState> = _state
 
+    private var _insertionCompleted = MutableStateFlow<Boolean?>(null)
+    val insertionCompleted: StateFlow<Boolean?> = _insertionCompleted
+
     fun getSigns() {
         viewModelScope.launch {
             _state.value = MySignsState.Loading
@@ -42,14 +46,18 @@ class MySignsViewModel @Inject constructor(
     fun createSign(itemsFull: ItemViewFullModel) {
         viewModelScope.launch {
             try {
-
+                Log.i("listFinalBd","primero: $itemsFull")
                 withContext(Dispatchers.IO) { createSignUseCase(itemsFull) }
+                Log.i("listFinalBd","segundo $itemsFull")
 
                 val result = withContext(Dispatchers.IO){getAllSignsUseCase()}
 
                 _state.value = MySignsState.Success(result)
+
+                _insertionCompleted.value = true
             } catch (e: Exception) {
                 _state.value = MySignsState.Error("Hubo un problema")
+                _insertionCompleted.value = false
 
             }
 

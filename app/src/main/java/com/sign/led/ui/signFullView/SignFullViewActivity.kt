@@ -1,9 +1,11 @@
 package com.sign.led.ui.signFullView
 
+import android.animation.AnimatorInflater
 import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowInsetsController
@@ -34,7 +36,7 @@ class SignFullViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignFullViewBinding
     private val signFullViewModel: SignFullViewModel by viewModels()
     private lateinit var flBackground: FrameLayout
-    private val args:SignFullViewActivityArgs by navArgs()
+    private val args: SignFullViewActivityArgs by navArgs()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +60,8 @@ class SignFullViewActivity : AppCompatActivity() {
             )
         }
 
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         setContentView(binding.root)
 
 
@@ -70,28 +74,34 @@ class SignFullViewActivity : AppCompatActivity() {
 
 
     private fun initUI() {
+        flBackground = binding.flBackground
         initState()
     }
 
     private fun initState() {
-        flBackground = binding.flBackground
+
 
         flBackground.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 flBackground.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                when(args.type){
+                when (args.type) {
                     "signTemporal" -> initUILocal()
-                    "signBd" -> initUIState()
+                    "signBd" -> {
+                        signFullViewModel.getSignById(args.id)
+                        initUIState()
+                    }
                 }
+
 
             }
         })
 
 
-
         initListeners()
+
+
     }
 
 
@@ -100,21 +110,21 @@ class SignFullViewActivity : AppCompatActivity() {
 
         flBackground.setOnClickListener {
             openToolbarGoBack()
+
         }
 
         binding.btnBackFullView.setOnClickListener {
-            flBackground.removeAllViews()
             onBackPressed()
         }
 
         binding.tvGoBack.setOnClickListener {
-            flBackground.removeAllViews()
             onBackPressed()
+
         }
 
 
-
     }
+
 
     private fun initFlToolBar() {
         binding.flToolBar.animate()
@@ -148,182 +158,211 @@ class SignFullViewActivity : AppCompatActivity() {
     }
 
 
-    override fun onBackPressed() {
-        flBackground.removeAllViews()
-        super.onBackPressed()
+    private fun initUILocal() {
+        val listItemsFinal = ListItemsFullViewSingleton.getListItems()
 
+        if (listItemsFinal.backgroundColor != null) {
+            flBackground.setBackgroundColor(listItemsFinal.backgroundColor)
+        } else {
+            flBackground.setBackgroundColor(getColor(R.color.black))
+        }
+
+
+        lateinit var backgroundFinal: ImageView
+
+        if (listItemsFinal.backgroundImage) {
+            backgroundFinal = ImageView(this)
+            backgroundFinal.setImageResource(R.drawable.background_pixel)
+            backgroundFinal.scaleType = ImageView.ScaleType.FIT_XY
+
+            val imageLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+
+            )
+            backgroundFinal.layoutParams = imageLayoutParams
+
+            flBackground.addView(backgroundFinal)
+        }
+
+        listItemsFinal.listText?.forEach { textItem ->
+
+            val newText = TextView(this)
+            newText.text = textItem.text
+            newText.textSize = textItem.size
+            newText.maxLines = 1
+            newText.setTextColor(textItem.color)
+            newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
+
+            val relativeX = textItem.positionX
+            val relativeY = textItem.positionY
+
+            val absoluteX = relativeX * flBackground.width
+            val absoluteY = relativeY * flBackground.height
+
+
+            val animationResourceTypeName =
+                this.resources.getResourceTypeName(textItem.animation)
+            if (animationResourceTypeName == "animator") {
+
+                val animationFinalPreviewAnimator =
+                    AnimatorInflater.loadAnimator(this, textItem.animation)
+                animationFinalPreviewAnimator.duration = textItem.speedAnimation
+                animationFinalPreviewAnimator.setTarget(newText)
+                animationFinalPreviewAnimator.start()
+
+
+            } else if (animationResourceTypeName == "anim") {
+                //Type Anim
+                val animation =
+                    AnimationUtils.loadAnimation(this, textItem.animation)
+                animation.duration = textItem.speedAnimation
+                newText.animation = animation
+                newText.startAnimation(animation)
+
+            }
+
+            newText.setPadding(20, 10, 20, 20)
+
+
+            val textLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+            )
+
+            newText.layoutParams = textLayoutParams
+
+
+            newText.x = absoluteX
+            newText.y = absoluteY
+
+            flBackground.addView(newText, 0)
+        }
     }
 
 
+    private fun initUIState() {
 
 
-
-
-private fun initUILocal() {
-    val listItemsFinal = ListItemsFullViewSingleton.getListItems()
-
-    if (listItemsFinal.backgroundColor != null) {
-        flBackground.setBackgroundColor(listItemsFinal.backgroundColor)
-    } else {
-        flBackground.setBackgroundColor(getColor(R.color.black))
-    }
-
-
-    lateinit var backgroundFinal: ImageView
-
-    if (listItemsFinal.backgroundImage) {
-        backgroundFinal = ImageView(this)
-        backgroundFinal.setImageResource(R.drawable.background_pixel)
-        backgroundFinal.scaleType = ImageView.ScaleType.FIT_XY
-
-        val imageLayoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT
-
-        )
-        backgroundFinal.layoutParams = imageLayoutParams
-
-        flBackground.addView(backgroundFinal)
-    }
-
-    listItemsFinal.listText?.forEach { textItem ->
-
-        val newText = TextView(this)
-        newText.text = textItem.text
-        newText.textSize = textItem.size
-        newText.maxLines = 1
-        newText.setTextColor(textItem.color)
-        newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
-
-        val relativeX = textItem.positionX
-        val relativeY = textItem.positionY
-
-        val absoluteX = relativeX * flBackground.width
-        val absoluteY = relativeY * flBackground.height
-
-
-        val animationNewText =
-            AnimationUtils.loadAnimation(this, textItem.animation)
-        animationNewText.duration = textItem.speedAnimation
-
-        newText.animation = animationNewText
-        newText.startAnimation(newText.animation)
-
-        newText.setPadding(20, 10, 20, 20)
-
-
-        val textLayoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-
-        )
-
-        newText.layoutParams = textLayoutParams
-
-
-        newText.x = absoluteX
-        newText.y = absoluteY
-
-        flBackground.addView(newText, 0)
-    }
-}
-
-
-private fun initUIState() {
-    signFullViewModel.getSignById(args.id)
-
-    lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            signFullViewModel.state.collect() {
-                when (it) {
-                    is SignFullState.Error -> errorState()
-                    SignFullState.Loading -> loadingState()
-                    is SignFullState.Success -> successState(it)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                signFullViewModel.state.collect() {
+                    when (it) {
+                        is SignFullState.Error -> errorState()
+                        SignFullState.Loading -> loadingState()
+                        is SignFullState.Success -> successState(it)
+                    }
                 }
             }
         }
     }
-}
 
-private fun successState(state: SignFullState.Success) {
+    private fun successState(state: SignFullState.Success) {
+        binding.pbViewFullSign.isVisible = false
 
-    binding.pbViewFullSign.isVisible = false
 
-    val listFinalBd = state.idItem
+        val listFinalBd = state.idItem
+        Log.i("listFinalBd", "${listFinalBd.listText}")
 
-    if (listFinalBd.backgroundColor != null) {
-        flBackground.setBackgroundColor(listFinalBd.backgroundColor)
-    } else {
-        flBackground.setBackgroundColor(getColor(R.color.black))
+        if (listFinalBd.backgroundColor != null) {
+            flBackground.setBackgroundColor(listFinalBd.backgroundColor)
+        } else {
+            flBackground.setBackgroundColor(getColor(R.color.black))
+        }
+
+        lateinit var backgroundFinal: ImageView
+
+        if (listFinalBd.backgroundImage) {
+            backgroundFinal = ImageView(this)
+            backgroundFinal.setImageResource(R.drawable.background_pixel)
+            backgroundFinal.scaleType = ImageView.ScaleType.FIT_XY
+
+            val imageLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+
+            )
+            backgroundFinal.layoutParams = imageLayoutParams
+
+            flBackground.addView(backgroundFinal)
+        }
+
+        listFinalBd.listText?.forEach { textItem ->
+
+            val newText = TextView(this)
+            newText.text = textItem.text
+            newText.textSize = textItem.size
+            newText.maxLines = 1
+            newText.setTextColor(textItem.color)
+            newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
+
+            val relativeX = textItem.positionX
+            val relativeY = textItem.positionY
+
+            val absoluteX = relativeX * flBackground.width
+            val absoluteY = relativeY * flBackground.height
+
+
+            val animationResourceTypeName =
+                this.resources.getResourceTypeName(textItem.animation)
+            if (animationResourceTypeName == "animator") {
+
+                val animationFinalPreviewAnimator =
+                    AnimatorInflater.loadAnimator(this, textItem.animation)
+                animationFinalPreviewAnimator.duration = textItem.speedAnimation
+                animationFinalPreviewAnimator.setTarget(newText)
+                animationFinalPreviewAnimator.start()
+
+
+            } else if (animationResourceTypeName == "anim") {
+                //Type Anim
+                val animation =
+                    AnimationUtils.loadAnimation(this, textItem.animation)
+                animation.duration = textItem.speedAnimation
+                newText.animation = animation
+                newText.startAnimation(animation)
+
+            }
+
+            newText.setPadding(20, 10, 20, 20)
+
+
+            val textLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+            )
+
+            newText.layoutParams = textLayoutParams
+
+
+            newText.x = absoluteX
+            newText.y = absoluteY
+
+            flBackground.addView(newText, 0)
+        }
+
     }
 
-    lateinit var backgroundFinal: ImageView
-
-    if (listFinalBd.backgroundImage) {
-        backgroundFinal = ImageView(this)
-        backgroundFinal.setImageResource(R.drawable.background_pixel)
-        backgroundFinal.scaleType = ImageView.ScaleType.FIT_XY
-
-        val imageLayoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.MATCH_PARENT
-
-        )
-        backgroundFinal.layoutParams = imageLayoutParams
-
-        flBackground.addView(backgroundFinal)
+    private fun loadingState() {
+        binding.pbViewFullSign.isVisible = true
     }
 
-    listFinalBd.listText?.forEach { textItem ->
-
-        val newText = TextView(this)
-        newText.text = textItem.text
-        newText.textSize = textItem.size
-        newText.maxLines = 1
-        newText.setTextColor(textItem.color)
-        newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
-
-        val relativeX = textItem.positionX
-        val relativeY = textItem.positionY
-
-        val absoluteX = relativeX * flBackground.width
-        val absoluteY = relativeY * flBackground.height
-
-
-        val animationNewText =
-            AnimationUtils.loadAnimation(this, textItem.animation)
-        animationNewText.duration = textItem.speedAnimation
-
-        newText.animation = animationNewText
-        newText.startAnimation(newText.animation)
-
-        newText.setPadding(20, 10, 20, 20)
-
-
-        val textLayoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-
-        )
-
-        newText.layoutParams = textLayoutParams
-
-
-        newText.x = absoluteX
-        newText.y = absoluteY
-
-        flBackground.addView(newText,0)
+    private fun errorState() {
+        binding.pbViewFullSign.isVisible = false
     }
 
-}
 
-private fun loadingState() {
-binding.pbViewFullSign.isVisible = true
-}
+    override fun onBackPressed() {
+        super.onBackPressed()
+        flBackground.removeAllViews()
+    }
 
-private fun errorState() {
-    binding.pbViewFullSign.isVisible = false
-}
+    override fun onDestroy() {
+        super.onDestroy()
+        flBackground.removeAllViews()
+    }
 
 
 }
