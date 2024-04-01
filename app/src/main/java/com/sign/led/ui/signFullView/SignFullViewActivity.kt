@@ -41,6 +41,7 @@ class SignFullViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivitySignFullViewBinding.inflate(layoutInflater)
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -92,6 +93,11 @@ class SignFullViewActivity : AppCompatActivity() {
                         signFullViewModel.getSignById(args.id)
                         initUIState()
                     }
+                    "signProvider" -> {
+                        signFullViewModel.getSignProviderById(args.id)
+                        Log.i("aveeeeer","${args.id}")
+                        initUIState()
+                    }
                 }
 
 
@@ -103,6 +109,8 @@ class SignFullViewActivity : AppCompatActivity() {
 
 
     }
+
+
 
 
     private fun initListeners() {
@@ -160,6 +168,8 @@ class SignFullViewActivity : AppCompatActivity() {
 
     private fun initUILocal() {
         val listItemsFinal = ListItemsFullViewSingleton.getListItems()
+
+        Log.i("pruebaaa","$listItemsFinal")
 
         if (listItemsFinal.backgroundColor != null) {
             flBackground.setBackgroundColor(listItemsFinal.backgroundColor)
@@ -252,18 +262,108 @@ class SignFullViewActivity : AppCompatActivity() {
                         is SignFullState.Error -> errorState()
                         SignFullState.Loading -> loadingState()
                         is SignFullState.Success -> successState(it)
+                        is SignFullState.SuccessProvider -> successProvider(it)
+                        else -> {}
                     }
                 }
             }
         }
     }
 
+
+    //Provider
+    private fun successProvider(state: SignFullState.SuccessProvider) {
+        binding.pbViewFullSign.isVisible = false
+
+        val listFinalProvider = state.idItem
+
+        Log.i("aveeeer","${listFinalProvider.backgroundColor}")
+        flBackground.setBackgroundColor(listFinalProvider.backgroundColor)
+
+
+        lateinit var backgroundFinal: ImageView
+
+        if (listFinalProvider.backgroundImage) {
+            backgroundFinal = ImageView(this)
+            backgroundFinal.setImageResource(R.drawable.background_pixel)
+            backgroundFinal.scaleType = ImageView.ScaleType.FIT_XY
+
+            val imageLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+
+            )
+            backgroundFinal.layoutParams = imageLayoutParams
+
+            flBackground.addView(backgroundFinal)
+        }
+
+        listFinalProvider.listText?.forEach { textItem ->
+
+            val newText = TextView(this)
+            newText.text = textItem.text
+            newText.textSize = textItem.size
+            newText.maxLines = 1
+            newText.setTextColor(textItem.color)
+            newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
+
+            val relativeX = textItem.positionX
+            val relativeY = textItem.positionY
+
+            val absoluteX = relativeX * flBackground.width
+            val absoluteY = relativeY * flBackground.height
+
+
+            val animationResourceTypeName =
+                this.resources.getResourceTypeName(textItem.animation)
+            if (animationResourceTypeName == "animator") {
+
+                val animationFinalPreviewAnimator =
+                    AnimatorInflater.loadAnimator(this, textItem.animation)
+                animationFinalPreviewAnimator.duration = textItem.speedAnimation
+                animationFinalPreviewAnimator.setTarget(newText)
+                animationFinalPreviewAnimator.start()
+
+
+            } else if (animationResourceTypeName == "anim") {
+                //Type Anim
+                val animation =
+                    AnimationUtils.loadAnimation(this, textItem.animation)
+                animation.duration = textItem.speedAnimation
+                newText.animation = animation
+                newText.startAnimation(animation)
+
+            }
+
+            newText.setPadding(20, 10, 20, 20)
+
+
+            val textLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+            )
+
+            newText.layoutParams = textLayoutParams
+
+
+            newText.x = absoluteX
+            newText.y = absoluteY
+
+            flBackground.addView(newText, 0)
+        }
+    }
+
+
+
+
+    //BD
     private fun successState(state: SignFullState.Success) {
         binding.pbViewFullSign.isVisible = false
 
 
         val listFinalBd = state.idItem
-        Log.i("listFinalBd", "${listFinalBd.listText}")
+        Log.i("aveeeer","${listFinalBd.backgroundColor}")
 
         if (listFinalBd.backgroundColor != null) {
             flBackground.setBackgroundColor(listFinalBd.backgroundColor)

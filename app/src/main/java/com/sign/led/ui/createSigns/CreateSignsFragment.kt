@@ -364,11 +364,12 @@ class CreateSignsFragment : Fragment() {
 
         binding.btnFullView.setOnClickListener {
 
-            Log.i("background", "$backgroundState")
             val items =
                 ItemViewFullModel(null, null, colorFinalBackground, backgroundState, listTextFinal)
             ListItemsFullViewSingleton.setListItems(items)
 
+            val customToast = CustomToast
+            customToast.showCustomToast(requireContext(),getString(R.string.loading_screen))
 
             findNavController().navigate(
                 CreateSignsFragmentDirections.actionCreateSignsFragmentToSignFullViewActivity2(
@@ -376,6 +377,9 @@ class CreateSignsFragment : Fragment() {
                     "signTemporal"
                 )
             )
+
+
+
         }
 
     }
@@ -1232,6 +1236,7 @@ class CreateSignsFragment : Fragment() {
         speedSlow = 0
         speedFast = 0
         speedSelectionItem = 0
+
 
         if(::backgroundFinal.isInitialized){
             backgroundFinal.setImageResource(0)

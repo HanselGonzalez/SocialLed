@@ -134,6 +134,7 @@ class MySignsFragment : Fragment() {
     }
 
     private fun navigateToFullView(idItem:Long){
+        
         findNavController().navigate(MySignsFragmentDirections.actionMySignsFragment2ToSignFullViewActivity(idItem,"signBd"))
     }
 

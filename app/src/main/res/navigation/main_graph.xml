@@ -30,7 +30,11 @@
         android:id="@+id/signsFragment2"
         android:name="com.sign.led.ui.signs.SignsFragment"
         android:label="fragment_signs"
-        tools:layout="@layout/fragment_signs" />
+        tools:layout="@layout/fragment_signs" >
+        <action
+            android:id="@+id/action_signsFragment2_to_signFullViewActivity"
+            app:destination="@id/signFullViewActivity" />
+    </fragment>
 
     <activity
         android:id="@+id/signFullViewActivity"

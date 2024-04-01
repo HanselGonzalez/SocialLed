@@ -39,7 +39,13 @@
     <string name="textNotValid">Enter a Valid Text</string>
     <string name="save_text_one">You must save at least 1 Text</string>
     <string name="name_valid">Please enter a valid name</string>
+    <string name="loading_screen">Loading Screen</string>
 
+    //SIGN FRAGMENT
+    <string name="welcome">Welcome</string>
+    <string name="study_time">Study time</string>
+    <string name="motivation">Motivation</string>
+    <string name="live_streaming">Live Streaming</string>
 
     //DIALOG TITLE
     <string name="font">Font</string>

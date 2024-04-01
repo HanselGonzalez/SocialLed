@@ -1,375 +1,353 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.createSigns.CreateSignsFragment"
-    android:background="@color/primary">
+    android:background="@color/primary"
+    tools:context=".ui.createSigns.CreateSignsFragment">
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:fillViewport="true">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginHorizontal="60dp"
-        style="@style/toolBar"
-        android:layout_height="?attr/actionBarSize">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/secondary"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textSize="30sp"
-            android:elevation="1dp"
-            android:layout_margin="10dp"
-            android:text="@string/app_name"
-            />
-
-    </FrameLayout>
-
-
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvBackground"
-        style="@style/cvHome"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="40dp"
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="7dp">
-
-            <TextView
-                android:id="@+id/tvBackground"
+            <FrameLayout
+                android:id="@+id/toolbar"
+                style="@style/toolBar"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@string/background"
-                android:textAlignment="center"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginHorizontal="60dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textSize="16sp"
-                android:textColor="@color/secondarySecond"
-                android:alpha="0.7"
-
-                />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btnStyleBackground"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvBackground"
-                style="@style/ButtonStyle">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/tvStyleBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/style"
-                    style="@style/textStyle"
-                    />
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:elevation="1dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/secondary"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
 
 
-            </com.google.android.material.card.MaterialCardView>
-
-
-
-
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvTitle"
-        style="@style/cvHome"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cvBackground"
-        android:layout_margin="25dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="7dp">
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/title"
-                android:textAlignment="center"
-                android:layout_marginTop="7dp"
-                app:layout_constraintStart_toStartOf="parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvBackground"
+                style="@style/cvHome"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textSize="16sp"
-                android:textColor="@color/secondarySecond"
-                android:alpha="0.7"
-
-                />
-
-            <EditText
-                android:id="@+id/etText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle"
-                app:layout_constraintBottom_toTopOf="@id/btnStyleTitle"
-                android:hint="@string/enter_text"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:backgroundTint="@color/secondarySecond"
-                android:textColorHint="@color/secondarySecond"
-                android:textColor="@color/secondarySecond"
-                android:inputType="text|textNoSuggestions"
-                android:maxLines="1"
-
-                />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btnStyleTitle"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etText"
-                style="@style/ButtonStyle">
-
-                <TextView
-                    android:id="@+id/tvStyleTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/style"
-                    style="@style/textStyle"
-                    />
-
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-    </androidx.cardview.widget.CardView>
-
-
-
-
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cvViewPreview"
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cvTitle"
-        android:layout_margin="25dp"
-        app:cardBackgroundColor="@color/black"
-        app:strokeColor="@color/primarySecond"
-        app:rippleColor="@color/transparent"
-        app:cardElevation="4dp"
-        app:layout_constraintBottom_toTopOf="@id/cvManagementButtons">
-
-
-
-
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cvManagementButtons"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cvViewPreview"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="8dp"
-        app:cardBackgroundColor="@color/transparent"
-        app:strokeColor="@color/transparent"
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:padding="1dp">
-
-
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btnPlayAnimation"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnFullView"
-                app:cardBackgroundColor="@color/tertiarySecond"
-                android:clickable="true"
-                app:cardElevation="4dp"
-                android:layout_marginRight="4dp"
-
-
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvPlayAnimation"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ivPlayAnimation"
-                        android:textColor="@color/secondarySecond"
-                        android:gravity="center"
-                        android:text="@string/play_animation"
-                        />
-
-                    <ImageView
-                        android:id="@+id/ivPlayAnimation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintStart_toEndOf="@id/tvPlayAnimation"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/ic_play_animation"
-                        android:layout_marginRight="10dp"
-
-                        />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btnFullView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toEndOf="@id/btnPlayAnimation"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:cardBackgroundColor="@color/tertiarySecond"
-                android:clickable="true"
-
-                >
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent">
+                    android:paddingHorizontal="7dp">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvFullView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                    <TextView
+                        android:id="@+id/tvBackground"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:alpha="0.7"
+                        android:text="@string/background"
+                        android:textAlignment="center"
                         android:textColor="@color/secondarySecond"
-                        android:gravity="center"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ivFullView"
-                        android:text="@string/full_view"
+
                         />
 
-                    <ImageView
-                        android:id="@+id/ivFullView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintStart_toEndOf="@id/tvFullView"
-                        app:layout_constraintTop_toTopOf="parent"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnStyleBackground"
+                        style="@style/ButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/ic_view_complete"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvBackground">
 
-                        />
+                        <TextView
+                            android:id="@+id/tvStyleBackground"
+                            style="@style/textStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/style" />
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvTitle"
+                style="@style/cvHome"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cvBackground">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="7dp">
+
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:alpha="0.7"
+                        android:text="@string/title"
+                        android:textAlignment="center"
+                        android:textColor="@color/secondarySecond"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        />
+
+                    <EditText
+                        android:id="@+id/etText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/secondarySecond"
+                        android:hint="@string/enter_text"
+                        android:inputType="text|textNoSuggestions"
+                        android:maxLines="1"
+                        android:textColor="@color/secondarySecond"
+                        android:textColorHint="@color/secondarySecond"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@id/btnStyleTitle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+
+                        />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnStyleTitle"
+                        style="@style/ButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etText">
+
+                        <TextView
+                            android:id="@+id/tvStyleTitle"
+                            style="@style/textStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/style" />
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvViewPreview"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_margin="25dp"
+                app:cardBackgroundColor="@color/black"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toTopOf="@id/cvManagementButtons"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cvTitle"
+                app:rippleColor="@color/transparent"
+                app:strokeColor="@color/primarySecond">
 
 
             </com.google.android.material.card.MaterialCardView>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvManagementButtons"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/transparent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cvViewPreview"
+                app:strokeColor="@color/transparent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:padding="1dp">
 
 
-    <ImageButton
-        android:id="@+id/btnUndo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_undo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cvManagementButtons"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="150dp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnPlayAnimation"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginRight="4dp"
+                        android:clickable="true"
+                        app:cardBackgroundColor="@color/tertiarySecond"
+                        app:cardElevation="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/btnFullView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
 
-    <ImageButton
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_save"
-        app:layout_constraintStart_toEndOf="@id/btnUndo"
-        app:layout_constraintTop_toBottomOf="@id/cvManagementButtons"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="23dp"
 
-        />
+                        >
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvPlayAnimation"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/play_animation"
+                                android:textColor="@color/secondarySecond"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/ivPlayAnimation"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/ivPlayAnimation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:src="@drawable/ic_play_animation"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/tvPlayAnimation"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btnFullView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:clickable="true"
+                        app:cardBackgroundColor="@color/tertiarySecond"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/btnPlayAnimation"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        >
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvFullView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/full_view"
+                                android:textColor="@color/secondarySecond"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/ivFullView"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/ivFullView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_view_complete"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/tvFullView"
+                                app:layout_constraintTop_toTopOf="parent"
+
+                                />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <ImageButton
+                android:id="@+id/btnUndo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_undo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cvManagementButtons" />
+
+            <ImageButton
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="23dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_save"
+                app:layout_constraintStart_toEndOf="@id/btnUndo"
+                app:layout_constraintTop_toBottomOf="@id/cvManagementButtons"
+
+                />
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
