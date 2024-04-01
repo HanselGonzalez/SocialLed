@@ -18,8 +18,8 @@
 
 
     //DIALOG SAVE
-    <string name="save_sign">Save Sign</string>
-    <string name="name_sign">Enter a sign name</string>
+    <string name="save_sign">Save Led Sign</string>
+    <string name="name_sign">Enter a led sign name</string>
     <string name="delete_sign">Are you sure to remove the led Sign?</string>
     <string name="name_sign_hint">Please enter a valid name</string>
 

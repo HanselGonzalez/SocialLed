@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Solky</string>
+    <string name="home">Inicio</string>
+    <string name="signs">Led Signs</string>
+    <string name="my_signs">Mis Led Signs</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    //OTHERS
+    <string name="go_back">Volver Atras</string>
+
+    //MY SIGNS FRAGMENT
+    <string name="favorite_signs">Led Signs Favoritos</string>
+    <string name="empty_list">Lista Vacia</string>
+
+    //SIGNS LED
+    <string name="led_signs">Led Signs</string>
+
+
+    //DIALOG SAVE
+    <string name="save_sign">Guardar Led Sign</string>
+    <string name="name_sign">Ingresa un nombre</string>
+    <string name="delete_sign">Are you sure to remove the led Sign?</string>
+    <string name="name_sign_hint">Introduzca un nombre valido</string>
+
+    //HOME FRAGMENT
+    <string name="title">Titulo</string>
+    <string name="background">Fondo</string>
+    <string name="enter_text">Ingresa un texto </string>
+    <string name="another_text">Ingresa otro texto</string>
+    <string name="style">Añadir Estilo</string>
+    <string name="edit_style">Editar Estilo</string>
+
+    <string name="play_animation">Ver Animaciones</string>
+    <string name="full_view">Vista Completa</string>
+
+    //TOAST
+    <string name="stop_animations">Detenga las animaciones</string>
+    <string name="textNotValid">Ingrese un texto valido</string>
+    <string name="save_text_one">Debe de guardar al menos un texto</string>
+    <string name="name_valid">Ingrese un nombre valido</string>
+    <string name="loading_screen">Cargando la Siguiente Pantalla</string>
+
+    //SIGN FRAGMENT
+    <string name="welcome">Bienvenido</string>
+    <string name="study_time">Tiempo de Estudiar</string>
+    <string name="motivation">Motivacion</string>
+    <string name="live_streaming">Transmision en Vivo</string>
+
+    //DIALOG TITLE
+    <string name="font">Fuente</string>
+    <string name="animation">Animacion</string>
+    <string name="speed">Velocidad</string>
+    <string name="texture">Textura</string>
+
+    //SPINNERS TITLE
+    <string-array name="spFontItems">
+        <item>DmSan</item>
+        <item>LeagueGothic</item>
+        <item>DmSerifText</item>
+        <item>Fugazone</item>
+        <item>SixtyFour</item>
+        <item>PressStart</item>
+        <item>BungeeShade</item>
+        <item>Amatic</item>
+    </string-array>
+
+    <string-array name="spAnimationItems">
+        <item>None</item>
+        <item>Desplazamiento Horizontal</item>
+        <item>Parapdeo</item>
+        <item>Flotante</item>
+        <item>Rotar</item>
+        <item>Zoom</item>
+    </string-array>
+
+    <string-array name="spSpeedAnimationItems">
+        <item>Normal</item>
+        <item>Lento</item>
+        <item>Rapido</item>
+    </string-array>
+
+    <string-array name="spTextureItems">
+        <item>Normal</item>
+        <item>Pixel</item>
+    </string-array>
+
+
+
+
+
+</resources>
