@@ -43,9 +43,14 @@
 
     //SIGN FRAGMENT
     <string name="welcome">Bienvenido</string>
-    <string name="study_time">Tiempo de Estudiar</string>
+    <string name="study_time">Estudiando</string>
     <string name="motivation">Motivacion</string>
     <string name="live_streaming">Transmision en Vivo</string>
+    <string name="live_streaming2"></string>
+    //Sign Fragment on Full View
+    <string name="welcome_caps">BIENVENIDO</string>
+    <string name="welcome_phrase_motivation_1">Estas destinado a algo</string>
+    <string name="welcome_phrase_motivation_2">intenta encontrarlo</string>
 
     //DIALOG TITLE
     <string name="font">Fuente</string>
@@ -66,9 +71,9 @@
     </string-array>
 
     <string-array name="spAnimationItems">
-        <item>None</item>
+        <item>Ninguna</item>
         <item>Desplazamiento Horizontal</item>
-        <item>Parapdeo</item>
+        <item>Parpadeo</item>
         <item>Flotante</item>
         <item>Rotar</item>
         <item>Zoom</item>
@@ -77,7 +82,7 @@
     <string-array name="spSpeedAnimationItems">
         <item>Normal</item>
         <item>Lento</item>
-        <item>Rapido</item>
+        <item>Rápido</item>
     </string-array>
 
     <string-array name="spTextureItems">

@@ -43,9 +43,17 @@
 
     //SIGN FRAGMENT
     <string name="welcome">Welcome</string>
-    <string name="study_time">Study time</string>
+    <string name="study_time">Study Time</string>
     <string name="motivation">Motivation</string>
     <string name="live_streaming">Live Streaming</string>
+    <string name="live_streaming2">0</string>
+    //Sign Fragment on Full View
+    <string name="welcome_caps">WELCOME</string>
+    <string name="welcome_phrase_motivation_1">You are destined for something</string>
+    <string name="welcome_phrase_motivation_2">try and find it</string>
+
+
+
 
     //DIALOG TITLE
     <string name="font">Font</string>

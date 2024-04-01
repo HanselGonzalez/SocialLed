@@ -339,6 +339,8 @@
                 android:background="@drawable/ic_save"
                 app:layout_constraintStart_toEndOf="@id/btnUndo"
                 app:layout_constraintTop_toBottomOf="@id/cvManagementButtons"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="144dp"
 
                 />
 
