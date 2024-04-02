@@ -69,6 +69,9 @@ dependencies {
     //ViewModel
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
+    //Splash
+    implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
+
     //OTHERS
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation("androidx.core:core-ktx:1.12.0")

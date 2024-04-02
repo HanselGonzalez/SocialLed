@@ -86,6 +86,7 @@ class CreateSignsFragment : Fragment() {
     private var speedSlow: Long = 0
     private var speedFast: Long = 0
     private var speedSelectionItem: Int = 0
+    private var isScrollable = true
 
 
     override fun onCreateView(
@@ -167,7 +168,10 @@ class CreateSignsFragment : Fragment() {
         }
 
 
+
+
     }
+
 
     private fun showDialogSaveSign() {
         val nameSignSave = dialogSave.findViewById<EditText>(R.id.etNameSign)
@@ -521,6 +525,7 @@ class CreateSignsFragment : Fragment() {
 
 
     //TEXT
+    @SuppressLint("ClickableViewAccessibility")
     private fun showDialogTitle() {
         val btnAddText = dialogTitle.findViewById<ImageButton>(R.id.btnCheck)
         val btnExitDialog = dialogTitle.findViewById<ImageButton>(R.id.btnBack)
@@ -832,6 +837,8 @@ class CreateSignsFragment : Fragment() {
                     etText.setHint(R.string.another_text)
                 }
 
+                etText.clearFocus()
+
             } else {
 
                 val customToast = CustomToast
@@ -894,6 +901,7 @@ class CreateSignsFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setOnTouchListener(newText: TextView, newView: View) {
+
         var resizing = false
         var initialY = 0f
         val initialSize = 20f
@@ -903,9 +911,12 @@ class CreateSignsFragment : Fragment() {
 
         val indicesNewTextID = newText.id
 
+        val scrollView = binding.svFragmentCreateSign
 
 
         newView.setOnTouchListener { v, event ->
+
+
 
             if (!touchState) {
 
@@ -916,6 +927,8 @@ class CreateSignsFragment : Fragment() {
             when (event.action) {
 
                 MotionEvent.ACTION_DOWN -> {
+
+                    scrollView.requestDisallowInterceptTouchEvent(true)
 
                     //Collocation Background to vista
                     val viewIndex = listViewNew.indexOfFirst { it == newView }
@@ -989,6 +1002,8 @@ class CreateSignsFragment : Fragment() {
                 }
 
                 MotionEvent.ACTION_MOVE -> {
+                    scrollView.requestDisallowInterceptTouchEvent(true)
+
                     Log.i("TOuchEvent", "move $resizing")
                     if (resizing) {
                         val deltaY = event.rawY - initialY
@@ -1046,11 +1061,22 @@ class CreateSignsFragment : Fragment() {
 
                 }
 
+                MotionEvent.ACTION_UP ->{
+                    scrollView.requestDisallowInterceptTouchEvent(false)
+                }
+
 
             }
+
+
             true
 
         }
+
+
+
+
+
 
 
     }

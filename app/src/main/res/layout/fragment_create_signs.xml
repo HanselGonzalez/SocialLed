@@ -10,6 +10,7 @@
 
 
     <ScrollView
+        android:id="@+id/svFragmentCreateSign"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -181,7 +182,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cvViewPreview"
-                android:layout_width="match_parent"
+                android:layout_width="370dp"
                 android:layout_height="240dp"
                 android:layout_margin="25dp"
                 app:cardBackgroundColor="@color/black"
@@ -191,7 +192,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cvTitle"
                 app:rippleColor="@color/transparent"
-                app:strokeColor="@color/primarySecond">
+                app:strokeColor="@color/primarySecond"
+                >
 
 
             </com.google.android.material.card.MaterialCardView>
@@ -327,6 +329,7 @@
                 android:layout_marginLeft="150dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/ic_undo"
+                app:layout_constraintEnd_toStartOf="@id/btnSave"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cvManagementButtons" />
 

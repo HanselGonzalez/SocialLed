@@ -47,6 +47,14 @@
         <item name="android:textColor">@color/secondarySecond</item>
         <item name="android:layout_gravity">center</item>
     </style>
+    
+    
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/tertiary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_anim</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.SocialLed</item>
+
+    </style>
 
 
 

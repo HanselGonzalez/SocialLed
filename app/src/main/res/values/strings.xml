@@ -53,8 +53,6 @@
     <string name="welcome_phrase_motivation_2">try and find it</string>
 
 
-
-
     //DIALOG TITLE
     <string name="font">Font</string>
     <string name="animation">Animation</string>
@@ -92,9 +90,6 @@
         <item>Normal</item>
         <item>Pixel</item>
     </string-array>
-
-
-
 
 
 </resources>
