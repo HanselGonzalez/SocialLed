@@ -46,6 +46,7 @@ class MySignsFragment : Fragment() {
         mySignsViewModel.getSigns()
         initList()
         initUIState()
+
     }
 
     private fun initDialog() {

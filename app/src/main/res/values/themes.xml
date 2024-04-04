@@ -50,8 +50,8 @@
     
     
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/tertiary</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_anim</item>
+        <item name="windowSplashScreenBackground">@color/primary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.SocialLed</item>
 
     </style>

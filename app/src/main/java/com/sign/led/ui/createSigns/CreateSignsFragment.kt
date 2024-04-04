@@ -311,6 +311,12 @@ class CreateSignsFragment : Fragment() {
 
                 listTextNew.forEach { text ->
                     text.ellipsize = TextUtils.TruncateAt.END
+                    text.layoutParams.width = -2
+                    text.isSelected = false
+
+
+
+
                     text.clearAnimation()
                 }
 
@@ -325,29 +331,44 @@ class CreateSignsFragment : Fragment() {
                 listTextNew.forEachIndexed { index, text ->
                     val textModel = listTextFinal[index]
                     text.ellipsize = null
-                    text.freezesText = true
+                    val textWidth = text.paint.measureText(text.text.toString())
+
+
+
+
+
                     val animationResourceTypeName =
                         requireContext().resources.getResourceTypeName(textModel.animation)
 
 
                     //Type Animator
+
+
                     if (animationResourceTypeName == "animator") {
 
-                        val animationFinalPreviewAnimator  =
-                            AnimatorInflater.loadAnimator(requireContext(), textModel.animation)
-                        animationFinalPreviewAnimator.duration = textModel.speedAnimation
-                        animationFinalPreviewAnimator.setTarget(text)
-                        animatorSet.play(animationFinalPreviewAnimator)
+                            val animationFinalPreviewAnimator  =
+                                AnimatorInflater.loadAnimator(requireContext(), textModel.animation)
+                            animationFinalPreviewAnimator.duration = textModel.speedAnimation
+                            animationFinalPreviewAnimator.setTarget(text)
+                            animatorSet.play(animationFinalPreviewAnimator)
+
 
 
                     } else if (animationResourceTypeName == "anim") {
-                        //Type Anim
-                        val animation =
-                            AnimationUtils.loadAnimation(requireContext(), textModel.animation)
-                        animation.duration = textModel.speedAnimation
-                        text.animation = animation
-                        text.startAnimation(animation)
+                        if(textModel.animation == R.anim.anim_horizontal_displacement && textWidth > cvViewPreview.width.toFloat()){
 
+                                text.layoutParams.width = textWidth.toInt()
+                                text.ellipsize = TextUtils.TruncateAt.MARQUEE
+                                text.isSelected = true
+
+
+                        }else{
+                            val animation =
+                                AnimationUtils.loadAnimation(requireContext(), textModel.animation)
+                            animation.duration = textModel.speedAnimation
+                            text.animation = animation
+                            text.startAnimation(animation)
+                        }
                     }
 
 
@@ -744,7 +765,8 @@ class CreateSignsFragment : Fragment() {
                 val textNew = newText.text.toString()
                 newText.textSize = 20f
                 newText.maxLines = 1
-                newText.ellipsize = TextUtils.TruncateAt.MARQUEE
+                newText.isSingleLine = true
+                newText.ellipsize = TextUtils.TruncateAt.END
                 newText.setTextColor(colorFinalTitle!!)
                 val fontSelected = Typeface.createFromAsset(requireContext().assets, fontFinal)
 
@@ -1224,6 +1246,7 @@ class CreateSignsFragment : Fragment() {
         fontFinal = ""
         listTextFinal.clear()
         animationSelected = R.anim.anim_none
+        animationState = false
         touchState = true
         cvViewPreview.removeAllViews()
         speedSelection = 0
@@ -1254,6 +1277,7 @@ class CreateSignsFragment : Fragment() {
         listTextFinal.clear()
         animationSelected = R.anim.anim_none
         touchState = true
+        animationState = false
         cvViewPreview.removeAllViews()
         speedSelection = 0
         positionX = 0.0f
