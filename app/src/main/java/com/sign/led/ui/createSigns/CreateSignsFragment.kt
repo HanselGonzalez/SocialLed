@@ -86,7 +86,6 @@ class CreateSignsFragment : Fragment() {
     private var speedSlow: Long = 0
     private var speedFast: Long = 0
     private var speedSelectionItem: Int = 0
-    private var isScrollable = true
 
 
     override fun onCreateView(
