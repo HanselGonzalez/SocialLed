@@ -21,13 +21,30 @@ android {
     }
 
     buildTypes {
-        release {
+
+        getByName("release") {
             isMinifyEnabled = false
+            isDebuggable = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            resValue("string", "solkyname","Solky")
+            resValue("string", "ADMOB_ID_MANIFEST","ca-app-pub-3940256099942544~3347511713")
+            resValue("string", "ADMOB_ID_ADS","ca-app-pub-3940256099942544/1033173712")
+
         }
+
+        getByName("debug"){
+            isDebuggable = true
+
+            resValue("string", "solkyname","[DEBUG] Solky")
+            resValue("string", "ADMOB_ID_MANIFEST","ca-app-pub-3940256099942544~3347511713")
+            resValue("string", "ADMOB_ID_ADS","ca-app-pub-3940256099942544/1033173712")
+        }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,6 +56,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 
 
@@ -71,6 +89,9 @@ dependencies {
 
     //Splash
     implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
+
+    //ADS
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
 
     //OTHERS
     implementation ("androidx.cardview:cardview:1.0.0")

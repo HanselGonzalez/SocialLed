@@ -34,6 +34,12 @@ import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.card.MaterialCardView
 import com.sign.led.R
 import com.sign.led.databinding.FragmentCreateSignsBinding
@@ -86,6 +92,8 @@ class CreateSignsFragment : Fragment() {
     private var speedSlow: Long = 0
     private var speedFast: Long = 0
     private var speedSelectionItem: Int = 0
+    private var adCount = 0
+    private var interstitial:InterstitialAd? = null
 
 
     override fun onCreateView(
@@ -105,12 +113,29 @@ class CreateSignsFragment : Fragment() {
     }
 
     private fun initUI() {
+        initAds()
         initListeners()
     }
+
+
 
     private fun initListeners() {
         initDialogs()
         backgroundPixelInitial()
+
+        interstitial?.fullScreenContentCallback = object : FullScreenContentCallback(){
+            override fun onAdDismissedFullScreenContent() {
+            }
+
+            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                interstitial = null
+            }
+
+        }
+
 
         binding.btnStyleTitle.setOnClickListener {
             if(!animationState){
@@ -172,6 +197,36 @@ class CreateSignsFragment : Fragment() {
     }
 
 
+    private fun initAds() {
+        var adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(requireContext(), getString(R.string.ADMOB_ID_ADS), adRequest, object : InterstitialAdLoadCallback(){
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                interstitial = interstitialAd
+            }
+
+            override fun onAdFailedToLoad(p0: LoadAdError) {
+                interstitial = null
+            }
+
+        })
+
+
+    }
+
+    private fun checkCount(){
+        if(adCount == 4){
+            showAds()
+            adCount = 0
+            initAds()
+        }
+    }
+
+    private fun showAds(){
+        interstitial?.show(requireActivity())
+    }
+
+
     private fun showDialogSaveSign() {
         val nameSignSave = dialogSave.findViewById<EditText>(R.id.etNameSign)
         val btnExitDialogSave = dialogSave.findViewById<ImageButton>(R.id.btnBackSave)
@@ -228,6 +283,8 @@ class CreateSignsFragment : Fragment() {
                         R.color.black
                     )
                 )
+                backgroundState = false
+                colorFinalBackground = null
                 listViewNew.clear()
                 listTextNew.clear()
                 listTextFinal.clear()
@@ -395,6 +452,9 @@ class CreateSignsFragment : Fragment() {
             val customToast = CustomToast
             customToast.showCustomToast(requireContext(),getString(R.string.loading_screen))
 
+            Log.i("aveeerrrs", "$adCount")
+
+
             findNavController().navigate(
                 CreateSignsFragmentDirections.actionCreateSignsFragmentToSignFullViewActivity2(
                     -1,
@@ -402,6 +462,9 @@ class CreateSignsFragment : Fragment() {
                 )
             )
 
+
+            adCount += 1
+            checkCount()
 
 
         }
