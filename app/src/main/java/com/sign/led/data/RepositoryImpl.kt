@@ -39,9 +39,6 @@ class RepositoryImpl @Inject constructor(private val itemViewFullDao: ItemViewFu
                     backgroundImage = itemsFull.backgroundImage,
                     textListFinal = Gson().toJson(itemsFull.listText)
                 )
-                Log.i("listFinalBd","$itemsFull")
-
-                Log.i("listFinalBd","$entity")
 
                 itemViewFullDao.insertSign(entity)
             } catch (e: Exception) {

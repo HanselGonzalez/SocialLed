@@ -1,11 +1,12 @@
 package com.sign.led.ui.signFullView
 
 import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.text.TextUtils
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowInsets
@@ -96,7 +97,6 @@ class SignFullViewActivity : AppCompatActivity() {
                     }
                     "signProvider" -> {
                         signFullViewModel.getSignProviderById(args.id)
-                        Log.i("aveeeeer","${args.id}")
                         initUIState()
                     }
                 }
@@ -168,9 +168,10 @@ class SignFullViewActivity : AppCompatActivity() {
 
 
     private fun initUILocal() {
+        val animatorSet = AnimatorSet()
+
         val listItemsFinal = ListItemsFullViewSingleton.getListItems()
 
-        Log.i("pruebaaa","$listItemsFinal")
 
         if (listItemsFinal.backgroundColor != null) {
             flBackground.setBackgroundColor(listItemsFinal.backgroundColor)
@@ -205,35 +206,15 @@ class SignFullViewActivity : AppCompatActivity() {
             newText.setTextColor(textItem.color)
             newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
 
+            val textWidth = newText.paint.measureText(newText.text.toString())
+
+
+
             val relativeX = textItem.positionX
             val relativeY = textItem.positionY
 
             val absoluteX = relativeX * flBackground.width
             val absoluteY = relativeY * flBackground.height
-
-
-            val animationResourceTypeName =
-                this.resources.getResourceTypeName(textItem.animation)
-            if (animationResourceTypeName == "animator") {
-
-                val animationFinalPreviewAnimator =
-                    AnimatorInflater.loadAnimator(this, textItem.animation)
-                animationFinalPreviewAnimator.duration = textItem.speedAnimation
-                animationFinalPreviewAnimator.setTarget(newText)
-                animationFinalPreviewAnimator.start()
-
-
-            } else if (animationResourceTypeName == "anim") {
-                //Type Anim
-                val animation =
-                    AnimationUtils.loadAnimation(this, textItem.animation)
-                animation.duration = textItem.speedAnimation
-                newText.animation = animation
-                newText.startAnimation(animation)
-
-            }
-
-            newText.setPadding(20, 10, 20, 20)
 
 
             val textLayoutParams = ConstraintLayout.LayoutParams(
@@ -245,11 +226,51 @@ class SignFullViewActivity : AppCompatActivity() {
             newText.layoutParams = textLayoutParams
 
 
+            val animationResourceTypeName =
+                this.resources.getResourceTypeName(textItem.animation)
+
+            if (animationResourceTypeName == "animator") {
+
+                val animationFinalPreviewAnimator  =
+                    AnimatorInflater.loadAnimator(this, textItem.animation)
+                animationFinalPreviewAnimator.duration = textItem.speedAnimation
+                animationFinalPreviewAnimator.setTarget(newText)
+                animatorSet.play(animationFinalPreviewAnimator)
+
+
+
+            } else if (animationResourceTypeName == "anim") {
+
+                if(textItem.animation == R.anim.anim_horizontal_displacement && textWidth > flBackground.width.toFloat()){
+
+                    newText.layoutParams.width = textWidth.toInt()
+                    newText.ellipsize = TextUtils.TruncateAt.MARQUEE
+                    newText.isSingleLine = true
+                    newText.isSelected = true
+
+
+                }else{
+                    val animation =
+                        AnimationUtils.loadAnimation(this, textItem.animation)
+                    animation.duration = textItem.speedAnimation
+                    newText.animation = animation
+                    newText.startAnimation(animation)
+                }
+            }
+
+            newText.setPadding(20, 10, 20, 20)
+
+
+
+
+
             newText.x = absoluteX
             newText.y = absoluteY
 
             flBackground.addView(newText, 0)
         }
+
+        animatorSet.start()
     }
 
 
@@ -274,11 +295,11 @@ class SignFullViewActivity : AppCompatActivity() {
 
     //Provider
     private fun successProvider(state: SignFullState.SuccessProvider) {
+        val animatorSet = AnimatorSet()
         binding.pbViewFullSign.isVisible = false
 
         val listFinalProvider = state.idItem
 
-        Log.i("aveeeer","${listFinalProvider.backgroundColor}")
         flBackground.setBackgroundColor(listFinalProvider.backgroundColor)
 
 
@@ -308,6 +329,10 @@ class SignFullViewActivity : AppCompatActivity() {
             newText.setTextColor(textItem.color)
             newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
 
+
+            val textWidth = newText.paint.measureText(newText.text.toString())
+
+
             val relativeX = textItem.positionX
             val relativeY = textItem.positionY
 
@@ -317,23 +342,34 @@ class SignFullViewActivity : AppCompatActivity() {
 
             val animationResourceTypeName =
                 this.resources.getResourceTypeName(textItem.animation)
+
             if (animationResourceTypeName == "animator") {
 
-                val animationFinalPreviewAnimator =
+                val animationFinalPreviewAnimator  =
                     AnimatorInflater.loadAnimator(this, textItem.animation)
                 animationFinalPreviewAnimator.duration = textItem.speedAnimation
                 animationFinalPreviewAnimator.setTarget(newText)
-                animationFinalPreviewAnimator.start()
+                animatorSet.play(animationFinalPreviewAnimator)
+
 
 
             } else if (animationResourceTypeName == "anim") {
-                //Type Anim
-                val animation =
-                    AnimationUtils.loadAnimation(this, textItem.animation)
-                animation.duration = textItem.speedAnimation
-                newText.animation = animation
-                newText.startAnimation(animation)
 
+                if(textItem.animation == R.anim.anim_horizontal_displacement && textWidth > flBackground.width.toFloat()){
+
+                    newText.layoutParams.width = textWidth.toInt()
+                    newText.ellipsize = TextUtils.TruncateAt.MARQUEE
+                    newText.isSingleLine = true
+                    newText.isSelected = true
+
+
+                }else{
+                    val animation =
+                        AnimationUtils.loadAnimation(this, textItem.animation)
+                    animation.duration = textItem.speedAnimation
+                    newText.animation = animation
+                    newText.startAnimation(animation)
+                }
             }
 
             newText.setPadding(20, 10, 20, 20)
@@ -353,6 +389,9 @@ class SignFullViewActivity : AppCompatActivity() {
 
             flBackground.addView(newText, 0)
         }
+
+        animatorSet.start()
+
     }
 
 
@@ -360,11 +399,12 @@ class SignFullViewActivity : AppCompatActivity() {
 
     //BD
     private fun successState(state: SignFullState.Success) {
+        val animatorSet = AnimatorSet()
+
         binding.pbViewFullSign.isVisible = false
 
 
         val listFinalBd = state.idItem
-        Log.i("aveeeer","${listFinalBd.backgroundColor}")
 
         if (listFinalBd.backgroundColor != null) {
             flBackground.setBackgroundColor(listFinalBd.backgroundColor)
@@ -398,6 +438,10 @@ class SignFullViewActivity : AppCompatActivity() {
             newText.setTextColor(textItem.color)
             newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
 
+
+            val textWidth = newText.paint.measureText(newText.text.toString())
+
+
             val relativeX = textItem.positionX
             val relativeY = textItem.positionY
 
@@ -407,23 +451,34 @@ class SignFullViewActivity : AppCompatActivity() {
 
             val animationResourceTypeName =
                 this.resources.getResourceTypeName(textItem.animation)
+
             if (animationResourceTypeName == "animator") {
 
-                val animationFinalPreviewAnimator =
+                val animationFinalPreviewAnimator  =
                     AnimatorInflater.loadAnimator(this, textItem.animation)
                 animationFinalPreviewAnimator.duration = textItem.speedAnimation
                 animationFinalPreviewAnimator.setTarget(newText)
-                animationFinalPreviewAnimator.start()
+                animatorSet.play(animationFinalPreviewAnimator)
+
 
 
             } else if (animationResourceTypeName == "anim") {
-                //Type Anim
-                val animation =
-                    AnimationUtils.loadAnimation(this, textItem.animation)
-                animation.duration = textItem.speedAnimation
-                newText.animation = animation
-                newText.startAnimation(animation)
 
+                if(textItem.animation == R.anim.anim_horizontal_displacement && textWidth > flBackground.width.toFloat()){
+
+                    newText.layoutParams.width = textWidth.toInt()
+                    newText.ellipsize = TextUtils.TruncateAt.MARQUEE
+                    newText.isSingleLine = true
+                    newText.isSelected = true
+
+
+                }else{
+                    val animation =
+                        AnimationUtils.loadAnimation(this, textItem.animation)
+                    animation.duration = textItem.speedAnimation
+                    newText.animation = animation
+                    newText.startAnimation(animation)
+                }
             }
 
             newText.setPadding(20, 10, 20, 20)
@@ -443,6 +498,9 @@ class SignFullViewActivity : AppCompatActivity() {
 
             flBackground.addView(newText, 0)
         }
+
+        animatorSet.start()
+
 
     }
 

@@ -1,7 +1,6 @@
 package com.sign.led.ui.signs
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,6 @@ class SignsFragment : Fragment() {
     private val binding get() = _binding!!
     private val signsViewModel:SignsViewModel by viewModels()
     private lateinit var adapter:SignsAdapter
-    private var adCount = 0
     private var interstitial: InterstitialAd? = null
 
 
@@ -68,7 +66,6 @@ class SignsFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 signsViewModel.signsP.collect(){
-                    Log.i("etcetera","$it")
                     adapter.updateData(it)
                 }
             }
@@ -89,7 +86,6 @@ class SignsFragment : Fragment() {
     private fun navigateToFullView(idItem:Long){
 
         findNavController().navigate(SignsFragmentDirections.actionSignsFragment2ToSignFullViewActivity(idItem,"signProvider"))
-        adCount += 1
         checkCount()
     }
 
@@ -112,11 +108,9 @@ class SignsFragment : Fragment() {
     }
 
     private fun checkCount(){
-        if(adCount == 2){
             showAds()
-            adCount = 0
             initAds()
-        }
+
     }
 
     private fun showAds(){

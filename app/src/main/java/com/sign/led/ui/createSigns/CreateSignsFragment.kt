@@ -13,7 +13,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextPaint
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -263,7 +262,6 @@ class CreateSignsFragment : Fragment() {
             ) {
 
 
-                Log.i("listFinalBd", "$listTextFinal")
                 val nameSignFinal = nameSignSave.text.toString()
                 val itemsFull = ItemViewFullModel(
                     -1,
@@ -272,7 +270,7 @@ class CreateSignsFragment : Fragment() {
                     backgroundState,
                     listTextFinal.toList()
                 )
-                Log.i("listFinalBd", "$listTextFinal")
+
                 mySignsViewModel.createSign(itemsFull)
 
 
@@ -290,7 +288,6 @@ class CreateSignsFragment : Fragment() {
                 listTextFinal.clear()
                 dialogSave.dismiss()
                 nameSignSave.setText("")
-                Log.i("listFinalBd", "clear $listTextFinal")
 
 
             } else if (nameSignSave.text.toString().isEmpty()) {
@@ -387,6 +384,7 @@ class CreateSignsFragment : Fragment() {
                 listTextNew.forEachIndexed { index, text ->
                     val textModel = listTextFinal[index]
                     text.ellipsize = null
+
                     val textWidth = text.paint.measureText(text.text.toString())
 
 
@@ -452,7 +450,6 @@ class CreateSignsFragment : Fragment() {
             val customToast = CustomToast
             customToast.showCustomToast(requireContext(),getString(R.string.loading_screen))
 
-            Log.i("aveeerrrs", "$adCount")
 
 
             findNavController().navigate(
@@ -876,7 +873,6 @@ class CreateSignsFragment : Fragment() {
                     1 -> speedSelection = speedSlow
                     2 -> speedSelection = speedFast
                 }
-                Log.i("position", "$speedSelection")
                 val animationFinal = animationSelected
                 val animationSpeed = speedSelection
 
@@ -943,7 +939,6 @@ class CreateSignsFragment : Fragment() {
 
     private fun speedAnimationNormal(position: Int): Long {
 
-        Log.i("item position", "$position")
         return when (position) {
             1 -> 6000 //horizontal displacement
             2 -> 1000 //blink
@@ -1056,9 +1051,9 @@ class CreateSignsFragment : Fragment() {
 
 
                     if (isInsideResizeRegion) {
-                        Log.i("TouchEvent", "Estás presionando en la esquina inferior derecha")
+                        //Touch bottom right
+
                         resizing = true
-                        Log.i("TOuchEvent", "$resizing")
                     } else if (isInsideLeftBottomRegion) {
 
                         cvViewPreview.removeView(newText)
@@ -1088,7 +1083,7 @@ class CreateSignsFragment : Fragment() {
                 MotionEvent.ACTION_MOVE -> {
                     scrollView.requestDisallowInterceptTouchEvent(true)
 
-                    Log.i("TOuchEvent", "move $resizing")
+                    //Move
                     if (resizing) {
                         val deltaY = event.rawY - initialY
                         val newSize = initialSize + deltaY
@@ -1111,7 +1106,6 @@ class CreateSignsFragment : Fragment() {
 
                         var textModelSearchBd: Int? = null
 
-                        Log.i("textModelSearch", "$textModelSearchBd")
                         for ((index, text) in listTextFinal.withIndex()) {
                             if (text.id == indicesNewTextID) {
                                 textModelSearchBd = index
@@ -1119,7 +1113,6 @@ class CreateSignsFragment : Fragment() {
                             }
                         }
 
-                        Log.i("textModelSearch", "$textModelSearchBd")
 
                         if(textModelSearchBd != null){
                             val textModelSelected = listTextFinal[textModelSearchBd]
