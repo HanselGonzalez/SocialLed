@@ -4,13 +4,17 @@
 
         <item name="fontFamily">@font/dmsan</item>
         <item name="android:statusBarColor">@color/tertiary</item>
+        <item name="android:navigationBarColor">@color/navBar</item>
+        <item name="colorControlNormal">@color/white</item>
+
+
 
     </style>
 
     <style name="Theme.SocialLed" parent="Base.Theme.SocialLed" />
 
     <style name="bottomNav">
-        <item name="itemIconSize">32dp</item>
+        <item name="itemIconSize">27dp</item>
         <item name="itemTextAppearanceActive">@font/dmsan</item>
         <item name="itemTextAppearanceInactive">@font/dmsan</item>
         <item name="android:itemBackground">@color/transparent</item>
@@ -54,8 +58,8 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.SocialLed</item>
 
-
     </style>
+
 
 
 

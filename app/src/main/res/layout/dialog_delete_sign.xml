@@ -18,6 +18,7 @@
         app:cardCornerRadius="30dp"
         app:cardElevation="30dp"
         android:background="@color/transparent"
+        app:cardBackgroundColor="@color/white"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +32,7 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/delete_sign"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>

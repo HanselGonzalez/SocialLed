@@ -10,6 +10,9 @@
     <color name="secondaryBar">#0290DC</color>
     <color name="primary">#040710</color>
 
+    <color name="navBar">#040812</color>
+
+
     //ACTIVITY FULL VIEW
     <color name="save_pressed">#2F369F</color>
     <color name="tertiaryTransparent">#171755</color>

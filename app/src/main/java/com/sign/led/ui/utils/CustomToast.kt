@@ -18,7 +18,7 @@ object CustomToast {
 
         val toast = Toast(context)
         toast.setGravity(Gravity.BOTTOM, 0, 230)
-        toast.duration = Toast.LENGTH_LONG
+        toast.duration = Toast.LENGTH_SHORT
         toast.view = layout
         toast.show()
     }

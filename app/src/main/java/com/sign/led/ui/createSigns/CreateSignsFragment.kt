@@ -178,7 +178,7 @@ class CreateSignsFragment : Fragment() {
             binding.btnSave.alpha = 0f
             binding.btnSave.animate()
                 .alpha(1f)
-                .setDuration(120)
+                .setDuration(160)
                 .setInterpolator(AccelerateDecelerateInterpolator())
                 .withEndAction {
                     binding.btnSave.postDelayed({
@@ -275,17 +275,18 @@ class CreateSignsFragment : Fragment() {
 
 
                 cvViewPreview.removeAllViews()
-                cvViewPreview.setBackgroundColor(
+                cvViewPreview.setCardBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
-                backgroundState = false
                 colorFinalBackground = null
                 listViewNew.clear()
                 listTextNew.clear()
                 listTextFinal.clear()
+                backgroundPixelInitial()
+                backgroundState = false
                 dialogSave.dismiss()
                 nameSignSave.setText("")
 

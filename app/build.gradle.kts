@@ -14,7 +14,7 @@ android {
         applicationId = "com.sign.led"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -23,7 +23,8 @@ android {
     buildTypes {
 
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             isDebuggable = false
 
             proguardFiles(
@@ -32,8 +33,9 @@ android {
             )
 
             resValue("string", "solkyname","Solky")
-            resValue("string", "ADMOB_ID_MANIFEST","ca-app-pub-3940256099942544~3347511713")
-            resValue("string", "ADMOB_ID_ADS","ca-app-pub-3940256099942544/1033173712")
+            resValue("string", "ADMOB_ID_MANIFEST","ca-app-pub-1256986380476629~6300321407")
+            resValue("string", "ADMOB_ID_ADS","ca-app-pub-1256986380476629/3972158076")
+            signingConfig = signingConfigs.getByName("debug")
 
         }
 
