@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowInsets
@@ -173,6 +174,7 @@ class SignFullViewActivity : AppCompatActivity() {
         val listItemsFinal = ListItemsFullViewSingleton.getListItems()
 
 
+
         if (listItemsFinal.backgroundColor != null) {
             flBackground.setBackgroundColor(listItemsFinal.backgroundColor)
         } else {
@@ -201,7 +203,17 @@ class SignFullViewActivity : AppCompatActivity() {
 
             val newText = TextView(this)
             newText.text = textItem.text
-            newText.textSize = textItem.size
+
+            val displayMetrics = DisplayMetrics()
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val screenHeight = displayMetrics.heightPixels
+            val densityScreen = displayMetrics.density
+
+            val sizeRest = (screenHeight / 100) + densityScreen
+
+            newText.textSize = textItem.size - sizeRest
+
+
             newText.maxLines = 1
             newText.setTextColor(textItem.color)
             newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
@@ -210,20 +222,18 @@ class SignFullViewActivity : AppCompatActivity() {
 
 
 
-            val relativeX = textItem.positionX
-            val relativeY = textItem.positionY
-
-            val absoluteX = relativeX * flBackground.width
-            val absoluteY = relativeY * flBackground.height
-
-
             val textLayoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
 
             )
 
-            newText.layoutParams = textLayoutParams
+            val relativeX = textItem.positionX
+            val relativeY = textItem.positionY
+
+            val absoluteX = relativeX * flBackground.width
+            val absoluteY = relativeY * flBackground.height
+
 
 
             val animationResourceTypeName =
@@ -258,14 +268,19 @@ class SignFullViewActivity : AppCompatActivity() {
                 }
             }
 
-            newText.setPadding(20, 10, 20, 20)
+            newText.setPadding(20, 20, 20, 20)
 
-
-
-
+            newText.layoutParams = textLayoutParams
 
             newText.x = absoluteX
             newText.y = absoluteY
+
+
+
+
+
+
+
 
             flBackground.addView(newText, 0)
         }
@@ -325,6 +340,16 @@ class SignFullViewActivity : AppCompatActivity() {
             val newText = TextView(this)
             newText.text = textItem.text
             newText.textSize = textItem.size
+
+            val displayMetrics = DisplayMetrics()
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val screenHeight = displayMetrics.heightPixels
+            val densityScreen = displayMetrics.density
+
+            val sizeRest = (screenHeight / 100) + densityScreen
+
+            newText.textSize = textItem.size - sizeRest
+
             newText.maxLines = 1
             newText.setTextColor(textItem.color)
             newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
@@ -433,7 +458,16 @@ class SignFullViewActivity : AppCompatActivity() {
 
             val newText = TextView(this)
             newText.text = textItem.text
-            newText.textSize = textItem.size
+
+            val displayMetrics = DisplayMetrics()
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val screenHeight = displayMetrics.heightPixels
+            val densityScreen = displayMetrics.density
+
+            val sizeRest = (screenHeight / 100) + densityScreen
+
+            newText.textSize = textItem.size - sizeRest
+
             newText.maxLines = 1
             newText.setTextColor(textItem.color)
             newText.typeface = Typeface.createFromAsset(this.assets, textItem.typeface)
@@ -448,6 +482,14 @@ class SignFullViewActivity : AppCompatActivity() {
             val absoluteX = relativeX * flBackground.width
             val absoluteY = relativeY * flBackground.height
 
+
+            val textLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+
+            )
+
+            newText.layoutParams = textLayoutParams
 
             val animationResourceTypeName =
                 this.resources.getResourceTypeName(textItem.animation)
@@ -481,16 +523,10 @@ class SignFullViewActivity : AppCompatActivity() {
                 }
             }
 
-            newText.setPadding(20, 10, 20, 20)
+            newText.setPadding(20, 20, 20, 20)
 
 
-            val textLayoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
 
-            )
-
-            newText.layoutParams = textLayoutParams
 
 
             newText.x = absoluteX

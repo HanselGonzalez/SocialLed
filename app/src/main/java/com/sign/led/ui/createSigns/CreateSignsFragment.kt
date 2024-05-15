@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextPaint
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -112,10 +113,24 @@ class CreateSignsFragment : Fragment() {
     }
 
     private fun initUI() {
+        initBackground()
+
         initAds()
         initListeners()
     }
 
+    private fun initBackground() {
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+        val densityScreen = displayMetrics.density
+
+        val layoutParamsPreview = cvViewPreview.layoutParams
+        val layoutHeightDp = screenWidth / densityScreen
+        layoutParamsPreview.height = layoutHeightDp.toInt()
+
+        cvViewPreview.layoutParams = layoutParamsPreview
+    }
 
 
     private fun initListeners() {
@@ -390,8 +405,6 @@ class CreateSignsFragment : Fragment() {
 
 
 
-
-
                     val animationResourceTypeName =
                         requireContext().resources.getResourceTypeName(textModel.animation)
 
@@ -443,7 +456,6 @@ class CreateSignsFragment : Fragment() {
         }
 
         binding.btnFullView.setOnClickListener {
-
             val items =
                 ItemViewFullModel(null, null, colorFinalBackground, backgroundState, listTextFinal)
             ListItemsFullViewSingleton.setListItems(items)
@@ -869,6 +881,8 @@ class CreateSignsFragment : Fragment() {
 
 
 
+
+
                 when (speedSelectionItem) {
                     0 -> speedSelection = speedNormal
                     1 -> speedSelection = speedSlow
@@ -901,7 +915,6 @@ class CreateSignsFragment : Fragment() {
                 listViewNew.add(newView)
                 setOnTouchListener(newText, newView)
 
-
                 cvViewPreview.addView(newText, 0)
                 cvViewPreview.removeView(backgroundFinal)
                 cvViewPreview.addView(backgroundFinal)
@@ -910,8 +923,6 @@ class CreateSignsFragment : Fragment() {
 
                 etText.text.clear()
                 dialogTitle.dismiss()
-
-
 
 
                 if (listTextNew.size > 0) {
@@ -1092,18 +1103,20 @@ class CreateSignsFragment : Fragment() {
                         newText.measure(0, 0)
                         val textHeight = newText.measuredHeight
                         val textWidth = newText.measuredWidth
+
                         newView.layoutParams.height = textHeight
                         newView.layoutParams.width = textWidth
                         newView.requestLayout()
                     } else {
 
+
                         val newX = event.rawX + deltaX
                         val newY = event.rawY + deltaY
 
 
-
                         positionX = newX / cvViewPreview.width
                         positionY = newY / cvViewPreview.height
+
 
                         var textModelSearchBd: Int? = null
 
