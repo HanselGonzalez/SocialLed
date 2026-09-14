@@ -24,10 +24,17 @@ Caracteristicas - Solky App!
 
 🟣 Solky App 🟣
 
-HG
+HG<p align="center">
+  <!-- 1. Logo de la app -->
+  <img src="https://github.com/user-attachments/assets/1ac661ef-55b8-402f-81c6-7405db5828e9" width="150" alt="Logo Solky" />
+  <br><br>
 
-<img width="512" height="512" alt="solky" src="https://github.com/user-attachments/assets/1ac661ef-55b8-402f-81c6-7405db5828e9" />
-<img width="720" height="1600" alt="Imagen" src="https://github.com/user-attachments/assets/563538b8-4790-4097-bfb7-f398044f15e3" />
-<img width="720" height="1600" alt="imagen 2" src="https://github.com/user-attachments/assets/584bcad5-a39b-44df-8e7d-8066acfd120e" />
-<img width="1024" height="500" alt="imgaen 3" src="https://github.com/user-attachments/assets/d6da113a-590e-4a6c-86a6-b73ce9f182eb" />
+  <!-- 2. Capturas de pantalla de la interfaz -->
+  <img src="https://github.com/user-attachments/assets/563538b8-4790-4097-bfb7-f398044f15e3" width="220" alt="Pantalla 1" />
+  <img src="https://github.com/user-attachments/assets/584bcad5-a39b-44df-8e7d-8066acfd120e" width="220" alt="Pantalla 2" />
+  <br><br>
+
+  <!-- 3. Banner promocional / Imagen horizontal -->
+  <img src="https://github.com/user-attachments/assets/d6da113a-590e-4a6c-86a6-b73ce9f182eb" width="600" alt="Banner Solky" />
+</p>
 
