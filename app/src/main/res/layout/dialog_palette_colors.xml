@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="400dp"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="400dp"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="525dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="10dp"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="30dp"
         android:background="@color/transparent"
         app:cardBackgroundColor="@color/white"
-        >
+        app:cardCornerRadius="30dp"
+        app:cardElevation="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
 
 
                 <androidx.cardview.widget.CardView
@@ -31,218 +30,213 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     app:cardBackgroundColor="@android:color/transparent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-
+                    app:layout_constraintTop_toTopOf="parent">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="27dp"
-                        android:paddingVertical="20dp">
-
+                        android:paddingVertical="20dp"
+                        android:paddingLeft="27dp">
 
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor1"
-                            android:layout_margin="20dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:cardBackgroundColor="@color/black"
                             android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            android:layout_height="40dp"
+                            android:layout_margin="20dp"
+                            app:cardBackgroundColor="@color/black"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_margin="20dp"
                             app:cardBackgroundColor="@color/white"
                             app:layout_constraintStart_toEndOf="@id/cvColor1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor3"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_margin="20dp"
                             app:cardBackgroundColor="@color/blue"
                             app:layout_constraintStart_toEndOf="@id/cvColor2"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor4"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_margin="20dp"
                             app:cardBackgroundColor="@color/red"
                             app:layout_constraintStart_toEndOf="@id/cvColor3"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor5"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_margin="20dp"
                             app:cardBackgroundColor="@color/yellow"
                             app:layout_constraintStart_toEndOf="@id/cvColor4"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor6"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/salmon"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor1"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor1" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor7"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/grey"
                             app:layout_constraintStart_toEndOf="@id/cvColor6"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor2"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor2" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor8"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/sky_blue"
                             app:layout_constraintStart_toEndOf="@id/cvColor7"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor3"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor3" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor9"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/mint"
                             app:layout_constraintStart_toEndOf="@id/cvColor8"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor4"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor4" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor10"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/light_pink"
                             app:layout_constraintStart_toEndOf="@id/cvColor9"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor5"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
-
+                            app:layout_constraintTop_toBottomOf="@id/cvColor5" />
 
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor11"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/crimson"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor6"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor6" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor12"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/orange"
                             app:layout_constraintStart_toEndOf="@id/cvColor11"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor7"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor7" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor13"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/light_blue"
                             app:layout_constraintStart_toEndOf="@id/cvColor12"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor8"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor8" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor14"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/pink"
                             app:layout_constraintStart_toEndOf="@id/cvColor13"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor9"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor9" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor15"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/green"
                             app:layout_constraintStart_toEndOf="@id/cvColor14"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor10"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor10" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor16"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:cardBackgroundColor="@color/purple"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor11"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cvColor11" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor17"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/dark_blue"
                             app:layout_constraintStart_toEndOf="@id/cvColor16"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor12"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor12" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor18"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/dark_purple"
                             app:layout_constraintStart_toEndOf="@id/cvColor17"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor13"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor13" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor19"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/golden"
                             app:layout_constraintStart_toEndOf="@id/cvColor18"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor14"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor14" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvColor20"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="20dp"
                             app:cardBackgroundColor="@color/dark_red"
                             app:layout_constraintStart_toEndOf="@id/cvColor19"
-                            app:layout_constraintTop_toBottomOf="@id/cvColor15"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"/>
+                            app:layout_constraintTop_toBottomOf="@id/cvColor15" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -253,46 +247,45 @@
                     android:id="@+id/cvDetailStyle"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cvPaletteColors"
                     app:cardBackgroundColor="@android:color/transparent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    >
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cvPaletteColors">
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:paddingHorizontal="20dp">
 
+
                         <TextView
                             android:id="@+id/tvFont"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="@string/font"
-                            android:textSize="18sp"
-                            android:layout_marginTop="7dp"
                             android:layout_marginHorizontal="60dp"
+                            android:layout_marginTop="7dp"
+                            android:text="@string/font"
                             android:textColor="@color/primary"
-                            />
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvSpinnerFont"
-                            android:layout_height="wrap_content"
                             android:layout_width="0dp"
-                            app:layout_constraintTop_toBottomOf="@id/tvFont"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="2dp"
                             android:layout_marginTop="5dp"
-                            app:layout_constraintEnd_toStartOf="@id/cvSpinnerAnimation">
+                            app:layout_constraintEnd_toStartOf="@id/cvSpinnerAnimation"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvFont">
 
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/spFont"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spFont"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
 
                         </com.google.android.material.card.MaterialCardView>
 
@@ -300,25 +293,24 @@
                             android:id="@+id/tvAnimation"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:text="@string/animation"
-                            android:textSize="18sp"
-                            android:layout_marginTop="7dp"
-
                             android:layout_marginHorizontal="55dp"
+                            android:layout_marginTop="7dp"
+                            android:text="@string/animation"
                             android:textColor="@color/primary"
-                            />
+                            android:textSize="18sp"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvSpinnerAnimation"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            app:layout_constraintTop_toBottomOf="@id/tvAnimation"
-                            app:layout_constraintEnd_toEndOf="parent"
                             android:layout_marginHorizontal="5dp"
-                            app:layout_constraintStart_toEndOf="@id/cvSpinnerFont">
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/cvSpinnerFont"
+                            app:layout_constraintTop_toBottomOf="@id/tvAnimation">
 
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spAnimation"
@@ -330,32 +322,30 @@
                         </com.google.android.material.card.MaterialCardView>
 
 
-
                         <TextView
                             android:id="@+id/tvSpeedAnimation"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textAlignment="center"
-                            app:layout_constraintTop_toBottomOf="@id/cvSpinnerFont"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:text="@string/speed"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="10dp"
-                            android:textSize="18sp"
+                            android:text="@string/speed"
+                            android:textAlignment="center"
                             android:textColor="@color/primary"
-                            />
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cvSpinnerFont" />
 
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvSpinnerSpeedAnimation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/tvSpeedAnimation"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginLeft="15dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginLeft="15dp">
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvSpeedAnimation">
 
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spSpeedAnimation"
@@ -368,36 +358,33 @@
                         </com.google.android.material.card.MaterialCardView>
 
 
-
-
                         <ImageButton
                             android:id="@+id/btnBack"
                             android:layout_width="70dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/ic_back"
-                            app:layout_constraintTop_toBottomOf="@id/cvSpinnerSpeedAnimation"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/btnCheck"
                             android:layout_marginLeft="95dp"
                             android:layout_marginTop="5dp"
                             android:background="@drawable/rounded_borders"
                             android:backgroundTint="@color/tertiary"
-                            app:tint="@color/white"
-                            />
+                            android:src="@drawable/ic_back"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/btnCheck"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cvSpinnerSpeedAnimation"
+                            app:tint="@color/white" />
 
                         <ImageButton
                             android:id="@+id/btnCheck"
                             android:layout_width="70dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/ic_check"
-                            app:layout_constraintTop_toBottomOf="@id/cvSpinnerSpeedAnimation"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/btnBack"
-                            android:layout_marginTop="5dp"
                             android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
                             android:background="@drawable/rounded_borders"
                             android:backgroundTint="@color/tertiary"
+                            android:src="@drawable/ic_check"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/btnBack"
+                            app:layout_constraintTop_toBottomOf="@id/cvSpinnerSpeedAnimation"
                             app:tint="@color/white"
 
 
@@ -407,18 +394,13 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
                 </androidx.cardview.widget.CardView>
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

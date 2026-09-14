@@ -2,6 +2,7 @@ package com.sign.led.ui.signFullView
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Build
@@ -14,6 +15,7 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -79,6 +81,8 @@ class SignFullViewActivity : AppCompatActivity() {
 
     private fun initUI() {
         flBackground = binding.flBackground
+
+
         initState()
     }
 
@@ -221,6 +225,12 @@ class SignFullViewActivity : AppCompatActivity() {
             val textWidth = newText.paint.measureText(newText.text.toString())
 
 
+            val relativeX = textItem.positionX
+            val relativeY = textItem.positionY
+
+            val absoluteX = relativeX * flBackground.width
+            val absoluteY = relativeY * flBackground.height
+
 
             val textLayoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -228,11 +238,7 @@ class SignFullViewActivity : AppCompatActivity() {
 
             )
 
-            val relativeX = textItem.positionX
-            val relativeY = textItem.positionY
-
-            val absoluteX = relativeX * flBackground.width
-            val absoluteY = relativeY * flBackground.height
+            newText.layoutParams = textLayoutParams
 
 
 
@@ -270,7 +276,6 @@ class SignFullViewActivity : AppCompatActivity() {
 
             newText.setPadding(20, 20, 20, 20)
 
-            newText.layoutParams = textLayoutParams
 
             newText.x = absoluteX
             newText.y = absoluteY
@@ -512,6 +517,7 @@ class SignFullViewActivity : AppCompatActivity() {
                     newText.ellipsize = TextUtils.TruncateAt.MARQUEE
                     newText.isSingleLine = true
                     newText.isSelected = true
+
 
 
                 }else{

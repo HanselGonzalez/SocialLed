@@ -1,3 +1,13 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
+}
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,15 +16,16 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+
 android {
     namespace = "com.sign.led"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.sign.led"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 3
+        targetSdk = 35
+        versionCode = 8
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -33,8 +44,13 @@ android {
             )
 
             resValue("string", "solkyname","Solky")
-            resValue("string", "ADMOB_ID_MANIFEST","ca-app-pub-1256986380476629~6300321407")
-            resValue("string", "ADMOB_ID_ADS","ca-app-pub-1256986380476629/3972158076")
+
+            val admobManifest = localProperties.getProperty("ADMOB_RELEASE_MANIFEST") ?: ""
+            val admobAds = localProperties.getProperty("ADMOB_RELEASE_ADS") ?: ""
+
+            resValue("string", "ADMOB_ID_MANIFEST", admobManifest)
+            resValue("string", "ADMOB_ID_ADS", admobAds)
+
             signingConfig = signingConfigs.getByName("debug")
 
         }

@@ -1,5 +1,11 @@
 *.iml
 .gradle
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+/app/build/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -13,3 +19,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+*.jks
+*.keystore
+.idea/deploymentTargetDropDown.xml
+/app/debug/
+/app/release/
